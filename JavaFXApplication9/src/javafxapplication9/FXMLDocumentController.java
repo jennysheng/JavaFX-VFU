@@ -21,7 +21,6 @@ import javafx.stage.FileChooser;
  * @author Jenny_2
  */
 public class FXMLDocumentController implements Initializable {
-    
 
     @FXML
     private void handleReadAction(ActionEvent event) {
@@ -42,13 +41,14 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
-@FXML
-private void handleButtonAction(ActionEvent event){
-    System.out.println("pressed");
-    
-    
-    
-}
+
+    @FXML
+    private void handleButtonAction(ActionEvent event) {
+        System.out.println("pressed");
+       
+
+    }
+       
 
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

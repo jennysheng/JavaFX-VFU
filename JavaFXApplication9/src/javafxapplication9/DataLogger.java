@@ -10,7 +10,8 @@ package javafxapplication9;
  * @author Jenny_2
  */
 public class DataLogger {
-   String date, value1, value2, value3, value4, value5, value6, value7, value8;
+
+    String date, value1, value2, value3, value4, value5, value6, value7, value8;
 
     public DataLogger(String date, String value1, String value2, String value3, String value4, String value5, String value6, String value7, String value8) {
         this.date = date;
@@ -60,5 +61,4 @@ public class DataLogger {
         return value8;
     }
 
-    
 }
