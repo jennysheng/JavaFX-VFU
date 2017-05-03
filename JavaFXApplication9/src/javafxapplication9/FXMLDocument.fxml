@@ -9,13 +9,12 @@
 
 <AnchorPane id="AnchorPane" prefHeight="623.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication7.FXMLDocumentController">
     <children>
-        <Button fx:id="button" layoutX="22.0" layoutY="470.0" text="Channel 1" />
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <MenuBar layoutY="2.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="ReadFile" onAction="#handleReadAction"/>
+              <MenuItem mnemonicParsing="false" onAction="#handleReadAction" text="ReadFile" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -38,12 +37,37 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </ScatterChart>
-      <Button layoutX="22.0" layoutY="525.0" mnemonicParsing="false" text="Channel 2" />
-      <Button layoutX="343.0" layoutY="470.0" mnemonicParsing="false" text="Channel 3" />
-      <ColorPicker layoutX="114.0" layoutY="470.0" />
-      <ColorPicker layoutX="114.0" layoutY="525.0" />
-      <ColorPicker layoutX="463.0" layoutY="470.0" />
-      <Button layoutX="343.0" layoutY="525.0" mnemonicParsing="false" text="Channel 4" />
-      <ColorPicker layoutX="463.0" layoutY="525.0" />
+      <GridPane layoutX="67.0" layoutY="468.0" prefHeight="102.0" prefWidth="545.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="85.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="166.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="82.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="172.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" text="Channel 2" GridPane.rowIndex="1" />
+              <Button fx:id="button" text="Channel 1" />
+            <Button mnemonicParsing="false" text="Channel 3" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" text="Channel 4" GridPane.rowIndex="3" />
+            <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ColorPicker GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" text="Channel 5" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" text="Channel 6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" text="Channel 7" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" text="Channel 8" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <ColorPicker GridPane.columnIndex="3" />
+            <ColorPicker GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <ColorPicker GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <ColorPicker GridPane.columnIndex="3" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
     </children>
 </AnchorPane>
