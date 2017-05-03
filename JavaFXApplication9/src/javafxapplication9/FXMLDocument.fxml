@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="623.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication7.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="623.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication9.FXMLDocumentController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <MenuBar layoutY="2.0">
@@ -52,7 +52,7 @@
         </rowConstraints>
          <children>
             <Button mnemonicParsing="false" text="Channel 2" GridPane.rowIndex="1" />
-              <Button fx:id="button" text="Channel 1" />
+            <Button fx:id="button" text="Channel 1" onAction="#handleButtonAction" />
             <Button mnemonicParsing="false" text="Channel 3" GridPane.rowIndex="2" />
             <Button mnemonicParsing="false" text="Channel 4" GridPane.rowIndex="3" />
             <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
