@@ -9,7 +9,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="623.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication9.FXMLDocumentController">
     <children>
-        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
         <MenuBar layoutY="2.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
@@ -29,7 +28,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <ScatterChart layoutX="9.0" layoutY="58.0" prefHeight="405.0" prefWidth="545.0" >
+        <ScatterChart fx:id="scatterchart" layoutX="9.0" layoutY="58.0" prefHeight="405.0" prefWidth="545.0">
             <xAxis>
                 <CategoryAxis side="BOTTOM" />
             </xAxis>
@@ -52,13 +51,13 @@
             </rowConstraints>
             <children>
                 <Button mnemonicParsing="false" text="Channel 2" GridPane.rowIndex="1" />
-                <Button fx:id="button" text="Channel 1" onAction="#handleButtonAction" />
+                <Button fx:id="buttonChannel1" onAction="#handleButtonAction" text="Channel 1" />
                 <Button mnemonicParsing="false" text="Channel 3" GridPane.rowIndex="2" />
                 <Button mnemonicParsing="false" text="Channel 4" GridPane.rowIndex="3" />
                 <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <ColorPicker GridPane.columnIndex="1" />
+                <ColorPicker fx:id="colorPicker1" GridPane.columnIndex="1" />
                 <Button mnemonicParsing="false" text="Channel 5" GridPane.columnIndex="2" />
                 <Button mnemonicParsing="false" text="Channel 6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                 <Button mnemonicParsing="false" text="Channel 7" GridPane.columnIndex="2" GridPane.rowIndex="2" />
