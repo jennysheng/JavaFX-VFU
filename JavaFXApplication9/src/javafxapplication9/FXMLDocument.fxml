@@ -30,7 +30,7 @@
         </MenuBar>
         <ScatterChart fx:id="scatterchart" layoutX="9.0" layoutY="58.0" prefHeight="405.0" prefWidth="545.0">
             <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <NumberAxis side="BOTTOM" />
             </xAxis>
             <yAxis>
                 <NumberAxis side="LEFT" />
@@ -51,7 +51,7 @@
             </rowConstraints>
             <children>
                 <Button mnemonicParsing="false" text="Channel 2" GridPane.rowIndex="1" />
-                <Button fx:id="buttonChannel1" onAction="#handleButtonAction" text="Channel 1" />
+                <Button fx:id="buttonChannel1" onAction="#handleButton1Action" text="Channel 1" />
                 <Button mnemonicParsing="false" text="Channel 3" GridPane.rowIndex="2" />
                 <Button mnemonicParsing="false" text="Channel 4" GridPane.rowIndex="3" />
                 <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="3" />

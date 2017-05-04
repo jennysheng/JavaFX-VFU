@@ -11,9 +11,10 @@ package javafxapplication9;
  */
 public class DataLogger {
 
-    String date, value1, value2, value3, value4, value5, value6, value7, value8;
+    String date;
+    double value1, value2, value3, value4, value5, value6, value7, value8;
 
-    public DataLogger(String date, String value1, String value2, String value3, String value4, String value5, String value6, String value7, String value8) {
+    public DataLogger(String date, double value1, double value2, double value3, double value4, double value5, double value6, double value7, double value8) {
         this.date = date;
         this.value1 = value1;
         this.value2 = value2;
@@ -25,42 +26,45 @@ public class DataLogger {
         this.value8 = value8;
     }
 
-   
+    
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getValue1() {
+    public double getValue1() {
         return value1;
     }
 
-    public String getValue2() {
+    public double getValue2() {
         return value2;
     }
 
-    public String getValue3() {
+    public double getValue3() {
         return value3;
     }
 
-    public String getValue4() {
+    public double getValue4() {
         return value4;
     }
 
-    public String getValue5() {
+    public double getValue5() {
         return value5;
     }
 
-    public String getValue6() {
+    public double getValue6() {
         return value6;
     }
 
-    public String getValue7() {
+    public double getValue7() {
         return value7;
     }
 
-    public String getValue8() {
+    public double getValue8() {
         return value8;
     }
+
+ 
+
+   
+
+
+  
 
 }

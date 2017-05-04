@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -20,7 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.ScatterChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
@@ -32,7 +31,6 @@ import javafx.stage.FileChooser;
  */
 public class FXMLDocumentController implements Initializable {
 
-    @FXML
     private ArrayList<ScatterChart.Series> scatterchartseries = new ArrayList<>();
 
     private final ListView<Double> channel1 = new ListView<Double>();
@@ -49,28 +47,28 @@ public class FXMLDocumentController implements Initializable {
     File selectedFile = null;
     int f = 0;
     JavaFXApplication9 aThis;
+    @FXML
+    private ScatterChart<Integer, Double> scatterchart;
 
     @FXML
-    private void handleReadAction(ActionEvent event) throws InterruptedException {
+    private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
 
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
-     
-
-      
+        addSenorValueFromFile();
+        createChart();
 
     }
 
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-
+    public ObservableList<DataLogger> getChannelsdata() {
+        return channelsdata;
     }
 
     public void initialize(URL url, ResourceBundle rb) {
-       createChart();
+
     }
 
-    public ObservableList<DataLogger> addSenorValueFromFile() {
+    public ObservableList<DataLogger> addSenorValueFromFile() throws ParseException {
 
         StringBuilder filecontent = new StringBuilder();
 
@@ -91,10 +89,18 @@ public class FXMLDocumentController implements Initializable {
 
                 System.out.println(j);
                 int i = 0;
-
+                //SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd:HH:mm:ss,SSS");
                 while (i < ((j - 1) * 9)) {
 
-                    channelsdata.add(new DataLogger(parts[i], parts[i + 1], parts[i + 2], parts[i + 3], parts[i + 4], parts[i + 5], parts[i + 6], parts[i + 7], parts[i + 8]));
+                    channelsdata.add(new DataLogger(parts[i],
+                            Double.parseDouble(parts[i + 1]),
+                            Double.parseDouble(parts[i + 2]),
+                            Double.parseDouble(parts[i + 3]),
+                            Double.parseDouble(parts[i + 4]),
+                            Double.parseDouble(parts[i + 5]),
+                            Double.parseDouble(parts[i + 6]),
+                            Double.parseDouble(parts[i + 7]),
+                            Double.parseDouble(parts[i + 8])));
                     i += 9;
                 }
 
@@ -105,7 +111,7 @@ public class FXMLDocumentController implements Initializable {
         return channelsdata;
     }
 
-    public void createChart() {
+    public void createChart() throws ParseException {
 
         series1 = new ScatterChart.Series();
         series2 = new ScatterChart.Series();
@@ -116,25 +122,28 @@ public class FXMLDocumentController implements Initializable {
         series7 = new ScatterChart.Series();
         series8 = new ScatterChart.Series();
 
-        SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd:HH:mm:ss,SSS");
+        getChannelsdata().stream().forEach((c) -> {
 
-        this.addSenorValueFromFile().stream().forEach((c) -> {
+            series1.getData().add(new ScatterChart.Data(f, c.getValue1()));
+            series2.getData().add(new ScatterChart.Data(f, c.getValue2()));
+            series3.getData().add(new ScatterChart.Data(f, c.getValue3()));
+            series4.getData().add(new ScatterChart.Data(f, c.getValue4()));
+            series5.getData().add(new ScatterChart.Data(f, c.getValue5()));
+            series6.getData().add(new ScatterChart.Data(f, c.getValue6()));
+            series7.getData().add(new ScatterChart.Data(f, c.getValue7()));
+            series8.getData().add(new ScatterChart.Data(f, c.getValue8()));
 
-            series1.getData().add(new ScatterChart.Data(f, Double.parseDouble(c.getValue1())));
-            series2.getData().add(new ScatterChart.Data(f, Double.parseDouble(c.getValue2())));
-            series3.getData().add(new ScatterChart.Data(f, Double.parseDouble(c.getValue3())));
-            series4.getData().add(new XYChart.Data(f, Double.parseDouble(c.getValue4())));
-            series5.getData().add(new XYChart.Data(f, Double.parseDouble(c.getValue5())));
-            series6.getData().add(new XYChart.Data(f, Double.parseDouble(c.getValue6())));
-            series7.getData().add(new XYChart.Data(f, Double.parseDouble(c.getValue7())));
-            series8.getData().add(new XYChart.Data(f, Double.parseDouble(c.getValue8())));
             f++;
 
         });
         scatterchartseries.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
+        scatterchart.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
 
     }
 
-    
+    @FXML
+    private void handleButton1Action(ActionEvent event) {
+
+    }
 
 }
