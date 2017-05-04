@@ -57,7 +57,7 @@ public class FXMLDocumentController implements Initializable {
         selectedFile = fileChooser.showOpenDialog(null);
      
 
-        createChart();
+      
 
     }
 
@@ -67,7 +67,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       createChart();
     }
 
     public ObservableList<DataLogger> addSenorValueFromFile() {
