@@ -50,22 +50,22 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button mnemonicParsing="false" text="Channel 2" GridPane.rowIndex="1" />
+                <Button fx:id="buttonChannel2" mnemonicParsing="false" onAction="#handleButton2Action" text="Channel 2" GridPane.rowIndex="1" />
                 <Button fx:id="buttonChannel1" onAction="#handleButton1Action" text="Channel 1" />
-                <Button mnemonicParsing="false" text="Channel 3" GridPane.rowIndex="2" />
-                <Button mnemonicParsing="false" text="Channel 4" GridPane.rowIndex="3" />
-                <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <ColorPicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <ColorPicker fx:id="colorPicker1" GridPane.columnIndex="1" />
-                <Button mnemonicParsing="false" text="Channel 5" GridPane.columnIndex="2" />
-                <Button mnemonicParsing="false" text="Channel 6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <Button mnemonicParsing="false" text="Channel 7" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <Button mnemonicParsing="false" text="Channel 8" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                <ColorPicker GridPane.columnIndex="3" />
-                <ColorPicker GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                <ColorPicker GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                <ColorPicker GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                <Button fx:id="buttonChannel3" mnemonicParsing="false" onAction="#handleButton3Action" text="Channel 3" GridPane.rowIndex="2" />
+                <Button fx:id="buttonChannel4" mnemonicParsing="false" onAction="#handleButton4Action" text="Channel 4" GridPane.rowIndex="3" />
+                <ColorPicker fx:id="colorPicker4" onAction="#handleColor4Action" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <ColorPicker fx:id="colorPicker3" onAction="#handleColor3Action" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ColorPicker fx:id="colorPicker2" onAction="#handleColor2Action" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <ColorPicker fx:id="colorPicker1" onAction="#handleColor1Action" GridPane.columnIndex="1" />
+                <Button fx:id="buttonChannel5" mnemonicParsing="false" onAction="#handleButton5Action" text="Channel 5" GridPane.columnIndex="2" />
+                <Button fx:id="buttonChannel6" mnemonicParsing="false" onAction="#handleButton6Action" text="Channel 6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Button fx:id="buttonChannel7" mnemonicParsing="false" onAction="#handleButton7Action" text="Channel 7" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Button fx:id="buttonChannel8" mnemonicParsing="false" onAction="#handleButton8Action" text="Channel 8" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <ColorPicker fx:id="colorPicker5" onAction="#handleColor5Action" GridPane.columnIndex="3" />
+                <ColorPicker fx:id="colorPicker6" onAction="#handleColor6Action" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <ColorPicker fx:id="colorPicker7" onAction="#handleColor7Action" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <ColorPicker fx:id="colorPicker8" onAction="#handleColor8Action" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             </children>
         </GridPane>
     </children>

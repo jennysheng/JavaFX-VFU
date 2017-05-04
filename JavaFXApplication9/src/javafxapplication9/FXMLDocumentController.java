@@ -49,6 +49,34 @@ public class FXMLDocumentController implements Initializable {
     JavaFXApplication9 aThis;
     @FXML
     private ScatterChart<Integer, Double> scatterchart;
+    @FXML
+    private ColorPicker colorPicker4;
+    @FXML
+    private ColorPicker colorPicker3;
+    @FXML
+    private ColorPicker colorPicker2;
+    @FXML
+    private ColorPicker colorPicker5;
+    @FXML
+    private ColorPicker colorPicker6;
+    @FXML
+    private ColorPicker colorPicker7;
+    @FXML
+    private ColorPicker colorPicker8;
+    @FXML
+    private Button buttonChannel2;
+    @FXML
+    private Button buttonChannel3;
+    @FXML
+    private Button buttonChannel4;
+    @FXML
+    private Button buttonChannel5;
+    @FXML
+    private Button buttonChannel6;
+    @FXML
+    private Button buttonChannel7;
+    @FXML
+    private Button buttonChannel8;
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -89,7 +117,7 @@ public class FXMLDocumentController implements Initializable {
 
                 System.out.println(j);
                 int i = 0;
-                //SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd:HH:mm:ss,SSS");
+
                 while (i < ((j - 1) * 9)) {
 
                     channelsdata.add(new DataLogger(parts[i],
@@ -137,13 +165,132 @@ public class FXMLDocumentController implements Initializable {
 
         });
         scatterchartseries.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
-        scatterchart.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
+        //scatterchart.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
 
     }
 
     @FXML
     private void handleButton1Action(ActionEvent event) {
+           
+        if (buttonChannel1.getText().equalsIgnoreCase("Channel 1")) {
+            scatterchart.getData().addAll(series1);
+            buttonChannel1.setText("StopChannel1");
+        } else {
+            scatterchart.getData().remove(series1);
+            buttonChannel1.setText("Channel 1");
+        }
 
+    }
+
+    @FXML
+    private void handleButton2Action(ActionEvent event) {
+         if (buttonChannel2.getText().equalsIgnoreCase("Channel 2")) {
+            scatterchart.getData().addAll(series2);
+            buttonChannel2.setText("StopChannel2");
+        } else {
+            scatterchart.getData().remove(series2);
+            buttonChannel2.setText("Channel 2");
+        }
+
+        
+    }
+
+    @FXML
+    private void handleButton3Action(ActionEvent event) {
+     if (buttonChannel3.getText().equalsIgnoreCase("Channel 3")) {
+            scatterchart.getData().addAll(series3);
+            buttonChannel3.setText("StopChannel3");
+        } else {
+            scatterchart.getData().remove(series3);
+            buttonChannel3.setText("Channel 3");
+        }
+    }
+
+    @FXML
+    private void handleButton4Action(ActionEvent event) {
+    if (buttonChannel4.getText().equalsIgnoreCase("Channel 4")) {
+            scatterchart.getData().addAll(series4);
+            buttonChannel4.setText("StopChannel4");
+        } else {
+            scatterchart.getData().remove(series4);
+            buttonChannel4.setText("Channel 4");
+        }
+    }
+
+    @FXML
+    private void handleColor4Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleColor3Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleColor2Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleColor1Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleButton5Action(ActionEvent event) {
+      if (buttonChannel5.getText().equalsIgnoreCase("Channel 5")) {
+            scatterchart.getData().addAll(series5);
+            buttonChannel5.setText("StopChannel5");
+        } else {
+            scatterchart.getData().remove(series5);
+            buttonChannel5.setText("Channel 5");
+        }
+    }
+
+    @FXML
+    private void handleButton6Action(ActionEvent event) {
+     if (buttonChannel6.getText().equalsIgnoreCase("Channel 6")) {
+            scatterchart.getData().addAll(series6);
+            buttonChannel6.setText("StopChannel6");
+        } else {
+            scatterchart.getData().remove(series6);
+            buttonChannel6.setText("Channel 6");
+        }
+    }
+
+    @FXML
+    private void handleButton7Action(ActionEvent event) {
+        if (buttonChannel7.getText().equalsIgnoreCase("Channel 7")) {
+            scatterchart.getData().addAll(series7);
+            buttonChannel7.setText("StopChannel7");
+        } else {
+            scatterchart.getData().remove(series7);
+            buttonChannel7.setText("Channel 7");
+        }
+    }
+
+    @FXML
+    private void handleButton8Action(ActionEvent event) {
+        if (buttonChannel8.getText().equalsIgnoreCase("Channel 8")) {
+            scatterchart.getData().addAll(series8);
+            buttonChannel8.setText("StopChannel8");
+        } else {
+            scatterchart.getData().remove(series8);
+            buttonChannel8.setText("Channel 8");
+        }
+    }
+
+    @FXML
+    private void handleColor5Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleColor6Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleColor7Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleColor8Action(ActionEvent event) {
     }
 
 }
