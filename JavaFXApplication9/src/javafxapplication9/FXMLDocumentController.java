@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,9 +31,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ScatterChart<?, ?> scatterchart;
 
-    private ListView<DataLogger> datalist = new ListView<DataLogger>();
-    ArrayList<Date> datetime = new ArrayList<Date>();
-    ArrayList<Double> channel1 = new ArrayList<Double>();
+    private final ListView<Double> channel1 = new ListView<Double>();
 
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
     @FXML
@@ -64,23 +60,37 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public ObservableList<DataLogger> addSenorValueFromFile() {
+
         StringBuilder filecontent = new StringBuilder();
 
         if (selectedFile != null) {
+
             try (BufferedReader reader = new BufferedReader(new FileReader(new File(selectedFile.getPath())))) {
 
-                String line;
-                while ((line = reader.readLine()) != null) {
+                String line=reader.readLine();
+
+                while ((line) != null) {
+                    line=reader.readLine();
                     filecontent.append(line).trimToSize();
                 }
                 String content = filecontent.toString();
+                String[] parts = content.split("\t");
+                System.out.println(parts[0]);
 
-                System.out.println(filecontent.toString());
+                for (int i = 0; i < filecontent.length(); i++) {
+                    channelsdata.add(new DataLogger(parts[i],parts[i+1], parts[i+2],parts[i+3],parts[i+4],parts[i+5],parts[i+6],parts[i+7],parts[i+8]));
+
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+        return channelsdata;
+    }
+
+    public ObservableList<DataLogger> getChannelsdata() {
+        return channelsdata;
     }
 
 }
