@@ -42,10 +42,11 @@ public class FXMLDocumentController implements Initializable {
     File selectedFile = null;
 
     @FXML
-    private void handleReadAction(ActionEvent event) {
+    private void handleReadAction(ActionEvent event) throws InterruptedException {
 
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
+        Thread.sleep(1000);
         addSenorValueFromFile();
 
     }
@@ -67,18 +68,26 @@ public class FXMLDocumentController implements Initializable {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(new File(selectedFile.getPath())))) {
 
-                String line=reader.readLine();
+                String line = reader.readLine();
+                int j = 0;
 
                 while ((line) != null) {
-                    line=reader.readLine();
-                    filecontent.append(line).trimToSize();
+                    line = reader.readLine();
+                    filecontent.append(line + "\t").trimToSize();
+                    j++;
                 }
                 String content = filecontent.toString();
                 String[] parts = content.split("\t");
-                System.out.println(parts[0]);
 
-                for (int i = 0; i < filecontent.length(); i++) {
-                    channelsdata.add(new DataLogger(parts[i],parts[i+1], parts[i+2],parts[i+3],parts[i+4],parts[i+5],parts[i+6],parts[i+7],parts[i+8]));
+                System.out.println(j);
+                int i = 0;
+
+                while (i < ((j-1) * 9)) {
+
+                    channelsdata.add(new DataLogger(parts[i], parts[i + 1], parts[i + 2], parts[i + 3], parts[i + 4], parts[i + 5], parts[i + 6], parts[i + 7], parts[i + 8]));
+                    i += 9;
+                    
+                   
 
                 }
 
@@ -91,6 +100,10 @@ public class FXMLDocumentController implements Initializable {
 
     public ObservableList<DataLogger> getChannelsdata() {
         return channelsdata;
+    }
+
+    private void plotChart() {
+
     }
 
 }
