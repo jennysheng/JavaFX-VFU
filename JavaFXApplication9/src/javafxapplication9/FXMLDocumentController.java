@@ -22,7 +22,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -35,7 +34,7 @@ public class FXMLDocumentController implements Initializable {
 
     private ArrayList<ScatterChart.Series> scatterchartseries = new ArrayList<>();
 
-    private final ListView<Double> channel1 = new ListView<Double>();
+    private final ObservableList<Double> channel1list = FXCollections.observableArrayList();
 
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
 
@@ -54,7 +53,7 @@ public class FXMLDocumentController implements Initializable {
 
     File selectedFile = null;
     int f = 0;
-    JavaFXApplication9 aThis;
+
     @FXML
     private ScatterChart<Integer, Double> scatterchart;
     @FXML
@@ -168,6 +167,7 @@ public class FXMLDocumentController implements Initializable {
         getChannelsdata().stream().forEach((c) -> {
 
             series1.getData().add(new ScatterChart.Data(f, c.getValue1()));
+            channel1list.add(c.getValue1());
             series2.getData().add(new ScatterChart.Data(f, c.getValue2()));
             series3.getData().add(new ScatterChart.Data(f, c.getValue3()));
             series4.getData().add(new ScatterChart.Data(f, c.getValue4()));
@@ -188,7 +188,6 @@ public class FXMLDocumentController implements Initializable {
     private void handleButton1Action(ActionEvent event) {
 
         if (buttonChannel1.getText().equalsIgnoreCase("Channel 1")) {
-
             scatterchart.getData().add(series1);
             series1.setName("Channel1");
             buttonChannel1.setText("StopChannel1");
