@@ -12,11 +12,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.ScatterChart;
@@ -25,6 +29,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 /**
  *
@@ -34,7 +39,7 @@ public class FXMLDocumentController implements Initializable {
 
     private ArrayList<ScatterChart.Series> scatterchartseries = new ArrayList<>();
 
-    private final ObservableList<Double> channel1list = FXCollections.observableArrayList();
+    private ArrayList<Double> channel1list = new ArrayList<>();
 
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
 
@@ -52,7 +57,8 @@ public class FXMLDocumentController implements Initializable {
     private ColorPicker colorPicker1;
 
     File selectedFile = null;
-    int f = 0;
+
+    private SequentialTransition animation;
 
     @FXML
     private ScatterChart<Integer, Double> scatterchart;
@@ -107,7 +113,6 @@ public class FXMLDocumentController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
         addSenorValueFromFile();
-        createChart();
 
     }
 
@@ -162,38 +167,80 @@ public class FXMLDocumentController implements Initializable {
         return channelsdata;
     }
 
-    public void createChart() throws ParseException {
+    public ArrayList<Double> createChart() {
 
         getChannelsdata().stream().forEach((c) -> {
-
-            series1.getData().add(new ScatterChart.Data(f, c.getValue1()));
             channel1list.add(c.getValue1());
-            series2.getData().add(new ScatterChart.Data(f, c.getValue2()));
-            series3.getData().add(new ScatterChart.Data(f, c.getValue3()));
-            series4.getData().add(new ScatterChart.Data(f, c.getValue4()));
-            series5.getData().add(new ScatterChart.Data(f, c.getValue5()));
-            series6.getData().add(new ScatterChart.Data(f, c.getValue6()));
-            series7.getData().add(new ScatterChart.Data(f, c.getValue7()));
-            series8.getData().add(new ScatterChart.Data(f, c.getValue8()));
-
-            f++;
+//            series1.getData().add(new ScatterChart.Data(f, c.getValue1()));
+//            series2.getData().add(new ScatterChart.Data(f, c.getValue2()));
+//            series3.getData().add(new ScatterChart.Data(f, c.getValue3()));
+//            series4.getData().add(new ScatterChart.Data(f, c.getValue4()));
+//            series5.getData().add(new ScatterChart.Data(f, c.getValue5()));
+//            series6.getData().add(new ScatterChart.Data(f, c.getValue6()));
+//            series7.getData().add(new ScatterChart.Data(f, c.getValue7()));
+//            series8.getData().add(new ScatterChart.Data(f, c.getValue8()));
 
         });
-        scatterchartseries.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
+        //scatterchartseries.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
         //scatterchart.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
-
+     
+      
+        return channel1list;
     }
+      int f ;
+    public void createAnimation() {
+        // create animation
+        createChart();
+        
+   
+        Timeline timeline1 = new Timeline();
+        timeline1.getKeyFrames().add(
+                new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                     
+                            
+                            series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                            System.out.println("chartvalue:" +channel1list.get(f));                        
+                             scatterchart.getData().add(series1);
+                          f++;
+                          if(series1.getData().size() > 50){
+                             series1.getData().remove(0); 
+                          }
+                            System.out.println("f"+f);
+                           
+                        
+                          
+                    }
+                })
+        );
+        timeline1.setCycleCount(Animation.INDEFINITE);
+        animation = new SequentialTransition();
+        animation.getChildren().addAll(timeline1);
+        
+    }
+
+    public void play() {
+        animation.play();
+    }
+      public void stop() {
+        animation.pause();
+    }  
 
     @FXML
     private void handleButton1Action(ActionEvent event) {
 
         if (buttonChannel1.getText().equalsIgnoreCase("Channel 1")) {
-            scatterchart.getData().add(series1);
+            createAnimation();
+            play();
+          
             series1.setName("Channel1");
             buttonChannel1.setText("StopChannel1");
         } else {
+             series1.setName(null);
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
+            stop();
         }
 
     }
