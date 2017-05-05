@@ -23,6 +23,8 @@ import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
 /**
@@ -77,6 +79,22 @@ public class FXMLDocumentController implements Initializable {
     private Button buttonChannel7;
     @FXML
     private Button buttonChannel8;
+    @FXML
+    private Slider slider1;
+    @FXML
+    private Slider slider2;
+    @FXML
+    private Slider slider3;
+    @FXML
+    private Slider slider4;
+    @FXML
+    private Slider slider5;
+    @FXML
+    private Slider slider6;
+    @FXML
+    private Slider slider7;
+    @FXML
+    private Slider slider8;
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -291,6 +309,38 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleColor8Action(ActionEvent event) {
+    }
+
+    @FXML
+    private void handelSlider1Action(MouseEvent event) {
+    }
+
+    @FXML
+    private void handelSlider2Action(MouseEvent event) {
+    }
+
+    @FXML
+    private void handelSlider3Action(MouseEvent event) {
+    }
+
+    @FXML
+    private void handelSlider4Action(MouseEvent event) {
+    }
+
+    @FXML
+    private void handelSlider5Action(MouseEvent event) {
+    }
+
+    @FXML
+    private void handelSlider6Action(MouseEvent event) {
+    }
+
+    @FXML
+    private void handelSlider7Action(MouseEvent event) {
+    }
+
+    @FXML
+    private void handelSlider8Action(MouseEvent event) {
     }
 
 }
