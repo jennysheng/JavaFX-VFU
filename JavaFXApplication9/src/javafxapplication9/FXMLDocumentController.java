@@ -5,7 +5,6 @@
  */
 package javafxapplication9;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -40,8 +39,14 @@ public class FXMLDocumentController implements Initializable {
 
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
 
-    ScatterChart.Series series1, series2, series3, series4, series5, series6, series7, series8;
-
+    ScatterChart.Series series1 = new ScatterChart.Series();
+    ScatterChart.Series series2 = new ScatterChart.Series();
+    ScatterChart.Series series3 = new ScatterChart.Series();
+    ScatterChart.Series series4 = new ScatterChart.Series();
+    ScatterChart.Series series5 = new ScatterChart.Series();
+    ScatterChart.Series series6 = new ScatterChart.Series();
+    ScatterChart.Series series7 = new ScatterChart.Series();
+    ScatterChart.Series series8 = new ScatterChart.Series();
     @FXML
     private Button buttonChannel1;
     @FXML
@@ -160,15 +165,6 @@ public class FXMLDocumentController implements Initializable {
 
     public void createChart() throws ParseException {
 
-        series1 = new ScatterChart.Series();
-        series2 = new ScatterChart.Series();
-        series3 = new ScatterChart.Series();
-        series4 = new ScatterChart.Series();
-        series5 = new ScatterChart.Series();
-        series6 = new ScatterChart.Series();
-        series7 = new ScatterChart.Series();
-        series8 = new ScatterChart.Series();
-
         getChannelsdata().stream().forEach((c) -> {
 
             series1.getData().add(new ScatterChart.Data(f, c.getValue1()));
@@ -193,16 +189,13 @@ public class FXMLDocumentController implements Initializable {
 
         if (buttonChannel1.getText().equalsIgnoreCase("Channel 1")) {
 
-            scatterchart.getData().addAll(series1);
+            scatterchart.getData().add(series1);
             series1.setName("Channel1");
             buttonChannel1.setText("StopChannel1");
         } else {
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
         }
-     
-
-
 
     }
 
