@@ -5,6 +5,7 @@
  */
 package javafxapplication9;
 
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -189,34 +190,40 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleButton1Action(ActionEvent event) {
-           
+
         if (buttonChannel1.getText().equalsIgnoreCase("Channel 1")) {
+
             scatterchart.getData().addAll(series1);
+            series1.setName("Channel1");
             buttonChannel1.setText("StopChannel1");
         } else {
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
         }
+     
+
+
 
     }
 
     @FXML
     private void handleButton2Action(ActionEvent event) {
-         if (buttonChannel2.getText().equalsIgnoreCase("Channel 2")) {
+        if (buttonChannel2.getText().equalsIgnoreCase("Channel 2")) {
             scatterchart.getData().addAll(series2);
+            series2.setName("Channel2");
             buttonChannel2.setText("StopChannel2");
         } else {
             scatterchart.getData().remove(series2);
             buttonChannel2.setText("Channel 2");
         }
 
-        
     }
 
     @FXML
     private void handleButton3Action(ActionEvent event) {
-     if (buttonChannel3.getText().equalsIgnoreCase("Channel 3")) {
+        if (buttonChannel3.getText().equalsIgnoreCase("Channel 3")) {
             scatterchart.getData().addAll(series3);
+            series3.setName("Channel3");
             buttonChannel3.setText("StopChannel3");
         } else {
             scatterchart.getData().remove(series3);
@@ -226,8 +233,9 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleButton4Action(ActionEvent event) {
-    if (buttonChannel4.getText().equalsIgnoreCase("Channel 4")) {
+        if (buttonChannel4.getText().equalsIgnoreCase("Channel 4")) {
             scatterchart.getData().addAll(series4);
+            series4.setName("Channel4");
             buttonChannel4.setText("StopChannel4");
         } else {
             scatterchart.getData().remove(series4);
@@ -253,8 +261,9 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleButton5Action(ActionEvent event) {
-      if (buttonChannel5.getText().equalsIgnoreCase("Channel 5")) {
+        if (buttonChannel5.getText().equalsIgnoreCase("Channel 5")) {
             scatterchart.getData().addAll(series5);
+            series5.setName("Channel5");
             buttonChannel5.setText("StopChannel5");
         } else {
             scatterchart.getData().remove(series5);
@@ -264,8 +273,9 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleButton6Action(ActionEvent event) {
-     if (buttonChannel6.getText().equalsIgnoreCase("Channel 6")) {
+        if (buttonChannel6.getText().equalsIgnoreCase("Channel 6")) {
             scatterchart.getData().addAll(series6);
+            series6.setName("Channel6");
             buttonChannel6.setText("StopChannel6");
         } else {
             scatterchart.getData().remove(series6);
@@ -277,6 +287,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleButton7Action(ActionEvent event) {
         if (buttonChannel7.getText().equalsIgnoreCase("Channel 7")) {
             scatterchart.getData().addAll(series7);
+            series7.setName("Channel7");
             buttonChannel7.setText("StopChannel7");
         } else {
             scatterchart.getData().remove(series7);
@@ -288,6 +299,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleButton8Action(ActionEvent event) {
         if (buttonChannel8.getText().equalsIgnoreCase("Channel 8")) {
             scatterchart.getData().addAll(series8);
+            series8.setName("Channel8");
             buttonChannel8.setText("StopChannel8");
         } else {
             scatterchart.getData().remove(series8);
@@ -313,6 +325,13 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handelSlider1Action(MouseEvent event) {
+
+        slider1.setShowTickMarks(true);
+        slider1.setShowTickLabels(true);
+        slider1.setMajorTickUnit(10f);
+        slider1.setBlockIncrement(10f);
+
+        System.out.println("slider1" + slider1.getValue());
     }
 
     @FXML

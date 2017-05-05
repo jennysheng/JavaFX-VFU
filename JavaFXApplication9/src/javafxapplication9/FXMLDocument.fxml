@@ -40,10 +40,10 @@
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="105.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="88.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="94.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="94.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="95.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="94.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -68,14 +68,14 @@
                 <ColorPicker fx:id="colorPicker6" onAction="#handleColor6Action" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                 <ColorPicker fx:id="colorPicker7" onAction="#handleColor7Action" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                 <ColorPicker fx:id="colorPicker8" onAction="#handleColor8Action" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Slider fx:id="slider1" onDragDetected="#handelSlider1Action" GridPane.columnIndex="2" />
-            <Slider fx:id="slider2" onDragDetected="#handelSlider2Action" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Slider fx:id="slider3" onDragDetected="#handelSlider3Action" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Slider fx:id="slider4" onDragDetected="#handelSlider4Action" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Slider fx:id="slider5" onDragDetected="#handelSlider5Action" GridPane.columnIndex="5" />
-            <Slider fx:id="slider6" onDragDetected="#handelSlider6Action" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <Slider fx:id="slider7" onDragDetected="#handelSlider7Action" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-            <Slider fx:id="slider8" onDragDetected="#handelSlider8Action" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                <Slider fx:id="slider1" onDragDetected="#handelSlider1Action" GridPane.columnIndex="2" />
+                <Slider fx:id="slider2" onMouseDragEntered="#handelSlider2Action" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Slider fx:id="slider3" onMouseDragEntered="#handelSlider3Action" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Slider fx:id="slider4" onMouseDragEntered="#handelSlider4Action" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Slider fx:id="slider5" onMouseDragEntered="#handelSlider5Action" GridPane.columnIndex="5" />
+                <Slider fx:id="slider6" onMouseDragEntered="#handelSlider6Action" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                <Slider fx:id="slider7" onMouseDragEntered="#handelSlider7Action" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                <Slider fx:id="slider8" onDragDetected="#handelSlider8Action" onMouseDragEntered="#handelSlider8Action" GridPane.columnIndex="5" GridPane.rowIndex="3" />
             </children>
         </GridPane>
     </children>

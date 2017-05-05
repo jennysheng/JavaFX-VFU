@@ -26,8 +26,6 @@ public class DataLogger {
         this.value8 = value8;
     }
 
-    
-
     public double getValue1() {
         return value1;
     }
@@ -59,12 +57,5 @@ public class DataLogger {
     public double getValue8() {
         return value8;
     }
-
- 
-
-   
-
-
-  
 
 }
