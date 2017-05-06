@@ -183,49 +183,45 @@ public class FXMLDocumentController implements Initializable {
         });
         //scatterchartseries.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
         //scatterchart.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
-     
-      
+
         return channel1list;
     }
-      int f ;
+    int f;
+
     public void createAnimation() {
         // create animation
         createChart();
-        
-   
+        scatterchart.getData().add(series1);
         Timeline timeline1 = new Timeline();
         timeline1.getKeyFrames().add(
                 new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                     
-                            
-                            series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
-                            System.out.println("chartvalue:" +channel1list.get(f));                        
-                             scatterchart.getData().add(series1);
-                          f++;
-                          if(series1.getData().size() > 50){
-                             series1.getData().remove(0); 
-                          }
-                            System.out.println("f"+f);
-                           
-                        
-                          
+                        series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                        System.out.println("chartvalue:" + channel1list.get(f));
+
+                        f++;
+                        if (series1.getData().size() > 50) {
+                            series1.getData().remove(0);
+                        }
+                        System.out.println("f" + f);
+
                     }
                 })
         );
         timeline1.setCycleCount(Animation.INDEFINITE);
         animation = new SequentialTransition();
         animation.getChildren().addAll(timeline1);
-        
+
     }
 
     public void play() {
         animation.play();
     }
-      public void stop() {
+
+    public void stop() {
         animation.pause();
-    }  
+    }
 
     @FXML
     private void handleButton1Action(ActionEvent event) {
@@ -233,11 +229,11 @@ public class FXMLDocumentController implements Initializable {
         if (buttonChannel1.getText().equalsIgnoreCase("Channel 1")) {
             createAnimation();
             play();
-          
+
             series1.setName("Channel1");
             buttonChannel1.setText("StopChannel1");
         } else {
-             series1.setName(null);
+            series1.setName(null);
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
             stop();
