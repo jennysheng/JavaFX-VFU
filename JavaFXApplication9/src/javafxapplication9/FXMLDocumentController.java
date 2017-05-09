@@ -267,6 +267,8 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                       // series1.getNode().setStyle(colorPicker1.getValue().toString());               
+
                         System.out.println("chartvalue:" + channel1list.get(f));
                         f++;
 
@@ -305,7 +307,6 @@ public class FXMLDocumentController implements Initializable {
                     public void handle(ActionEvent actionEvent) {
                         series3.getData().add(new ScatterChart.Data(n, channel3list.get(n)));
                         n++;
-
                     }
                 })
         );
@@ -322,7 +323,6 @@ public class FXMLDocumentController implements Initializable {
                     public void handle(ActionEvent actionEvent) {
                         series4.getData().add(new ScatterChart.Data(o, channel4list.get(o)));
                         o++;
-
                     }
                 })
         );
@@ -341,13 +341,10 @@ public class FXMLDocumentController implements Initializable {
             series1.setName("Channel1");
             buttonChannel1.setText("StopChannel1");
         } else {
-
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
             animation1.stop();
-
         }
-
     }
 
     @FXML
@@ -398,6 +395,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleColor4Action(ActionEvent event) {
+
     }
 
     @FXML
@@ -410,6 +408,10 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleColor1Action(ActionEvent event) {
+       
+          
+        
+        
     }
 
     public void createAnimation5() {
@@ -439,7 +441,6 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series6.getData().add(new ScatterChart.Data(q, channel6list.get(q)));
-
                         q++;
                     }
                 })
@@ -458,7 +459,6 @@ public class FXMLDocumentController implements Initializable {
                     public void handle(ActionEvent actionEvent) {
                         series7.getData().add(new ScatterChart.Data(r, channel7list.get(r)));
                         r++;
-
                     }
                 })
         );
