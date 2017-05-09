@@ -26,8 +26,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -193,27 +195,30 @@ public class FXMLDocumentController implements Initializable {
     int f, m, n, o, p, q, r, s;
 
     public void createAnimation1() {
-        Timeline timeline1 = new Timeline();
-        timeline1.getKeyFrames().add(
-                new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
-                        System.out.println("chartvalue:" + channel1list.get(f));
+        if (slider1.getValue() == 0.0) {
+            slider1.setValue(1000);
+        }
+            Timeline timeline1 = new Timeline();
+            timeline1.getKeyFrames().add(
+                    new KeyFrame(Duration.millis(slider1.getValue()), new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                            System.out.println("chartvalue:" + channel1list.get(f));
 
-                        f++;
-                        if (series1.getData().size() > 50) {
-                            series1.getData().remove(0);
+                            f++;
+                            if (series1.getData().size() > 50) {
+                                series1.getData().remove(0);
+                            }
+                            System.out.println("f" + f);
+
                         }
-                        System.out.println("f" + f);
-
-                    }
-                })
-        );
-        timeline1.setCycleCount(Animation.INDEFINITE);
-        animation1 = new SequentialTransition();
-        animation1.getChildren().addAll(timeline1);
-
+                    })
+            );
+            timeline1.setCycleCount(Animation.INDEFINITE);
+            animation1 = new SequentialTransition();
+            animation1.getChildren().addAll(timeline1);
+        
     }
 
     public void createAnimation2() {
@@ -246,11 +251,12 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series3.getData().add(new ScatterChart.Data(n, channel3list.get(n)));
-                         System.out.println("chartvalue:" + channel3list.get(n));
+                        System.out.println("chartvalue:" + channel3list.get(n));
                         n++;
                         if (series3.getData().size() > 50) {
                             series3.getData().remove(0);
-                        } System.out.println("n" + n);
+                        }
+                        System.out.println("n" + n);
                     }
                 })
         );
@@ -266,11 +272,12 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series4.getData().add(new ScatterChart.Data(o, channel4list.get(o)));
-                         System.out.println("chartvalue:" + channel4list.get(o));
+                        System.out.println("chartvalue:" + channel4list.get(o));
                         o++;
                         if (series4.getData().size() > 50) {
                             series4.getData().remove(0);
-                        } System.out.println("o" + o);
+                        }
+                        System.out.println("o" + o);
                     }
                 })
         );
@@ -289,7 +296,7 @@ public class FXMLDocumentController implements Initializable {
             series1.setName("Channel1");
             buttonChannel1.setText("StopChannel1");
         } else {
-   
+
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
             animation1.stop();
@@ -426,12 +433,20 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handelSlider1Action(MouseEvent event) {
 
-        slider1.setShowTickMarks(true);
+        slider1.setMin(1000);
+        slider1.setMax(2000);
         slider1.setShowTickLabels(true);
-        slider1.setMajorTickUnit(10f);
-        slider1.setBlockIncrement(10f);
+        slider1.setShowTickMarks(true);
+        slider1.setMajorTickUnit(50);
+        slider1.setMinorTickCount(5);
+        slider1.setBlockIncrement(100);
+        Label label = new Label();
 
-        System.out.println("slider1" + slider1.getValue());
+        Pane thumb = (Pane) slider1.lookup(".thumb");
+        label.textProperty().bind(slider1.valueProperty().asString("%.1f"));
+        //  label.textProperty().setValue(String.valueOf((int) slider1.getValue()));
+        thumb.getChildren().add(label);
+        System.out.println("slider1:" + slider1.getValue());
     }
 
     @FXML
