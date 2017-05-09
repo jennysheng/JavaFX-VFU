@@ -115,6 +115,7 @@ public class FXMLDocumentController implements Initializable {
     private Slider slider7;
     @FXML
     private Slider slider8;
+  
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -193,38 +194,44 @@ public class FXMLDocumentController implements Initializable {
 
     }
     int f, m, n, o, p, q, r, s;
+    int currentSlider;
 
+    public int getCurrentSlider() {
+        return currentSlider;
+    }
+
+    public void setCurrentSlider(int currentSlider) {
+        this.currentSlider = currentSlider;
+    }
+    
     public void createAnimation1() {
-        if (slider1.getValue() == 0.0) {
-            slider1.setValue(1000);
-        }
+       
             Timeline timeline1 = new Timeline();
             timeline1.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(slider1.getValue()), new EventHandler<ActionEvent>() {
+                    new KeyFrame(Duration.millis(getCurrentSlider()), new EventHandler<ActionEvent>() {
+                        
                         @Override
                         public void handle(ActionEvent actionEvent) {
-                            series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                            series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));                       
                             System.out.println("chartvalue:" + channel1list.get(f));
-
-                            f++;
-                            if (series1.getData().size() > 50) {
-                                series1.getData().remove(0);
-                            }
+                            f++;                            
                             System.out.println("f" + f);
 
                         }
                     })
             );
+                 System.out.println("slider current value"+getCurrentSlider());
             timeline1.setCycleCount(Animation.INDEFINITE);
             animation1 = new SequentialTransition();
             animation1.getChildren().addAll(timeline1);
+         
         
     }
 
     public void createAnimation2() {
         Timeline timeline2 = new Timeline();
         timeline2.getKeyFrames().add(
-                new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+                new KeyFrame(Duration.millis(getCurrentSlider()), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series2.getData().add(new ScatterChart.Data(m, channel2list.get(m)));
@@ -300,6 +307,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
             animation1.stop();
+           
         }
 
     }
@@ -432,21 +440,20 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handelSlider1Action(MouseEvent event) {
-
-        slider1.setMin(1000);
-        slider1.setMax(2000);
+        slider1.setMin(1000);        
+        slider1.setMax(2500);
         slider1.setShowTickLabels(true);
         slider1.setShowTickMarks(true);
         slider1.setMajorTickUnit(50);
-        slider1.setMinorTickCount(5);
+        slider1.setMinorTickCount(50);
         slider1.setBlockIncrement(100);
         Label label = new Label();
-
         Pane thumb = (Pane) slider1.lookup(".thumb");
         label.textProperty().bind(slider1.valueProperty().asString("%.1f"));
         //  label.textProperty().setValue(String.valueOf((int) slider1.getValue()));
         thumb.getChildren().add(label);
         System.out.println("slider1:" + slider1.getValue());
+        setCurrentSlider((int) slider1.getValue());
     }
 
     @FXML

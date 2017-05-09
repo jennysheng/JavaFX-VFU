@@ -30,10 +30,10 @@
         </MenuBar>
         <ScatterChart fx:id="scatterchart" layoutX="9.0" layoutY="58.0" prefHeight="405.0" prefWidth="545.0">
             <xAxis>
-                <NumberAxis side="BOTTOM" />
+                <NumberAxis side="BOTTOM" fx:id="xAxis"/>
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis side="LEFT" fx:id="yAxis"/>
             </yAxis>
         </ScatterChart>
         <GridPane layoutX="20.0" layoutY="468.0" prefHeight="102.0" prefWidth="568.0">
