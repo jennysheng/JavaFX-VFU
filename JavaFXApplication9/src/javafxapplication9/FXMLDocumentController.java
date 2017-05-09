@@ -115,7 +115,6 @@ public class FXMLDocumentController implements Initializable {
     private Slider slider7;
     @FXML
     private Slider slider8;
-  
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -194,58 +193,105 @@ public class FXMLDocumentController implements Initializable {
 
     }
     int f, m, n, o, p, q, r, s;
-    int currentSlider;
+    int currentSlider1, currentSlider2, currentSlider3, currentslider4, currentslider5, currentslider6, currentslider7, currentslider8;
 
-    public int getCurrentSlider() {
-        return currentSlider;
+    public int getCurrentSlider2() {
+        return currentSlider2;
     }
 
-    public void setCurrentSlider(int currentSlider) {
-        this.currentSlider = currentSlider;
+    public void setCurrentSlider2(int currentSlider2) {
+        this.currentSlider2 = currentSlider2;
     }
-    
+
+    public int getCurrentSlider3() {
+        return currentSlider3;
+    }
+
+    public void setCurrentSlider3(int currentslider3) {
+        this.currentSlider3 = currentslider3;
+    }
+
+    public int getCurrentslider4() {
+        return currentslider4;
+    }
+
+    public void setCurrentslider4(int currentslider4) {
+        this.currentslider4 = currentslider4;
+    }
+
+    public int getCurrentslider5() {
+        return currentslider5;
+    }
+
+    public void setCurrentslider5(int currentslider5) {
+        this.currentslider5 = currentslider5;
+    }
+
+    public int getCurrentslider6() {
+        return currentslider6;
+    }
+
+    public void setCurrentslider6(int currentslider6) {
+        this.currentslider6 = currentslider6;
+    }
+
+    public int getCurrentslider7() {
+        return currentslider7;
+    }
+
+    public void setCurrentslider7(int currentslider7) {
+        this.currentslider7 = currentslider7;
+    }
+
+    public int getCurrentslider8() {
+        return currentslider8;
+    }
+
+    public void setCurrentslider8(int currentslider8) {
+        this.currentslider8 = currentslider8;
+    }
+
+    public int getCurrentSlider1() {
+        return currentSlider1;
+    }
+
+    public void setCurrentSlider1(int currentSlider1) {
+        this.currentSlider1 = currentSlider1;
+    }
+
     public void createAnimation1() {
-       
-            Timeline timeline1 = new Timeline();
-            timeline1.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(getCurrentSlider()), new EventHandler<ActionEvent>() {
-                        
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));                       
-                            System.out.println("chartvalue:" + channel1list.get(f));
-                            f++;                            
-                            System.out.println("f" + f);
+        Timeline timeline1 = new Timeline();
+        timeline1.getKeyFrames().add(
+                new KeyFrame(Duration.millis(getCurrentSlider1()), new EventHandler<ActionEvent>() {
 
-                        }
-                    })
-            );
-                 System.out.println("slider current value"+getCurrentSlider());
-            timeline1.setCycleCount(Animation.INDEFINITE);
-            animation1 = new SequentialTransition();
-            animation1.getChildren().addAll(timeline1);
-         
-        
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                        System.out.println("chartvalue:" + channel1list.get(f));
+                        f++;
+
+                    }
+                })
+        );
+
+        timeline1.setCycleCount(Animation.INDEFINITE);
+        animation1 = new SequentialTransition();
+        animation1.getChildren().addAll(timeline1);
+
     }
 
     public void createAnimation2() {
         Timeline timeline2 = new Timeline();
         timeline2.getKeyFrames().add(
-                new KeyFrame(Duration.millis(getCurrentSlider()), new EventHandler<ActionEvent>() {
+                new KeyFrame(Duration.millis(getCurrentSlider2()), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series2.getData().add(new ScatterChart.Data(m, channel2list.get(m)));
-                        System.out.println("chartvalue:" + channel2list.get(m));
-
                         m++;
-                        if (series2.getData().size() > 50) {
-                            series2.getData().remove(0);
-                        }
-                        System.out.println("m" + m);
-
                     }
                 })
         );
+
         timeline2.setCycleCount(Animation.INDEFINITE);
         animation2 = new SequentialTransition();
         animation2.getChildren().add(timeline2);
@@ -254,16 +300,12 @@ public class FXMLDocumentController implements Initializable {
     public void createAnimation3() {
         Timeline timeline3 = new Timeline();
         timeline3.getKeyFrames().add(
-                new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+                new KeyFrame(Duration.millis(getCurrentSlider3()), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series3.getData().add(new ScatterChart.Data(n, channel3list.get(n)));
-                        System.out.println("chartvalue:" + channel3list.get(n));
                         n++;
-                        if (series3.getData().size() > 50) {
-                            series3.getData().remove(0);
-                        }
-                        System.out.println("n" + n);
+
                     }
                 })
         );
@@ -275,16 +317,12 @@ public class FXMLDocumentController implements Initializable {
     public void createAnimation4() {
         Timeline timeline4 = new Timeline();
         timeline4.getKeyFrames().add(
-                new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+                new KeyFrame(Duration.millis(getCurrentslider4()), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series4.getData().add(new ScatterChart.Data(o, channel4list.get(o)));
-                        System.out.println("chartvalue:" + channel4list.get(o));
                         o++;
-                        if (series4.getData().size() > 50) {
-                            series4.getData().remove(0);
-                        }
-                        System.out.println("o" + o);
+
                     }
                 })
         );
@@ -307,7 +345,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(series1);
             buttonChannel1.setText("Channel 1");
             animation1.stop();
-           
+
         }
 
     }
@@ -374,15 +412,89 @@ public class FXMLDocumentController implements Initializable {
     private void handleColor1Action(ActionEvent event) {
     }
 
+    public void createAnimation5() {
+        Timeline timeline5 = new Timeline();
+        timeline5.getKeyFrames().add(
+                new KeyFrame(Duration.millis(getCurrentslider5()), new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        series5.getData().add(new ScatterChart.Data(p, channel5list.get(p)));
+                        p++;
+
+                    }
+                })
+        );
+
+        timeline5.setCycleCount(Animation.INDEFINITE);
+        animation5 = new SequentialTransition();
+        animation5.getChildren().addAll(timeline5);
+
+    }
+
+    public void createAnimation6() {
+        Timeline timeline6 = new Timeline();
+        timeline6.getKeyFrames().add(
+                new KeyFrame(Duration.millis(getCurrentslider6()), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        series6.getData().add(new ScatterChart.Data(q, channel6list.get(q)));
+
+                        q++;
+                    }
+                })
+        );
+
+        timeline6.setCycleCount(Animation.INDEFINITE);
+        animation6 = new SequentialTransition();
+        animation6.getChildren().addAll(timeline6);
+    }
+
+    public void createAnimation7() {
+        Timeline timeline7 = new Timeline();
+        timeline7.getKeyFrames().add(
+                new KeyFrame(Duration.millis(getCurrentslider7()), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        series7.getData().add(new ScatterChart.Data(r, channel7list.get(r)));
+                        r++;
+
+                    }
+                })
+        );
+        timeline7.setCycleCount(Animation.INDEFINITE);
+        animation7 = new SequentialTransition();
+        animation7.getChildren().add(timeline7);
+    }
+
+    public void createAnimation8() {
+        Timeline timeline8 = new Timeline();
+        timeline8.getKeyFrames().add(
+                new KeyFrame(Duration.millis(getCurrentslider8()), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        series8.getData().add(new ScatterChart.Data(s, channel8list.get(s)));
+                        s++;
+                    }
+                })
+        );
+        timeline8.setCycleCount(Animation.INDEFINITE);
+        animation8 = new SequentialTransition();
+        animation8.getChildren().add(timeline8);
+    }
+
     @FXML
     private void handleButton5Action(ActionEvent event) {
         if (buttonChannel5.getText().equalsIgnoreCase("Channel 5")) {
             scatterchart.getData().addAll(series5);
+            createAnimation5();
+            animation5.play();
             series5.setName("Channel5");
             buttonChannel5.setText("StopChannel5");
         } else {
             scatterchart.getData().remove(series5);
             buttonChannel5.setText("Channel 5");
+            animation5.stop();
         }
     }
 
@@ -390,11 +502,14 @@ public class FXMLDocumentController implements Initializable {
     private void handleButton6Action(ActionEvent event) {
         if (buttonChannel6.getText().equalsIgnoreCase("Channel 6")) {
             scatterchart.getData().addAll(series6);
+            createAnimation6();
+            animation6.play();
             series6.setName("Channel6");
             buttonChannel6.setText("StopChannel6");
         } else {
             scatterchart.getData().remove(series6);
             buttonChannel6.setText("Channel 6");
+            animation6.stop();
         }
     }
 
@@ -402,11 +517,14 @@ public class FXMLDocumentController implements Initializable {
     private void handleButton7Action(ActionEvent event) {
         if (buttonChannel7.getText().equalsIgnoreCase("Channel 7")) {
             scatterchart.getData().addAll(series7);
+            createAnimation7();
+            animation7.play();
             series7.setName("Channel7");
             buttonChannel7.setText("StopChannel7");
         } else {
             scatterchart.getData().remove(series7);
             buttonChannel7.setText("Channel 7");
+            animation7.stop();
         }
     }
 
@@ -414,11 +532,14 @@ public class FXMLDocumentController implements Initializable {
     private void handleButton8Action(ActionEvent event) {
         if (buttonChannel8.getText().equalsIgnoreCase("Channel 8")) {
             scatterchart.getData().addAll(series8);
+            createAnimation8();
+            animation8.play();
             series8.setName("Channel8");
             buttonChannel8.setText("StopChannel8");
         } else {
             scatterchart.getData().remove(series8);
             buttonChannel8.setText("Channel 8");
+            animation8.stop();
         }
     }
 
@@ -440,7 +561,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handelSlider1Action(MouseEvent event) {
-        slider1.setMin(1000);        
+        slider1.setMin(1000);
         slider1.setMax(2500);
         slider1.setShowTickLabels(true);
         slider1.setShowTickMarks(true);
@@ -450,38 +571,120 @@ public class FXMLDocumentController implements Initializable {
         Label label = new Label();
         Pane thumb = (Pane) slider1.lookup(".thumb");
         label.textProperty().bind(slider1.valueProperty().asString("%.1f"));
-        //  label.textProperty().setValue(String.valueOf((int) slider1.getValue()));
         thumb.getChildren().add(label);
-        System.out.println("slider1:" + slider1.getValue());
-        setCurrentSlider((int) slider1.getValue());
+        setCurrentSlider1((int) slider1.getValue());
     }
 
     @FXML
     private void handelSlider2Action(MouseEvent event) {
+        slider2.setMin(1000);
+        slider2.setMax(2500);
+        slider2.setShowTickLabels(true);
+        slider2.setShowTickMarks(true);
+        slider2.setMajorTickUnit(50);
+        slider2.setMinorTickCount(50);
+        slider2.setBlockIncrement(100);
+        Label label2 = new Label();
+        Pane thumb2 = (Pane) slider2.lookup(".thumb");
+        label2.textProperty().bind(slider2.valueProperty().asString("%.1f"));
+        thumb2.getChildren().add(label2);
+        setCurrentSlider2((int) slider2.getValue());
     }
 
     @FXML
     private void handelSlider3Action(MouseEvent event) {
+        slider3.setMin(1000);
+        slider3.setMax(2500);
+        slider3.setShowTickLabels(true);
+        slider3.setShowTickMarks(true);
+        slider3.setMajorTickUnit(50);
+        slider3.setMinorTickCount(50);
+        slider3.setBlockIncrement(100);
+        Label label2 = new Label();
+        Pane thumb2 = (Pane) slider3.lookup(".thumb");
+        label2.textProperty().bind(slider3.valueProperty().asString("%.1f"));
+        thumb2.getChildren().add(label2);
+        setCurrentSlider3((int) slider3.getValue());
     }
 
     @FXML
     private void handelSlider4Action(MouseEvent event) {
+        slider4.setMin(1000);
+        slider4.setMax(2500);
+        slider4.setShowTickLabels(true);
+        slider4.setShowTickMarks(true);
+        slider4.setMajorTickUnit(50);
+        slider4.setMinorTickCount(50);
+        slider4.setBlockIncrement(100);
+        Label label2 = new Label();
+        Pane thumb2 = (Pane) slider4.lookup(".thumb");
+        label2.textProperty().bind(slider4.valueProperty().asString("%.1f"));
+        thumb2.getChildren().add(label2);
+        setCurrentslider4((int) slider4.getValue());
     }
 
     @FXML
     private void handelSlider5Action(MouseEvent event) {
+        slider5.setMin(1000);
+        slider5.setMax(2500);
+        slider5.setShowTickLabels(true);
+        slider5.setShowTickMarks(true);
+        slider5.setMajorTickUnit(50);
+        slider5.setMinorTickCount(50);
+        slider5.setBlockIncrement(100);
+        Label label = new Label();
+        Pane thumb = (Pane) slider5.lookup(".thumb");
+        label.textProperty().bind(slider5.valueProperty().asString("%.1f"));
+        thumb.getChildren().add(label);
+        setCurrentslider5((int) slider5.getValue());
     }
 
     @FXML
     private void handelSlider6Action(MouseEvent event) {
+        slider6.setMin(1000);
+        slider6.setMax(2500);
+        slider6.setShowTickLabels(true);
+        slider6.setShowTickMarks(true);
+        slider6.setMajorTickUnit(50);
+        slider6.setMinorTickCount(50);
+        slider6.setBlockIncrement(100);
+        Label label = new Label();
+        Pane thumb = (Pane) slider6.lookup(".thumb");
+        label.textProperty().bind(slider6.valueProperty().asString("%.1f"));
+        thumb.getChildren().add(label);
+        setCurrentslider6((int) slider6.getValue());
     }
 
     @FXML
     private void handelSlider7Action(MouseEvent event) {
+        slider7.setMin(1000);
+        slider7.setMax(2500);
+        slider7.setShowTickLabels(true);
+        slider7.setShowTickMarks(true);
+        slider7.setMajorTickUnit(50);
+        slider7.setMinorTickCount(50);
+        slider7.setBlockIncrement(100);
+        Label label = new Label();
+        Pane thumb = (Pane) slider7.lookup(".thumb");
+        label.textProperty().bind(slider7.valueProperty().asString("%.1f"));
+        thumb.getChildren().add(label);
+        setCurrentslider7((int) slider7.getValue());
     }
 
     @FXML
     private void handelSlider8Action(MouseEvent event) {
+        slider8.setMin(1000);
+        slider8.setMax(2500);
+        slider8.setShowTickLabels(true);
+        slider8.setShowTickMarks(true);
+        slider8.setMajorTickUnit(50);
+        slider8.setMinorTickCount(50);
+        slider8.setBlockIncrement(100);
+        Label label = new Label();
+        Pane thumb = (Pane) slider8.lookup(".thumb");
+        label.textProperty().bind(slider8.valueProperty().asString("%.1f"));
+        thumb.getChildren().add(label);
+        setCurrentslider8((int) slider8.getValue());
     }
 
 }
