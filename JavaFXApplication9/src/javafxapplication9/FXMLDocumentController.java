@@ -18,6 +18,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,12 +27,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -65,10 +65,6 @@ public class FXMLDocumentController implements Initializable {
     ScatterChart.Series series6 = new ScatterChart.Series();
     ScatterChart.Series series7 = new ScatterChart.Series();
     ScatterChart.Series series8 = new ScatterChart.Series();
-    @FXML
-    private Button buttonChannel1;
-    @FXML
-    private ColorPicker colorPicker1;
 
     File selectedFile = null;
 
@@ -79,6 +75,8 @@ public class FXMLDocumentController implements Initializable {
     int f, m, n, o, p, q, r, s;
     @FXML
     private ScatterChart<Integer, Double> scatterchart;
+    @FXML
+    private ColorPicker colorPicker1;
     @FXML
     private ColorPicker colorPicker4;
     @FXML
@@ -93,6 +91,8 @@ public class FXMLDocumentController implements Initializable {
     private ColorPicker colorPicker7;
     @FXML
     private ColorPicker colorPicker8;
+    @FXML
+    private Button buttonChannel1;
     @FXML
     private Button buttonChannel2;
     @FXML
@@ -123,12 +123,6 @@ public class FXMLDocumentController implements Initializable {
     private Slider slider7;
     @FXML
     private Slider slider8;
-    @FXML
-    private NumberAxis yAxis;
-    @FXML
-    private NumberAxis xAxis;
-    @FXML
-    private ProgressIndicator progressbar;
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -146,6 +140,17 @@ public class FXMLDocumentController implements Initializable {
 
     public void initialize(URL url, ResourceBundle rb) {
 
+    }
+
+    void changeslider1() {
+        slider1.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                System.out.println("newValue" + newValue);
+
+            }
+        });
+        
     }
 
     public ObservableList<DataLogger> addSenorValueFromFile() throws ParseException {
@@ -287,21 +292,22 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation1() {
-        Timeline timeline1 = new Timeline();
-        timeline1.getKeyFrames().add(
-                new KeyFrame(Duration.millis(slider1.getValue()), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
-                        changecolor1();
-                        f++;
-                    }
-                })
-        );
-        System.out.println("slider1:" + slider1.getValue());
+       
+        Timeline timeline1 = new Timeline();      
+        timeline1.getKeyFrames().add(new KeyFrame(Duration.millis(slider1.valueProperty().doubleValue()), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                changeslider1();
+                changecolor1();
+                f++;
+            }
+        }));
+        System.out.println("slider1:" +slider1.valueProperty().doubleValue());
         timeline1.setCycleCount(Animation.INDEFINITE);
         animation1 = new SequentialTransition();
         animation1.getChildren().add(timeline1);
+
     }
 
     public void createAnimation2() {
@@ -329,7 +335,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series3.getData().add(new ScatterChart.Data(n, channel3list.get(n)));
-                             changecolor3();
+                        changecolor3();
                         n++;
                     }
                 })
@@ -346,7 +352,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series4.getData().add(new ScatterChart.Data(o, channel4list.get(o)));
-                             changecolor4();
+                        changecolor4();
                         o++;
                     }
                 })
@@ -418,8 +424,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-  
-
     public void createAnimation5() {
         Timeline timeline5 = new Timeline();
         timeline5.getKeyFrames().add(
@@ -427,7 +431,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series5.getData().add(new ScatterChart.Data(p, channel5list.get(p)));
-                             changecolor5();
+                        changecolor5();
                         p++;
 
                     }
@@ -447,7 +451,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series6.getData().add(new ScatterChart.Data(q, channel6list.get(q)));
-                             changecolor6();
+                        changecolor6();
                         q++;
                     }
                 })
@@ -465,7 +469,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series7.getData().add(new ScatterChart.Data(r, channel7list.get(r)));
-                             changecolor7();
+                        changecolor7();
                         r++;
                     }
                 })
@@ -482,7 +486,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series8.getData().add(new ScatterChart.Data(s, channel8list.get(s)));
-                             changecolor8();
+                        changecolor8();
                         s++;
                     }
                 })
@@ -551,8 +555,6 @@ public class FXMLDocumentController implements Initializable {
             animation8.stop();
         }
     }
-
-   
 
     @FXML
     private void handelSlider1Action(MouseEvent event) {
