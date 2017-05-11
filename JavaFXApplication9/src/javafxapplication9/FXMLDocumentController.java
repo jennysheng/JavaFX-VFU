@@ -13,6 +13,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
@@ -23,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Button;
@@ -32,6 +34,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -204,7 +207,84 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-  
+    public static String toRGBCode(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
+    }
+
+    void changecolor1() {
+        Set<Node> nodes = scatterchart.lookupAll(".series0");
+        Color c = colorPicker1.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(c);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
+
+    void changecolor2() {
+        Set<Node> nodes = scatterchart.lookupAll(".series1");
+        Color d = colorPicker2.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(d);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
+
+    void changecolor3() {
+        Set<Node> nodes = scatterchart.lookupAll(".series2");
+        Color d = colorPicker3.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(d);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
+
+    void changecolor4() {
+        Set<Node> nodes = scatterchart.lookupAll(".series3");
+        Color d = colorPicker4.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(d);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
+
+    void changecolor5() {
+        Set<Node> nodes = scatterchart.lookupAll(".series4");
+        Color d = colorPicker5.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(d);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
+
+    void changecolor6() {
+        Set<Node> nodes = scatterchart.lookupAll(".series5");
+        Color d = colorPicker5.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(d);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
+
+    void changecolor7() {
+        Set<Node> nodes = scatterchart.lookupAll(".series6");
+        Color d = colorPicker6.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(d);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
+
+    void changecolor8() {
+        Set<Node> nodes = scatterchart.lookupAll(".series7");
+        Color d = colorPicker7.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(d);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
+    }
 
     public void createAnimation1() {
         Timeline timeline1 = new Timeline();
@@ -213,11 +293,12 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
+                        changecolor1();
                         f++;
                     }
                 })
         );
-        System.out.println("slider1:"+slider1.getValue());
+        System.out.println("slider1:" + slider1.getValue());
         timeline1.setCycleCount(Animation.INDEFINITE);
         animation1 = new SequentialTransition();
         animation1.getChildren().add(timeline1);
@@ -230,6 +311,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series2.getData().add(new ScatterChart.Data(m, channel2list.get(m)));
+                        changecolor2();
                         m++;
                     }
                 })
@@ -247,6 +329,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series3.getData().add(new ScatterChart.Data(n, channel3list.get(n)));
+                             changecolor3();
                         n++;
                     }
                 })
@@ -263,6 +346,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series4.getData().add(new ScatterChart.Data(o, channel4list.get(o)));
+                             changecolor4();
                         o++;
                     }
                 })
@@ -276,7 +360,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleButton1Action(ActionEvent event) {
 
         if (buttonChannel1.getText().equalsIgnoreCase("Channel 1")) {
-            scatterchart.getData().add(series1);            
+            scatterchart.getData().add(series1);
             createAnimation1();
             animation1.play();
             series1.setName("Channel1");
@@ -334,32 +418,16 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleColor4Action(ActionEvent event) {
-
-    }
-
-    @FXML
-    private void handleColor3Action(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleColor2Action(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleColor1Action(ActionEvent event) {
-
-    }
+  
 
     public void createAnimation5() {
         Timeline timeline5 = new Timeline();
         timeline5.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider5.getValue()), new EventHandler<ActionEvent>() {
-
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series5.getData().add(new ScatterChart.Data(p, channel5list.get(p)));
+                             changecolor5();
                         p++;
 
                     }
@@ -379,6 +447,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series6.getData().add(new ScatterChart.Data(q, channel6list.get(q)));
+                             changecolor6();
                         q++;
                     }
                 })
@@ -396,6 +465,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series7.getData().add(new ScatterChart.Data(r, channel7list.get(r)));
+                             changecolor7();
                         r++;
                     }
                 })
@@ -412,6 +482,7 @@ public class FXMLDocumentController implements Initializable {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         series8.getData().add(new ScatterChart.Data(s, channel8list.get(s)));
+                             changecolor8();
                         s++;
                     }
                 })
@@ -481,21 +552,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleColor5Action(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleColor6Action(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleColor7Action(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleColor8Action(ActionEvent event) {
-    }
+   
 
     @FXML
     private void handelSlider1Action(MouseEvent event) {
@@ -510,7 +567,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb1 = (Pane) slider1.lookup(".thumb");
         label1.textProperty().bind(slider1.valueProperty().asString("%.1f"));
         thumb1.getChildren().add(label1);
-       
+
     }
 
     @FXML
@@ -526,7 +583,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb2 = (Pane) slider2.lookup(".thumb");
         label2.textProperty().bind(slider2.valueProperty().asString("%.1f"));
         thumb2.getChildren().add(label2);
-       
+
     }
 
     @FXML
@@ -542,7 +599,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb2 = (Pane) slider3.lookup(".thumb");
         label2.textProperty().bind(slider3.valueProperty().asString("%.1f"));
         thumb2.getChildren().add(label2);
-    
+
     }
 
     @FXML
@@ -558,7 +615,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb2 = (Pane) slider4.lookup(".thumb");
         label2.textProperty().bind(slider4.valueProperty().asString("%.1f"));
         thumb2.getChildren().add(label2);
-      
+
     }
 
     @FXML
@@ -574,7 +631,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb = (Pane) slider5.lookup(".thumb");
         label.textProperty().bind(slider5.valueProperty().asString("%.1f"));
         thumb.getChildren().add(label);
-       
+
     }
 
     @FXML
@@ -590,7 +647,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb = (Pane) slider6.lookup(".thumb");
         label.textProperty().bind(slider6.valueProperty().asString("%.1f"));
         thumb.getChildren().add(label);
-       
+
     }
 
     @FXML
@@ -606,7 +663,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb = (Pane) slider7.lookup(".thumb");
         label.textProperty().bind(slider7.valueProperty().asString("%.1f"));
         thumb.getChildren().add(label);
-      
+
     }
 
     @FXML
@@ -622,7 +679,7 @@ public class FXMLDocumentController implements Initializable {
         Pane thumb = (Pane) slider8.lookup(".thumb");
         label.textProperty().bind(slider8.valueProperty().asString("%.1f"));
         thumb.getChildren().add(label);
-      
+
     }
 
 }
