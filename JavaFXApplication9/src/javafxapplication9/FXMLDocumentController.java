@@ -18,8 +18,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,6 +31,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -124,6 +123,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Slider slider8;
 
+  
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
 
@@ -139,18 +139,28 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+      
 
     }
 
-    void changeslider1() {
-        slider1.valueProperty().addListener(new ChangeListener<Number>() {
+    void zoom() {
+        final double SCALE_DELTA = 1.1;
+      
+        scatterchart.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println("newValue" + newValue);
+            public void handle(ScrollEvent event) {
+                event.consume();
 
+                if (event.getDeltaY() == 0) {
+                    return;
+                }
+
+                double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
+
+                scatterchart.setScaleX(scatterchart.getScaleX() * scaleFactor);
+                scatterchart.setScaleY(scatterchart.getScaleY() * scaleFactor);
             }
         });
-        
     }
 
     public ObservableList<DataLogger> addSenorValueFromFile() throws ParseException {
@@ -266,7 +276,7 @@ public class FXMLDocumentController implements Initializable {
 
     void changecolor6() {
         Set<Node> nodes = scatterchart.lookupAll(".series5");
-        Color d = colorPicker5.getValue();
+        Color d = colorPicker6.getValue();
         String newColor = "-fx-background-color: " + toRGBCode(d);
         for (Node n : nodes) {
             n.setStyle(newColor);
@@ -275,7 +285,7 @@ public class FXMLDocumentController implements Initializable {
 
     void changecolor7() {
         Set<Node> nodes = scatterchart.lookupAll(".series6");
-        Color d = colorPicker6.getValue();
+        Color d = colorPicker7.getValue();
         String newColor = "-fx-background-color: " + toRGBCode(d);
         for (Node n : nodes) {
             n.setStyle(newColor);
@@ -284,7 +294,7 @@ public class FXMLDocumentController implements Initializable {
 
     void changecolor8() {
         Set<Node> nodes = scatterchart.lookupAll(".series7");
-        Color d = colorPicker7.getValue();
+        Color d = colorPicker8.getValue();
         String newColor = "-fx-background-color: " + toRGBCode(d);
         for (Node n : nodes) {
             n.setStyle(newColor);
@@ -292,18 +302,17 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation1() {
-       
-        Timeline timeline1 = new Timeline();      
-        timeline1.getKeyFrames().add(new KeyFrame(Duration.millis(slider1.valueProperty().doubleValue()), new EventHandler<ActionEvent>() {
+         zoom();
+        Timeline timeline1 = new Timeline();
+        timeline1.getKeyFrames().add(new KeyFrame(Duration.millis(slider1.getValue()), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 series1.getData().add(new ScatterChart.Data(f, channel1list.get(f)));
-                changeslider1();
                 changecolor1();
                 f++;
             }
         }));
-        System.out.println("slider1:" +slider1.valueProperty().doubleValue());
+        System.out.println("slider1:" + slider1.getValue());
         timeline1.setCycleCount(Animation.INDEFINITE);
         animation1 = new SequentialTransition();
         animation1.getChildren().add(timeline1);
@@ -311,6 +320,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation2() {
+          zoom();
         Timeline timeline2 = new Timeline();
         timeline2.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider2.getValue()), new EventHandler<ActionEvent>() {
@@ -329,6 +339,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation3() {
+          zoom();
         Timeline timeline3 = new Timeline();
         timeline3.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider3.getValue()), new EventHandler<ActionEvent>() {
@@ -346,6 +357,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation4() {
+          zoom();
         Timeline timeline4 = new Timeline();
         timeline4.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider4.getValue()), new EventHandler<ActionEvent>() {
@@ -425,6 +437,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation5() {
+          zoom();
         Timeline timeline5 = new Timeline();
         timeline5.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider5.getValue()), new EventHandler<ActionEvent>() {
@@ -445,6 +458,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation6() {
+          zoom();
         Timeline timeline6 = new Timeline();
         timeline6.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider6.getValue()), new EventHandler<ActionEvent>() {
@@ -463,6 +477,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation7() {
+          zoom();
         Timeline timeline7 = new Timeline();
         timeline7.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider7.getValue()), new EventHandler<ActionEvent>() {
@@ -480,6 +495,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void createAnimation8() {
+          zoom();
         Timeline timeline8 = new Timeline();
         timeline8.getKeyFrames().add(
                 new KeyFrame(Duration.millis(slider8.getValue()), new EventHandler<ActionEvent>() {

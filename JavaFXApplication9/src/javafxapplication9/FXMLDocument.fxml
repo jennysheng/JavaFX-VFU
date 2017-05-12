@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="623.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication9.FXMLDocumentController">
+<AnchorPane id="AnchorPane" fx:id="anchorpane" prefHeight="623.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication9.FXMLDocumentController">
     <children>
         <MenuBar layoutY="2.0">
             <menus>
@@ -56,18 +56,18 @@
                 <Button fx:id="buttonChannel1" onAction="#handleButton1Action" text="Channel 1" />
                 <Button fx:id="buttonChannel3" mnemonicParsing="false" onAction="#handleButton3Action" text="Channel 3" GridPane.rowIndex="2" />
                 <Button fx:id="buttonChannel4" mnemonicParsing="false" onAction="#handleButton4Action" text="Channel 4" GridPane.rowIndex="3" />
-                <ColorPicker fx:id="colorPicker4"  GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <ColorPicker fx:id="colorPicker3"  GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <ColorPicker fx:id="colorPicker2"  GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <ColorPicker fx:id="colorPicker1"  prefHeight="25.0" prefWidth="106.0" GridPane.columnIndex="1" />
+                <ColorPicker fx:id="colorPicker4" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <ColorPicker fx:id="colorPicker3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ColorPicker fx:id="colorPicker2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <ColorPicker fx:id="colorPicker1" prefHeight="25.0" prefWidth="106.0" GridPane.columnIndex="1" />
                 <Button fx:id="buttonChannel5" mnemonicParsing="false" onAction="#handleButton5Action" text="Channel 5" GridPane.columnIndex="3" />
                 <Button fx:id="buttonChannel6" mnemonicParsing="false" onAction="#handleButton6Action" text="Channel 6" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                 <Button fx:id="buttonChannel7" mnemonicParsing="false" onAction="#handleButton7Action" text="Channel 7" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                 <Button fx:id="buttonChannel8" mnemonicParsing="false" onAction="#handleButton8Action" text="Channel 8" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                <ColorPicker fx:id="colorPicker5"  GridPane.columnIndex="4" />
-                <ColorPicker fx:id="colorPicker6"  GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                <ColorPicker fx:id="colorPicker7"  GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                <ColorPicker fx:id="colorPicker8"  GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                <ColorPicker fx:id="colorPicker5" GridPane.columnIndex="4" />
+                <ColorPicker fx:id="colorPicker6" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <ColorPicker fx:id="colorPicker7" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <ColorPicker fx:id="colorPicker8" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                 <Slider fx:id="slider1" onDragDetected="#handelSlider1Action" GridPane.columnIndex="2" />
                 <Slider fx:id="slider2" onDragDetected="#handelSlider2Action" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                 <Slider fx:id="slider3" onDragDetected="#handelSlider3Action" GridPane.columnIndex="2" GridPane.rowIndex="2" />
