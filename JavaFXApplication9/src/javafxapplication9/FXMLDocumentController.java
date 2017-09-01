@@ -257,7 +257,7 @@ public class FXMLDocumentController implements Initializable {
     private void handelButton1Action(ActionEvent event) {
       
         for(int i=0; i<100; i++){
-        series1.getData().add(new ScatterChart.Data(i, channel1HashMap.get(Datepicker1.getDate())));
+       // series1.getData().add(new ScatterChart.Data(i, channel1HashMap.get(Datepicker1.getDate())));
         scatterchart.getData().add(series1);
         
         }
