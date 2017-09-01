@@ -26,6 +26,10 @@ public class DataLogger {
         this.value8 = value8;
     }
 
+    public String getDate() {
+        return date;
+    }
+
     public double getValue1() {
         return value1;
     }
