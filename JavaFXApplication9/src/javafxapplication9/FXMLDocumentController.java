@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -46,9 +46,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
@@ -65,29 +62,30 @@ public class FXMLDocumentController implements Initializable {
 
     private List<ScatterChart.Series<Date, Double>> seriesCollection = new ArrayList<>();
 
-    Map<Date, Double> channel1HashMap = new HashMap<>();
-    Map<Date, Double> channel2HashMap = new HashMap<>();
-    Map<Date, Double> channel3HashMap = new HashMap<>();
-    Map<Date, Double> channel4HashMap = new HashMap<>();
-    Map<Date, Double> channel5HashMap = new HashMap<>();
-    Map<Date, Double> channel6HashMap = new HashMap<>();
-    Map<Date, Double> channel7HashMap = new HashMap<>();
-    Map<Date, Double> channel8HashMap = new HashMap<>();
+    Map<String, Double> channel1HashMap = new HashMap<>();
+    Map<String, Double> channel2HashMap = new HashMap<>();
+    Map<String, Double> channel3HashMap = new HashMap<>();
+    Map<String, Double> channel4HashMap = new HashMap<>();
+    Map<String, Double> channel5HashMap = new HashMap<>();
+    Map<String, Double> channel6HashMap = new HashMap<>();
+    Map<String, Double> channel7HashMap = new HashMap<>();
+    Map<String, Double> channel8HashMap = new HashMap<>();
 
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
-    XYChart.Series<Date, Double> series1 = new ScatterChart.Series();
-    ScatterChart.Series<Date, Double> series2 = new ScatterChart.Series();
-    ScatterChart.Series<Date, Double> series3 = new ScatterChart.Series();
-    ScatterChart.Series<Date, Double> series4 = new ScatterChart.Series();
-    ScatterChart.Series<Date, Double> series5 = new ScatterChart.Series();
-    ScatterChart.Series<Date, Double> series6 = new ScatterChart.Series();
-    ScatterChart.Series<Date, Double> series7 = new ScatterChart.Series();
-    ScatterChart.Series<Date, Double> series8 = new ScatterChart.Series();
+    XYChart.Series<String, Double> series1 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series2 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series3 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series4 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series5 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series6 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series7 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series8 = new ScatterChart.Series();
 
     File selectedFile = null;
 
     int f = 0, m = 0, n = 0, o = 0, q = 0, r = 0, s = 0;
-    private ScatterChart<Date, Double> scatterchart;
+    @FXML
+    private ScatterChart<String, Double> scatterchart;
     @FXML
     private ColorPicker colorPicker1;
     @FXML
@@ -126,7 +124,7 @@ public class FXMLDocumentController implements Initializable {
 
     private final String pattern = "yyyy-MM-dd";
     @FXML
-    private RadioButton Radio1;
+    private CheckBox checkbox1;
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -159,6 +157,13 @@ public class FXMLDocumentController implements Initializable {
         return parseDate;
     }
 
+    String DateToString(Date datetime) {
+
+        Format format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S");
+        String s = format.format(datetime);
+        return s;
+    }
+
     public ObservableList<DataLogger> readFromFile() throws ParseException {
 
         StringBuilder filecontent = new StringBuilder();
@@ -183,7 +188,7 @@ public class FXMLDocumentController implements Initializable {
 
                 while (i < ((j - 1) * 9)) {
 
-                    channelsdata.add(new DataLogger(StringToDate(parts[i]),
+                    channelsdata.add(new DataLogger(parts[i],
                             Double.parseDouble(parts[i + 1]),
                             Double.parseDouble(parts[i + 2]),
                             Double.parseDouble(parts[i + 3]),
@@ -207,13 +212,13 @@ public class FXMLDocumentController implements Initializable {
 
         getChannelsdata().stream().forEach((c) -> {
             channel1HashMap.put(c.getDate(), c.getValue1());
-            channel2HashMap.put(c.getDate(), c.getValue1());
-            channel3HashMap.put(c.getDate(), c.getValue1());
-            channel4HashMap.put(c.getDate(), c.getValue1());
-            channel5HashMap.put(c.getDate(), c.getValue1());
-            channel6HashMap.put(c.getDate(), c.getValue1());
-            channel7HashMap.put(c.getDate(), c.getValue1());
-            channel8HashMap.put(c.getDate(), c.getValue1());
+            channel2HashMap.put(c.getDate(), c.getValue2());
+            channel3HashMap.put(c.getDate(), c.getValue3());
+            channel4HashMap.put(c.getDate(), c.getValue4());
+            channel5HashMap.put(c.getDate(), c.getValue5());
+            channel6HashMap.put(c.getDate(), c.getValue6());
+            channel7HashMap.put(c.getDate(), c.getValue7());
+            channel8HashMap.put(c.getDate(), c.getValue8());
 
         });
         channel1HashMap.forEach((t, u) -> {
@@ -233,7 +238,7 @@ public class FXMLDocumentController implements Initializable {
         });
         channel6HashMap.forEach((t, u) -> {
             series6.getData().add(new ScatterChart.Data<>(t, u));
-           
+
         });
         channel7HashMap.forEach((t, u) -> {
             series7.getData().add(new ScatterChart.Data<>(t, u));
@@ -242,22 +247,32 @@ public class FXMLDocumentController implements Initializable {
             series8.getData().add(new ScatterChart.Data<>(t, u));
         });
 
-        seriesCollection.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
+        // seriesCollection.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
     }
 
     @FXML
-    private void selectRadioButton(ActionEvent event) {
-           
-  
-        if (event.getSource() instanceof ToggleButton) {
-            ToggleButton cp = (ToggleButton) event.getSource();
-           if(cp.isSelected()&&cp.getId().equals("Radio1")){
-               scatterchart.getData().add(series1);
-               
-           }          
+    private void selectCheckBox1(ActionEvent event) {
+        if (event.getSource() instanceof CheckBox) {
+            CheckBox cp = (CheckBox) event.getSource();
+            if (cp.isSelected() && cp.getId().equalsIgnoreCase("checkbox1")) {
+                scatterchart.getData().add(series1);
+            } else {
+                scatterchart.getData().remove(series1);
+            }
 
         }
+    }
+       @FXML
+    private void autoPlot(ScrollEvent event) {
+        
+        
+        
+        
+    }
 
+    @FXML
+    private void singelPlot(MouseEvent event) {
+        
     }
 
     @FXML
@@ -268,9 +283,6 @@ public class FXMLDocumentController implements Initializable {
     private void pickEndDate(ActionEvent event) {
     }
 
-    @FXML
-    private void freq1(MouseEvent event) {
-    }
 
     @FXML
     private void freq2(MouseEvent event) {
@@ -382,5 +394,7 @@ public class FXMLDocumentController implements Initializable {
             }
         });
     }
+
+ 
 
 }

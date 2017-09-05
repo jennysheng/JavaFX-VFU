@@ -13,10 +13,10 @@ import java.util.Date;
  */
 public class DataLogger {
 
-    Date date;
+    String date;
     double value1, value2, value3, value4, value5, value6, value7, value8;
 
-    public DataLogger(Date date, double value1, double value2, double value3, double value4, double value5, double value6, double value7, double value8) {
+    public DataLogger(String date, double value1, double value2, double value3, double value4, double value5, double value6, double value7, double value8) {
         this.date = date;
         this.value1 = value1;
         this.value2 = value2;
@@ -28,7 +28,7 @@ public class DataLogger {
         this.value8 = value8;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

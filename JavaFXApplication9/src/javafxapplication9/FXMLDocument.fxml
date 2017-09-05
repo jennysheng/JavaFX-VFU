@@ -56,22 +56,22 @@
             <ColorPicker fx:id="colorPicker5" onAction="#changeColor5" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             <ColorPicker fx:id="colorPicker6" onAction="#changeColor6" GridPane.columnIndex="5" GridPane.rowIndex="2" />
             <ColorPicker fx:id="colorPicker7" onAction="#changeColor7" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-            <ScrollBar fx:id="scollBar1" onDragDetected="#freq1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ScrollBar fx:id="scollBar1" onMouseClicked="#singelPlot" onScrollFinished="#autoPlot" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ScrollBar fx:id="scrollBar2" onDragDetected="#freq2" prefHeight="14.0" prefWidth="88.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ColorPicker fx:id="colorPicker4" onAction="#changeColor4" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <ColorPicker fx:id="colorPicker8" onAction="#changeColor8" prefHeight="25.0" prefWidth="81.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
             <Label text="Choose channel:" />
-            <Label text="Display frequency:" GridPane.columnIndex="1" />
+            <Label text="Press" GridPane.columnIndex="1" />
             <ScrollBar fx:id="scrollBar3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ScrollBar GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ScrollBar GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <ScrollBar GridPane.columnIndex="4" GridPane.rowIndex="2" />
             <ScrollBar GridPane.columnIndex="4" GridPane.rowIndex="3" />
             <ScrollBar GridPane.columnIndex="4" GridPane.rowIndex="4" />
-            <RadioButton fx:id="Radio1" mnemonicParsing="false" onAction="#selectRadioButton" text="Channel1" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkbox1" mnemonicParsing="false" onAction="#selectCheckBox1" text="Channel1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <ScatterChart layoutX="1.0" layoutY="62.0" prefHeight="411.0" prefWidth="582.0">
+      <ScatterChart fx:id="scatterchart" layoutX="1.0" layoutY="62.0" prefHeight="411.0" prefWidth="582.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>
