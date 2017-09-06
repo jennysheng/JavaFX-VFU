@@ -39,6 +39,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -46,6 +47,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
@@ -72,7 +74,7 @@ public class FXMLDocumentController implements Initializable {
     Map<String, Double> channel8HashMap = new HashMap<>();
 
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
-    XYChart.Series<String, Double> series1 = new ScatterChart.Series();
+    ScatterChart.Series<String, Double> series1 = new ScatterChart.Series();
     ScatterChart.Series<String, Double> series2 = new ScatterChart.Series();
     ScatterChart.Series<String, Double> series3 = new ScatterChart.Series();
     ScatterChart.Series<String, Double> series4 = new ScatterChart.Series();
@@ -88,19 +90,12 @@ public class FXMLDocumentController implements Initializable {
     private ScatterChart<String, Double> scatterchart;
     @FXML
     private ColorPicker colorPicker1;
-    @FXML
     private ColorPicker colorPicker4;
-    @FXML
     private ColorPicker colorPicker3;
-    @FXML
     private ColorPicker colorPicker2;
-    @FXML
     private ColorPicker colorPicker5;
-    @FXML
     private ColorPicker colorPicker6;
-    @FXML
     private ColorPicker colorPicker7;
-    @FXML
     private ColorPicker colorPicker8;
 
     @FXML
@@ -115,16 +110,26 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private DatePicker datePicker2;
 
-    @FXML
-    private ScrollBar scollBar1;
-    @FXML
-    private ScrollBar scrollBar2;
-    @FXML
-    private ScrollBar scrollBar3;
 
     private final String pattern = "yyyy-MM-dd";
     @FXML
     private CheckBox checkbox1;
+    @FXML
+    private Button SingelReadButton;
+    @FXML
+    private ScrollBar scrollbar1;
+    @FXML
+    private Button AutoReadButton;
+    @FXML
+    private Slider SliderScaleX;
+    @FXML
+    private Slider SliderScaleY;
+    @FXML
+    private RadioButton SamplesRadio;
+    @FXML
+    private RadioButton TimeRadio;
+    @FXML
+    private ChoiceBox<?> FocusAutoScaleChoiceBox;
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -256,37 +261,17 @@ public class FXMLDocumentController implements Initializable {
             CheckBox cp = (CheckBox) event.getSource();
             if (cp.isSelected() && cp.getId().equalsIgnoreCase("checkbox1")) {
                 scatterchart.getData().add(series1);
+                series1.setName("Channel1");
             } else {
                 scatterchart.getData().remove(series1);
             }
 
         }
     }
-       @FXML
-    private void autoPlot(ScrollEvent event) {
-        
-        
-        
-        
-    }
+     
 
-    @FXML
-    private void singelPlot(MouseEvent event) {
-        
-    }
+   
 
-    @FXML
-    private void pickStartDate(ActionEvent event) {
-    }
-
-    @FXML
-    private void pickEndDate(ActionEvent event) {
-    }
-
-
-    @FXML
-    private void freq2(MouseEvent event) {
-    }
 
     public static String toRGBCode(Color color) {
         return String.format("#%02X%02X%02X",
@@ -305,7 +290,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
     private void changeColor2(ActionEvent event) {
         Set<Node> nodes = scatterchart.lookupAll(".series2");
         Color d = colorPicker2.getValue();
@@ -315,7 +299,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
     private void changeColor3(ActionEvent event) {
         Set<Node> nodes = scatterchart.lookupAll(".series3");
         Color d = colorPicker3.getValue();
@@ -325,7 +308,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
     private void changeColor4(ActionEvent event) {
         Set<Node> nodes = scatterchart.lookupAll(".series4");
         Color d = colorPicker4.getValue();
@@ -335,7 +317,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
     private void changeColor5(ActionEvent event) {
         Set<Node> nodes = scatterchart.lookupAll(".series5");
         Color d = colorPicker5.getValue();
@@ -345,7 +326,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
     private void changeColor6(ActionEvent event) {
         Set<Node> nodes = scatterchart.lookupAll(".series6");
         Color d = colorPicker6.getValue();
@@ -355,7 +335,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
     private void changeColor7(ActionEvent event) {
         Set<Node> nodes = scatterchart.lookupAll(".series7");
         Color d = colorPicker7.getValue();
@@ -365,7 +344,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
     private void changeColor8(ActionEvent event) {
         Set<Node> nodes = scatterchart.lookupAll(".series7");
         Color d = colorPicker8.getValue();
@@ -393,6 +371,46 @@ public class FXMLDocumentController implements Initializable {
                 scatterchart.setScaleY(scatterchart.getScaleY() * scaleFactor);
             }
         });
+    }
+
+    @FXML
+    private void singelPlot(ActionEvent event) {
+    }
+
+    @FXML
+    private void frekvensSetup(MouseDragEvent event) {
+    }
+
+    @FXML
+    private void autoPlot(ActionEvent event) {
+    }
+
+    @FXML
+    private void pickStartDate(ActionEvent event) {
+    }
+
+    @FXML
+    private void pickEndDate(ActionEvent event) {
+    }
+
+    @FXML
+    private void autoScaleX(MouseDragEvent event) {
+    }
+
+    @FXML
+    private void autoScaleY(MouseDragEvent event) {
+    }
+
+    @FXML
+    private void SamplesOnX(ActionEvent event) {
+    }
+
+    @FXML
+    private void TimeOnX(ActionEvent event) {
+    }
+
+    @FXML
+    private void FocusAutoScale(MouseEvent event) {
     }
 
  
