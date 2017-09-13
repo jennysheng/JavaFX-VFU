@@ -35,8 +35,8 @@
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="94.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="108.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="95.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="76.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="111.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="101.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="88.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="99.0" />
         </columnConstraints>
         <rowConstraints>
@@ -48,12 +48,27 @@
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ColorPicker fx:id="colorPicker1" prefHeight="25.0" prefWidth="36.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ColorPicker fx:id="colorPicker1" prefHeight="25.0" prefWidth="82.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="17.0" prefWidth="163.0" GridPane.columnIndex="1" />
             <CheckBox fx:id="checkbox1" mnemonicParsing="false" text="Channel1" GridPane.rowIndex="1" />
-            <Button fx:id="SingelReadButton" mnemonicParsing="false" onMouseClicked="#singelPlot" prefHeight="25.0" prefWidth="100.0" text="SingelRead" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="AutoReadButton" mnemonicParsing="false" onMouseClicked="#autoPlot" prefHeight="25.0" prefWidth="96.0" text="AutoRead" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <TextField fx:id="textFieldMs" prefHeight="25.0" prefWidth="87.0" promptText="Antal ms" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="SingelReadButton" mnemonicParsing="false" onMouseClicked="#singelPlot" prefHeight="25.0" prefWidth="100.0" text="SingelRead" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Button fx:id="AutoReadButton" mnemonicParsing="false" onMouseClicked="#autoPlot" prefHeight="25.0" prefWidth="96.0" text="AutoRead" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <TextField fx:id="textFieldMs" prefHeight="25.0" prefWidth="87.0" promptText="Antal ms" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkbox2" mnemonicParsing="false" text="Channel2" GridPane.rowIndex="3" />
+            <CheckBox fx:id="checkbox3" mnemonicParsing="false" text="Channel3" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkbox4" mnemonicParsing="false" text="Channel4" GridPane.rowIndex="5" />
+            <ColorPicker fx:id="colorPicker2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ColorPicker fx:id="colorPicker3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ColorPicker fx:id="colorPicker4" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ColorPicker fx:id="colorPicker5" prefHeight="25.0" prefWidth="87.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <ColorPicker fx:id="colorPicker6" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <ColorPicker fx:id="colorPicker7" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <ColorPicker fx:id="colorPicker8" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <CheckBox fx:id="checkbox5" mnemonicParsing="false" text="Channel5" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkbox6" mnemonicParsing="false" text="Channel6" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <CheckBox fx:id="checkbox7" mnemonicParsing="false" text="Channel7" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkbox8" mnemonicParsing="false" text="Channel8" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Button fx:id="Cleanscreen" mnemonicParsing="false" onAction="#Cleanscreen" text="Cleanscreen" GridPane.columnIndex="5" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <ScatterChart fx:id="scatterchart" layoutX="45.0" layoutY="40.0" prefHeight="355.0" prefWidth="538.0">
@@ -65,15 +80,5 @@
         </yAxis>
       </ScatterChart>
       <TextFlow layoutX="282.0" layoutY="21.0" prefHeight="26.0" prefWidth="217.0" />
-      <Slider fx:id="SliderScaleX" layoutX="142.0" layoutY="396.0" onMouseDragEntered="#autoScaleX" />
-      <Slider fx:id="SliderScaleY" layoutX="38.0" layoutY="233.0" onMouseDragEntered="#autoScaleY" orientation="VERTICAL" />
-      <RadioButton fx:id="SamplesRadio" layoutX="292.0" layoutY="394.0" mnemonicParsing="false" onAction="#SamplesOnX" prefHeight="17.0" prefWidth="71.0" text="Samples" />
-      <RadioButton fx:id="TimeRadio" layoutX="391.0" layoutY="394.0" mnemonicParsing="false" onAction="#TimeOnX" text="Time" />
-      <SplitMenuButton layoutX="16.0" layoutY="382.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="FocusChannel">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Channel1" />
-          <MenuItem mnemonicParsing="false" text="Channel2" />
-        </items>
-      </SplitMenuButton>
     </children>
 </AnchorPane>
