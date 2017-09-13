@@ -30,13 +30,13 @@
                 </Menu>
             </menus>
         </MenuBar>
-      <GridPane layoutX="12.0" layoutY="444.0" prefHeight="165.0" prefWidth="592.0">
+      <GridPane layoutX="18.0" layoutY="410.0" prefHeight="165.0" prefWidth="592.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="94.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="114.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="96.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="65.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="94.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="108.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="95.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="76.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="111.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="99.0" />
         </columnConstraints>
         <rowConstraints>
@@ -48,28 +48,12 @@
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ColorPicker fx:id="colorPicker1" onAction="#changeColor1" prefHeight="25.0" prefWidth="36.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <ColorPicker fx:id="colorPicker1" prefHeight="25.0" prefWidth="36.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="17.0" prefWidth="163.0" GridPane.columnIndex="1" />
-            <CheckBox fx:id="checkbox1" mnemonicParsing="false" onAction="#selectCheckBox1" text="Channel1" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Button fx:id="SingelReadButton" mnemonicParsing="false" onMouseClicked="#singelPlot" prefHeight="25.0" prefWidth="95.0" text="SingelRead" GridPane.rowIndex="1" />
-            <ScrollBar fx:id="scrollbar1" onMouseDragExited="#frekvensSetup" prefHeight="14.0" prefWidth="53.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button fx:id="AutoReadButton" mnemonicParsing="false" onMouseClicked="#autoPlot" prefHeight="25.0" prefWidth="96.0" text="AutoRead" GridPane.rowIndex="3" />
-            <DatePicker fx:id="Datepicker1" onAction="#pickStartDate" prefHeight="25.0" prefWidth="112.0" promptText="2015-12-30" showWeekNumbers="true" GridPane.columnIndex="1" />
-            <Label text=" Start Date:" />
-            <Label text="Finish Date:" GridPane.columnIndex="3" />
-            <DatePicker fx:id="datePicker2" onAction="#pickEndDate" prefHeight="25.0" prefWidth="97.0" promptText="2015-12-30" showWeekNumbers="true" GridPane.columnIndex="4" />
-            <SplitMenuButton fx:id="starttime" mnemonicParsing="false" text="StartTime" GridPane.columnIndex="2">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
-              </items>
-            </SplitMenuButton>
-            <SplitMenuButton mnemonicParsing="false" prefHeight="25.0" prefWidth="99.0" text="EndTime" GridPane.columnIndex="5">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
-              </items>
-            </SplitMenuButton>
+            <CheckBox fx:id="checkbox1" mnemonicParsing="false" text="Channel1" GridPane.rowIndex="1" />
+            <Button fx:id="SingelReadButton" mnemonicParsing="false" onMouseClicked="#singelPlot" prefHeight="25.0" prefWidth="100.0" text="SingelRead" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="AutoReadButton" mnemonicParsing="false" onMouseClicked="#autoPlot" prefHeight="25.0" prefWidth="96.0" text="AutoRead" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldMs" prefHeight="25.0" prefWidth="87.0" promptText="Antal ms" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <ScatterChart fx:id="scatterchart" layoutX="45.0" layoutY="40.0" prefHeight="355.0" prefWidth="538.0">
@@ -85,10 +69,10 @@
       <Slider fx:id="SliderScaleY" layoutX="38.0" layoutY="233.0" onMouseDragEntered="#autoScaleY" orientation="VERTICAL" />
       <RadioButton fx:id="SamplesRadio" layoutX="292.0" layoutY="394.0" mnemonicParsing="false" onAction="#SamplesOnX" prefHeight="17.0" prefWidth="71.0" text="Samples" />
       <RadioButton fx:id="TimeRadio" layoutX="391.0" layoutY="394.0" mnemonicParsing="false" onAction="#TimeOnX" text="Time" />
-      <SplitMenuButton layoutX="14.0" layoutY="398.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="FocusChannel">
+      <SplitMenuButton layoutX="16.0" layoutY="382.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="FocusChannel">
         <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
+          <MenuItem mnemonicParsing="false" text="Channel1" />
+          <MenuItem mnemonicParsing="false" text="Channel2" />
         </items>
       </SplitMenuButton>
     </children>

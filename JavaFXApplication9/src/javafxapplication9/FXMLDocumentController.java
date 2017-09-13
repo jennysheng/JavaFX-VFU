@@ -5,6 +5,7 @@
  */
 package javafxapplication9;
 
+import com.sun.javafx.charts.Legend;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,6 +14,8 @@ import java.net.URL;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -73,23 +76,6 @@ public class FXMLDocumentController implements Initializable {
     private List<ScatterChart.Series<String, Double>> seriesCollection = new ArrayList<>();
 
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
-    Map<String, Double> channel1DateHashMap = new HashMap<>();
-    Map<String, Double> channel2DateHashMap = new HashMap<>();
-    Map<String, Double> channel3DateHashMap = new HashMap<>();
-    Map<String, Double> channel4DateHashMap = new HashMap<>();
-    Map<String, Double> channel5DateHashMap = new HashMap<>();
-    Map<String, Double> channel6DateHashMap = new HashMap<>();
-    Map<String, Double> channel7DateHashMap = new HashMap<>();
-    Map<String, Double> channel8DateHashMap = new HashMap<>();
-
-    ScatterChart.Series<String, Double> series1 = new ScatterChart.Series();
-    ScatterChart.Series<String, Double> series2 = new ScatterChart.Series();
-    ScatterChart.Series<String, Double> series3 = new ScatterChart.Series();
-    ScatterChart.Series<String, Double> series4 = new ScatterChart.Series();
-    ScatterChart.Series<String, Double> series5 = new ScatterChart.Series();
-    ScatterChart.Series<String, Double> series6 = new ScatterChart.Series();
-    ScatterChart.Series<String, Double> series7 = new ScatterChart.Series();
-    ScatterChart.Series<String, Double> series8 = new ScatterChart.Series();
 
     File selectedFile = null;
 
@@ -115,17 +101,10 @@ public class FXMLDocumentController implements Initializable {
     private CategoryAxis xAxis;
 
     @FXML
-    private DatePicker Datepicker1;
-    @FXML
-    private DatePicker datePicker2;
-
-    private final String pattern = "yyyy-MM-dd";
-    @FXML
     private CheckBox checkbox1;
     @FXML
     private Button SingelReadButton;
-    @FXML
-    private ScrollBar scrollbar1;
+
     @FXML
     private Button AutoReadButton;
     @FXML
@@ -139,7 +118,11 @@ public class FXMLDocumentController implements Initializable {
     private SequentialTransition animation, animation1, animation2, animation3, animation4, animation5, animation6, animation7, animation8;
 
     @FXML
-    private SplitMenuButton starttime;
+    private TextField textFieldMs;
+
+    public void initialize(URL url, ResourceBundle rb) {
+
+    }
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
@@ -147,36 +130,11 @@ public class FXMLDocumentController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
         readFromFile();
-        createALLChannelDataSeries();
 
     }
 
     public ObservableList<DataLogger> getChannelsdata() {
         return channelsdata;
-    }
-
-    public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
-    Date StringToDate(String datetimeStr) {
-
-        Date parseDate = null;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S");
-        try {
-            parseDate = format.parse(datetimeStr);
-
-        } catch (ParseException e) {
-
-        }
-        return parseDate;
-    }
-
-    String DateToString(Date datetime) {
-
-        Format format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S");
-        String s = format.format(datetime);
-        return s;
     }
 
     public ObservableList<DataLogger> readFromFile() throws ParseException {
@@ -222,49 +180,6 @@ public class FXMLDocumentController implements Initializable {
         return channelsdata;
     }
 
-    public void createALLChannelDataSeries() {
-
-        getChannelsdata().stream().forEach((c) -> {
-            channel1DateHashMap.put(c.getDate(), c.getValue1());
-            channel2DateHashMap.put(c.getDate(), c.getValue2());
-            channel3DateHashMap.put(c.getDate(), c.getValue3());
-            channel4DateHashMap.put(c.getDate(), c.getValue4());
-            channel5DateHashMap.put(c.getDate(), c.getValue5());
-            channel6DateHashMap.put(c.getDate(), c.getValue6());
-            channel7DateHashMap.put(c.getDate(), c.getValue7());
-            channel8DateHashMap.put(c.getDate(), c.getValue8());
-
-        });
-        channel1DateHashMap.forEach((t, u) -> {
-            series1.getData().add(new ScatterChart.Data<>(t, u));
-        });
-        channel2DateHashMap.forEach((t, u) -> {
-            series2.getData().add(new ScatterChart.Data<>(t, u));
-        });
-        channel3DateHashMap.forEach((t, u) -> {
-            series3.getData().add(new ScatterChart.Data<>(t, u));
-        });
-        channel4DateHashMap.forEach((t, u) -> {
-            series4.getData().add(new ScatterChart.Data<>(t, u));
-        });
-        channel5DateHashMap.forEach((t, u) -> {
-            series5.getData().add(new ScatterChart.Data<>(t, u));
-        });
-        channel6DateHashMap.forEach((t, u) -> {
-            series6.getData().add(new ScatterChart.Data<>(t, u));
-
-        });
-        channel7DateHashMap.forEach((t, u) -> {
-            series7.getData().add(new ScatterChart.Data<>(t, u));
-        });
-        channel8DateHashMap.forEach((t, u) -> {
-            series8.getData().add(new ScatterChart.Data<>(t, u));
-        });
-
-        seriesCollection.addAll(Arrays.asList(series1, series2, series3, series4, series5, series6, series7, series8));
-
-    }
-
     public static String toRGBCode(Color color) {
         return String.format("#%02X%02X%02X",
                 (int) (color.getRed() * 255),
@@ -273,112 +188,8 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void changeColor1(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series1");
-        Color d = colorPicker1.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    private void changeColor2(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series2");
-        Color d = colorPicker2.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    private void changeColor3(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series3");
-        Color d = colorPicker3.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    private void changeColor4(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series4");
-        Color d = colorPicker4.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    private void changeColor5(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series5");
-        Color d = colorPicker5.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    private void changeColor6(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series6");
-        Color d = colorPicker6.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    private void changeColor7(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series7");
-        Color d = colorPicker7.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    private void changeColor8(ActionEvent event) {
-        Set<Node> nodes = scatterchart.lookupAll(".series7");
-        Color d = colorPicker8.getValue();
-        String newColor = "-fx-background-color: " + toRGBCode(d);
-        for (Node n : nodes) {
-            n.setStyle(newColor);
-        }
-    }
-
-    void zoom() {
-        final double SCALE_DELTA = 1.1;
-
-        scatterchart.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                event.consume();
-
-                if (event.getDeltaY() == 0) {
-                    return;
-                }
-
-                double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
-
-                scatterchart.setScaleX(scatterchart.getScaleX() * scaleFactor);
-                scatterchart.setScaleY(scatterchart.getScaleY() * scaleFactor);
-            }
-        });
-    }
-
-    @FXML
-    private void frekvensSetup(MouseDragEvent event) {
-    }
-
-    @FXML
-    private void pickStartDate(ActionEvent event) {
-    }
-
-    @FXML
-    private void pickEndDate(ActionEvent event) {
-    }
-
-    @FXML
     private void autoScaleX(MouseDragEvent event) {
+
     }
 
     @FXML
@@ -394,6 +205,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     int i = 0;
+    int b = 0;
 
     @FXML
     private void singelPlot(MouseEvent event) {
@@ -417,71 +229,96 @@ public class FXMLDocumentController implements Initializable {
         seriesS6.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value6));
         seriesS7.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value7));
         seriesS8.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value8));
+        if (checkbox1.isSelected()) {
+            scatterchart.getData().add(seriesS1);
+            xAxis.setAnimated(true);
+            scatterchart.setLegendVisible(false);
+            Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(b));
+            Color c = colorPicker1.getValue();
+            String newColor = "-fx-background-color: " + toRGBCode(c);
+            for (Node n : nodes) {
+                n.setStyle(newColor);
+              
+            }
+            b++;
+            getChannelsdata().remove(0);
+            zoom();
 
-        scatterchart.getData().add(seriesS1);
-        scatterchart.getData().add(seriesS2);
-        scatterchart.getData().add(seriesS3);
-        scatterchart.getData().add(seriesS4);
-        scatterchart.getData().add(seriesS5);
-        scatterchart.getData().add(seriesS6);
-        scatterchart.getData().add(seriesS7);
-        scatterchart.getData().add(seriesS8);
-        scatterchart.setLegendVisible(false);
-        getChannelsdata().remove(0);
-        zoom();
-        f++;
-
+        }
     }
-
-    private double nextX = 0;
-    ScatterChart.Series<String, Double> seriesA1 = new ScatterChart.Series();
 
     private void animation() {
 
+        ScatterChart.Series<String, Double> seriesA1 = new ScatterChart.Series();
         Timeline timeline1 = new Timeline();
         timeline1.getKeyFrames().add(
-                new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
+                new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+
                         seriesA1.getData().add(new ScatterChart.Data<String, Double>(
                                 getChannelsdata().iterator().next().date,
                                 getChannelsdata().iterator().next().value1
                         ));
+
                         getChannelsdata().remove(0);
+                        changeAutoColor1();
+                        zoom();
+
                     }
                 })
         );
+
         timeline1.setCycleCount(1000);
         animation = new SequentialTransition();
         animation.getChildren().addAll(timeline1);
+        scatterchart.getData().add(seriesA1);
+        scatterchart.setLegendVisible(false);
     }
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
 
-        AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7b9;");
-        animation();
-        scatterchart.getData().add(seriesA1);
-        play();
-
-    }
-
-    public void play() {
-        animation.play();
-    }
-
-    @FXML
-    private void selectCheckBox1(ActionEvent event) {
-        if (event.getSource() instanceof CheckBox) {
-            CheckBox cp = (CheckBox) event.getSource();
-            if (cp.isSelected() && cp.getId().equalsIgnoreCase("checkbox1")) {
-                scatterchart.getData().add(series1);
-            } else {
-                scatterchart.getData().remove(series1);
-            }
+        if (checkbox1.isSelected() && textFieldMs.getText() != null) {
+            AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7b9;");
+            animation();
+            animation.play();
+        } else {
+            System.out.println("please fillin the time interval:");
+            animation.stop();
+            scatterchart.getData().clear();
 
         }
 
+    }
+
+    void zoom() {
+        final double SCALE_DELTA = 1.1;
+
+        scatterchart.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                event.consume();
+
+                if (event.getDeltaY() == 0) {
+                    return;
+                }
+
+                double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
+
+                scatterchart.setScaleX(scatterchart.getScaleX() * scaleFactor);
+                scatterchart.setScaleY(scatterchart.getScaleY() * scaleFactor);
+            }
+        });
+    }
+
+    private void changeAutoColor1() {
+        Set<Node> nodes = scatterchart.lookupAll(".series0");
+        Color c = colorPicker1.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(c);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
+        }
     }
 
 }
