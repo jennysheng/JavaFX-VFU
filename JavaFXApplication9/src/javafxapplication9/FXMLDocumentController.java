@@ -61,6 +61,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -79,7 +80,7 @@ public class FXMLDocumentController implements Initializable {
 
     File selectedFile = null;
 
-    //int i = 0, b = 0, d = 0, e = 0, f = 0, g = 0, h = 0, j = 0;
+    ArrayList<Color> colorList = new ArrayList<Color>();
     int TotalNbr;
 
     public int getTotalNbr() {
@@ -145,6 +146,22 @@ public class FXMLDocumentController implements Initializable {
     private Button Cleanscreen;
 
     public void initialize(URL url, ResourceBundle rb) {
+        colorList.add(Color.BLUE);
+        colorList.add(Color.RED);
+        colorList.add(Color.GREEN);
+        colorList.add(Color.YELLOW);
+        colorList.add(Color.BLACK);
+        colorList.add(Color.PINK);
+        colorList.add(Color.PURPLE);
+        colorList.add(Color.GREY);
+        colorPicker1.setValue(colorList.get(0));
+        colorPicker2.setValue(colorList.get(1));
+        colorPicker3.setValue(colorList.get(2));
+        colorPicker4.setValue(colorList.get(3));
+        colorPicker5.setValue(colorList.get(4));
+        colorPicker6.setValue(colorList.get(5));
+        colorPicker7.setValue(colorList.get(6));
+        colorPicker8.setValue(colorList.get(7));
 
     }
 
@@ -234,6 +251,7 @@ public class FXMLDocumentController implements Initializable {
         seriesS8.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value8));
 
         if (checkbox1.isSelected()) {
+
             scatterchart.getData().add(seriesS1);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -250,6 +268,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS1);
         }
         if (checkbox2.isSelected()) {
+
             scatterchart.getData().add(seriesS2);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -265,6 +284,7 @@ public class FXMLDocumentController implements Initializable {
         }
 
         if (checkbox3.isSelected()) {
+
             scatterchart.getData().add(seriesS3);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -279,6 +299,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS3);
         }
         if (checkbox4.isSelected()) {
+
             scatterchart.getData().add(seriesS4);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -293,6 +314,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS4);
         }
         if (checkbox5.isSelected()) {
+
             scatterchart.getData().add(seriesS5);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -307,6 +329,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS5);
         }
         if (checkbox6.isSelected()) {
+
             scatterchart.getData().add(seriesS6);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -321,6 +344,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS6);
         }
         if (checkbox7.isSelected()) {
+
             scatterchart.getData().add(seriesS7);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -335,6 +359,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS7);
         }
         if (checkbox8.isSelected()) {
+
             scatterchart.getData().add(seriesS8);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -349,13 +374,14 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS8);
         }
         getChannelsdata().remove(0);
-        zoom();
+      
 
     }
     Set<Node> nodes2, nodes3, nodes4, nodes5, nodes6, nodes7, nodes8;
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
+        
         if (textFieldMs.getText() != null) {
             AutoReadButton.setDisable(false);
             if (checkbox1.isSelected()) {
@@ -513,7 +539,6 @@ public class FXMLDocumentController implements Initializable {
 
                                 } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()) {
                                     nodes4 = scatterchart.lookupAll(".series0");
-
                                 }
                                 for (Node n : nodes4) {
                                     n.setStyle(newColor4);
@@ -981,26 +1006,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    void zoom() {
-        final double SCALE_DELTA = 1.1;
-
-        scatterchart.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                event.consume();
-
-                if (event.getDeltaY() == 0) {
-                    return;
-                }
-
-                double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
-
-                scatterchart.setScaleX(scatterchart.getScaleX() * scaleFactor);
-                scatterchart.setScaleY(scatterchart.getScaleY() * scaleFactor);
-            }
-        });
-    }
-
+    
     @FXML
     private void Cleanscreen(ActionEvent event) {
         scatterchart.getData().clear();
@@ -1011,6 +1017,10 @@ public class FXMLDocumentController implements Initializable {
             animation.stop();
         }
 
+    }
+
+    @FXML
+    private void zoomin(ZoomEvent event) {
     }
 
 }
