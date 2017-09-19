@@ -445,7 +445,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline2.setCycleCount(1000);
+                timeline2.setCycleCount(Animation.INDEFINITE);
                 animation2 = new SequentialTransition();
                 animation2.getChildren().add(timeline2);
                 scatterchart.getData().add(seriesA2);
@@ -489,7 +489,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline3.setCycleCount(1000);
+                timeline3.setCycleCount(Animation.INDEFINITE);
                 animation3 = new SequentialTransition();
                 animation3.getChildren().add(timeline3);
                 scatterchart.getData().add(seriesA3);
@@ -540,7 +540,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline4.setCycleCount(1000);
+                timeline4.setCycleCount(Animation.INDEFINITE);
                 animation4 = new SequentialTransition();
                 animation4.getChildren().add(timeline4);
                 scatterchart.getData().add(seriesA4);
@@ -602,7 +602,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline5.setCycleCount(1000);
+                timeline5.setCycleCount(Animation.INDEFINITE);
                 animation5 = new SequentialTransition();
                 animation5.getChildren().add(timeline5);
                 scatterchart.getData().add(seriesA5);
@@ -682,7 +682,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline6.setCycleCount(1000);
+                timeline6.setCycleCount(Animation.INDEFINITE);
                 animation6 = new SequentialTransition();
                 animation6.getChildren().add(timeline6);
                 scatterchart.getData().add(seriesA6);
@@ -800,7 +800,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline7.setCycleCount(1000);
+                timeline7.setCycleCount(Animation.INDEFINITE);
                 animation7 = new SequentialTransition();
                 animation7.getChildren().add(timeline7);
                 scatterchart.getData().add(seriesA7);
@@ -981,7 +981,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline8.setCycleCount(1000);
+                timeline8.setCycleCount(Animation.INDEFINITE);
                 animation8 = new SequentialTransition();
                 animation8.getChildren().add(timeline8);
                 scatterchart.getData().add(seriesA8);
