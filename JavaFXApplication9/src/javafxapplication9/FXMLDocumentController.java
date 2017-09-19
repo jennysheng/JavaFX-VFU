@@ -82,6 +82,8 @@ public class FXMLDocumentController implements Initializable {
 
     ArrayList<Color> colorList = new ArrayList<Color>();
     int TotalNbr;
+    @FXML
+    private Label outputLabel;
 
     public int getTotalNbr() {
         return TotalNbr;
@@ -251,7 +253,6 @@ public class FXMLDocumentController implements Initializable {
         seriesS8.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value8));
 
         if (checkbox1.isSelected()) {
-
             scatterchart.getData().add(seriesS1);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -261,6 +262,7 @@ public class FXMLDocumentController implements Initializable {
             String newColor = "-fx-background-color: " + toRGBCode(c);
             for (Node n : nodes) {
                 n.setStyle(newColor);
+
             }
             TotalNbr++;
 
@@ -268,7 +270,6 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS1);
         }
         if (checkbox2.isSelected()) {
-
             scatterchart.getData().add(seriesS2);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -284,7 +285,6 @@ public class FXMLDocumentController implements Initializable {
         }
 
         if (checkbox3.isSelected()) {
-
             scatterchart.getData().add(seriesS3);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -299,7 +299,6 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS3);
         }
         if (checkbox4.isSelected()) {
-
             scatterchart.getData().add(seriesS4);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -314,7 +313,6 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS4);
         }
         if (checkbox5.isSelected()) {
-
             scatterchart.getData().add(seriesS5);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -329,7 +327,6 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS5);
         }
         if (checkbox6.isSelected()) {
-
             scatterchart.getData().add(seriesS6);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -344,7 +341,6 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS6);
         }
         if (checkbox7.isSelected()) {
-
             scatterchart.getData().add(seriesS7);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -359,7 +355,6 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.getData().remove(seriesS7);
         }
         if (checkbox8.isSelected()) {
-
             scatterchart.getData().add(seriesS8);
             xAxis.setAnimated(true);
             scatterchart.setLegendVisible(false);
@@ -368,20 +363,21 @@ public class FXMLDocumentController implements Initializable {
             String newColor = "-fx-background-color: " + toRGBCode(c);
             for (Node n : nodes) {
                 n.setStyle(newColor);
+
             }
+
             TotalNbr++;
         } else {
             scatterchart.getData().remove(seriesS8);
         }
         getChannelsdata().remove(0);
-      
 
     }
     Set<Node> nodes2, nodes3, nodes4, nodes5, nodes6, nodes7, nodes8;
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
-        
+
         if (textFieldMs.getText() != null) {
             AutoReadButton.setDisable(false);
             if (checkbox1.isSelected()) {
@@ -404,16 +400,16 @@ public class FXMLDocumentController implements Initializable {
                                     n.setStyle(newColorA);
                                 }
                                 getChannelsdata().remove(0);
-
                             }
                         })
                 );
 
-                timeline1.setCycleCount(1000);
+                timeline1.setCycleCount(Animation.INDEFINITE);
                 animation1 = new SequentialTransition();
                 animation1.getChildren().add(timeline1);
                 scatterchart.getData().add(seriesA1);
                 animation1.play();
+                
 
             } else {
                 if (animation1 != null) {
@@ -421,7 +417,6 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             if (checkbox2.isSelected()) {
-
                 ScatterChart.Series<String, Double> seriesA2 = new ScatterChart.Series();
                 Timeline timeline2 = new Timeline();
                 timeline2.getKeyFrames().add(
@@ -446,16 +441,13 @@ public class FXMLDocumentController implements Initializable {
                                     n.setStyle(newColor2);
                                 }
                                 getChannelsdata().remove(0);
-
                             }
-
                         })
                 );
 
                 timeline2.setCycleCount(1000);
                 animation2 = new SequentialTransition();
                 animation2.getChildren().add(timeline2);
-
                 scatterchart.getData().add(seriesA2);
                 animation2.play();
 
@@ -465,7 +457,6 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             if (checkbox3.isSelected()) {
-
                 ScatterChart.Series<String, Double> seriesA3 = new ScatterChart.Series();
                 Timeline timeline3 = new Timeline();
                 timeline3.getKeyFrames().add(
@@ -1004,23 +995,31 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.setLegendVisible(false);
 
         }
+        scatterchart.setOnMouseMoved( new EventHandler<MouseEvent>() {
+			@Override
+			public void handle( MouseEvent mouseEvent ) {
+				double yStart = scatterchart.getYAxis().getLocalToParentTransform().getTy();
+				double axisYRelativeMousePosition = mouseEvent.getY() - yStart;
+				outputLabel.setText( String.format(
+						"%d, %d (%d, %d); %d - %d",
+						(int) mouseEvent.getSceneX(), (int) mouseEvent.getSceneY(),
+						(int) mouseEvent.getX(), (int) mouseEvent.getY(),
+						(int) yStart,
+						scatterchart.getYAxis().getValueForDisplay( axisYRelativeMousePosition ).intValue()
+				) );
+			}
+		} );
     }
 
-    
     @FXML
     private void Cleanscreen(ActionEvent event) {
         scatterchart.getData().clear();
-
         scatterchart.getData().removeAll();
-
         if (animation != null) {
             animation.stop();
         }
-
     }
 
-    @FXML
-    private void zoomin(ZoomEvent event) {
-    }
+   
 
 }
