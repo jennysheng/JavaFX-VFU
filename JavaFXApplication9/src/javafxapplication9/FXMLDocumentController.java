@@ -32,6 +32,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
@@ -52,6 +53,7 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -95,6 +97,7 @@ public class FXMLDocumentController implements Initializable {
     int TotalNbr;
     @FXML
     private Label outputLabel;
+    private Node referenceNode;
 
     public int getTotalNbr() {
         return TotalNbr;
@@ -138,7 +141,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button AutoReadButton;
     private SequentialTransition animation, animation1, animation2, animation3, animation4, animation5, animation6, animation7, animation8;
-
+    private final BooleanProperty zoomAnimated = new SimpleBooleanProperty(true);
     @FXML
     private TextField textFieldMs;
     @FXML
@@ -159,11 +162,11 @@ public class FXMLDocumentController implements Initializable {
     private Button Cleanscreen;
     private final SimpleDoubleProperty rectX = new SimpleDoubleProperty();
     private final SimpleDoubleProperty rectY = new SimpleDoubleProperty();
-    SimpleDoubleProperty rectinitX = new SimpleDoubleProperty();
-    SimpleDoubleProperty rectinitY = new SimpleDoubleProperty();
-    private final SimpleBooleanProperty selected = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty selected = new SimpleBooleanProperty(false);
     Rectangle selectRect;
     private final Timeline zoomAnimation = new Timeline();
+
+    StackPane chartPane;
 
     public void initialize(URL url, ResourceBundle rb) {
         colorList.add(Color.BLUE);
@@ -182,23 +185,134 @@ public class FXMLDocumentController implements Initializable {
         colorPicker6.setValue(colorList.get(5));
         colorPicker7.setValue(colorList.get(6));
         colorPicker8.setValue(colorList.get(7));
-        selectRect = new Rectangle(0, 0, 0, 0);
-        selectRect.setFill(Color.DODGERBLUE);
-        selectRect.setMouseTransparent(true);
-        selectRect.setOpacity(0.3);
-        selectRect.setStroke(Color.rgb(0, 0x29, 0x66));
-        selectRect.setStrokeType(StrokeType.INSIDE);
-        selectRect.setStrokeWidth(3.0);
-        //Bind the scene's width and height to the scaling parameters on the group
-		
-        selectRect.widthProperty().bind(rectX.subtract(rectinitX));
-        selectRect.heightProperty().bind(rectY.subtract(rectinitY));
+        scatterchart.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                double yStart = scatterchart.getLayoutY();
+                double xStart = scatterchart.getLayoutX();
+                double axisYRelativeMousePosition = mouseEvent.getY() - yStart;
+                outputLabel.setText(String.format(
+                        "%d, %d (%d, %d); %d - %d",
+                        (int) mouseEvent.getSceneX(), (int) mouseEvent.getSceneY(),
+                        (int) mouseEvent.getX(), (int) mouseEvent.getY(),
+                        (int) xStart,
+                        (int) scatterchart.getYAxis().getValueForDisplay(axisYRelativeMousePosition).intValue()
+                ));
+            }
+        });
+        scatterchart.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                selected.set(true);
+                selectRect = new Rectangle(0, 0, 0, 0);
+                selectRect.setFill(Color.BLANCHEDALMOND);
+                selectRect.setMouseTransparent(true);
+                selectRect.setOpacity(0.3);
+                selectRect.setStroke(Color.rgb(0, 0x29, 0x66));
+                selectRect.setStrokeType(StrokeType.INSIDE);
+                selectRect.setStrokeWidth(3.0);
+                chartPane = new StackPane();
+                double x = mouseEvent.getX();
+                double y = mouseEvent.getY();
+                System.out.println("x:" + x);
+                System.out.println("y:" + y);
+                selectRect.setTranslateX(x);
+                selectRect.setTranslateY(y);
+                rectX.set(x);
+                rectY.set(y);
+                //animated rectangle:
+                selectRect.widthProperty().bind(rectX.subtract(selectRect.translateXProperty()));
+                System.out.println("rectX.subtract(selectRect.translateXProperty():" + rectX.subtract(selectRect.translateXProperty()));
+                selectRect.heightProperty().bind(rectY.subtract(selectRect.translateYProperty()));
+                System.out.println("selectRect.translateYProperty():" + selectRect.translateYProperty());
+                selectRect.visibleProperty().bind(selected);
+            }
+        });
+        scatterchart.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (!selected.get()) {
+                    return;
+                }
+                Rectangle2D plotArea = getPlotArea();
+
+                double x = mouseEvent.getX();
+                //Clamp to the selection start
+                x = Math.max(x, selectRect.getTranslateX());
+                System.out.println("x2:" + x);
+                //Clamp to plot area
+                x = Math.min(x, plotArea.getMaxX());
+                rectX.set(x);
+
+                double y = mouseEvent.getY();
+                //Clamp to the selection start
+
+                y = Math.max(y, selectRect.getTranslateY());
+                //Clamp to plot area
+                y = Math.min(y, plotArea.getMaxY());
+                rectY.set(y);
+                System.out.println("y2:" + y);
+
+            }
+        });
+
+        scatterchart.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                if (!selected.get()) {
+                    return;
+                }
+
+                Rectangle2D zoomWindow = getDataCoordinates(
+                        selectRect.getTranslateX(), selectRect.getTranslateY(),
+                        rectX.get(), rectY.get()
+                );
+
+                xAxis.setAutoRanging(false);
+                yAxis.setAutoRanging(false);
+                if (zoomAnimated.get()) {
+                    zoomAnimation.stop();
+                    zoomAnimation.getKeyFrames().setAll(
+                            new KeyFrame(Duration.ZERO,
+                                    new KeyValue(yAxis.lowerBoundProperty(), yAxis.getLowerBound()),
+                                    new KeyValue(yAxis.upperBoundProperty(), yAxis.getUpperBound())
+                            ),
+                            new KeyFrame(Duration.millis(1000),
+                                    new KeyValue(yAxis.lowerBoundProperty(), zoomWindow.getMinY()),
+                                    new KeyValue(yAxis.upperBoundProperty(), zoomWindow.getMaxY())
+                            )
+                    );
+                    zoomAnimation.play();
+                } else {
+                    zoomAnimation.stop();
+                    yAxis.setLowerBound(zoomWindow.getMinY());
+                    yAxis.setUpperBound(zoomWindow.getMaxY());
+                }
+                selected.set(false);
+            }
+        });
+        scatterchart.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                double yStart = scatterchart.getLayoutY();
+                double xStart = scatterchart.getLayoutX();
+                //double axisXRelativeMousePosition = mouseEvent.getX() - xStart;
+                double axisYRelativeMousePosition = mouseEvent.getY() - yStart;
+                outputLabel.setText(String.format(
+                        "%d, %d (%d, %d); %d - %d",
+                        (int) mouseEvent.getSceneX(), (int) mouseEvent.getSceneY(),
+                        (int) mouseEvent.getX(), (int) mouseEvent.getY(),
+                        (int) xStart,
+                        (int) scatterchart.getYAxis().getValueForDisplay(axisYRelativeMousePosition).intValue()
+                ));
+            }
+        });
 
     }
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
-
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
         readFromFile();
@@ -392,25 +506,22 @@ public class FXMLDocumentController implements Initializable {
             String newColor = "-fx-background-color: " + toRGBCode(c);
             for (Node n : nodes) {
                 n.setStyle(newColor);
-
             }
-
             TotalNbr++;
         } else {
             scatterchart.getData().remove(seriesS8);
         }
         getChannelsdata().remove(0);
-
     }
     Set<Node> nodes2, nodes3, nodes4, nodes5, nodes6, nodes7, nodes8;
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
-
+        scatterchart.getData().clear();
+        scatterchart.getData().removeAll();
         if (textFieldMs.getText() != null) {
             AutoReadButton.setDisable(false);
             if (checkbox1.isSelected()) {
-
                 ScatterChart.Series<String, Double> seriesA1 = new ScatterChart.Series();
                 Timeline timeline1 = new Timeline();
                 timeline1.getKeyFrames().add(
@@ -433,7 +544,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline1.setCycleCount(Animation.INDEFINITE);
+                timeline1.setCycleCount(1000);
                 animation1 = new SequentialTransition();
                 animation1.getChildren().add(timeline1);
                 scatterchart.getData().add(seriesA1);
@@ -473,7 +584,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline2.setCycleCount(Animation.INDEFINITE);
+                timeline2.setCycleCount(1000);
                 animation2 = new SequentialTransition();
                 animation2.getChildren().add(timeline2);
                 scatterchart.getData().add(seriesA2);
@@ -516,8 +627,7 @@ public class FXMLDocumentController implements Initializable {
                             }
                         })
                 );
-
-                timeline3.setCycleCount(Animation.INDEFINITE);
+                timeline3.setCycleCount(1000);
                 animation3 = new SequentialTransition();
                 animation3.getChildren().add(timeline3);
                 scatterchart.getData().add(seriesA3);
@@ -529,7 +639,6 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             if (checkbox4.isSelected()) {
-
                 ScatterChart.Series<String, Double> seriesA4 = new ScatterChart.Series();
                 Timeline timeline4 = new Timeline();
                 timeline4.getKeyFrames().add(
@@ -568,7 +677,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline4.setCycleCount(Animation.INDEFINITE);
+                timeline4.setCycleCount(1000);
                 animation4 = new SequentialTransition();
                 animation4.getChildren().add(timeline4);
                 scatterchart.getData().add(seriesA4);
@@ -580,7 +689,6 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             if (checkbox5.isSelected()) {
-
                 ScatterChart.Series<String, Double> seriesA5 = new ScatterChart.Series();
                 Timeline timeline5 = new Timeline();
                 timeline5.getKeyFrames().add(
@@ -630,7 +738,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline5.setCycleCount(Animation.INDEFINITE);
+                timeline5.setCycleCount(1000);
                 animation5 = new SequentialTransition();
                 animation5.getChildren().add(timeline5);
                 scatterchart.getData().add(seriesA5);
@@ -642,7 +750,6 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             if (checkbox6.isSelected()) {
-
                 ScatterChart.Series<String, Double> seriesA6 = new ScatterChart.Series();
                 Timeline timeline6 = new Timeline();
                 timeline6.getKeyFrames().add(
@@ -1009,7 +1116,7 @@ public class FXMLDocumentController implements Initializable {
                         })
                 );
 
-                timeline8.setCycleCount(Animation.INDEFINITE);
+                timeline8.setCycleCount(1000);
                 animation8 = new SequentialTransition();
                 animation8.getChildren().add(timeline8);
                 scatterchart.getData().add(seriesA8);
@@ -1023,22 +1130,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.setLegendVisible(false);
 
         }
-        scatterchart.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                double yStart = scatterchart.getLayoutY();
-                double xStart = scatterchart.getLayoutX();
-                double axisXRelativeMousePosition = mouseEvent.getX() - xStart;
-                double axisYRelativeMousePosition = mouseEvent.getY() - yStart;
-                outputLabel.setText(String.format(
-                        "%d, %d (%d, %d); %d - %d",
-                        (int) mouseEvent.getSceneX(), (int) mouseEvent.getSceneY(),
-                        (int) mouseEvent.getX(), (int) mouseEvent.getY(),
-                        (int) xStart,
-                        (int) scatterchart.getYAxis().getValueForDisplay(axisYRelativeMousePosition).intValue()
-                ));
-            }
-        });
+
     }
 
     @FXML
@@ -1051,47 +1143,39 @@ public class FXMLDocumentController implements Initializable {
     }
 
     /**
-     * Find the X coordinate in ancestor's coordinate system that corresponds to
-     * the X=0 axis in descendant's coordinate system.
+     * Find the X /Ycoordinate in ancestor's coordinate system that corresponds
+     * to the X=0 axis in descendant's coordinate system.
      *
      * @param descendant a Node that is a descendant (direct or indirectly) of
      * the ancestor
      * @param ancestor a Node that is an ancestor of descendant
      */
-    public static double getXShift(Node descendant, Node ancestor) {
-        double ret = 0.0;
-        Node curr = descendant;
-        while (curr != ancestor) {
-            ret += curr.getLayoutX();
-            curr = curr.getParent();
-            if (curr == null) {
-                throw new IllegalArgumentException("'descendant' Node is not a descendant of 'ancestor");
-            }
-        }
+    private static double getXShift(Node node) {
+        double shift = 0;
+        do {
+            shift += node.getLayoutX();
+            node = node.getParent();
+        } while (node != null);
+        return shift;
+    }
 
-        return ret;
+    private static double getYShift(Node node) {
+        double shift = 0;
+        do {
+            shift += node.getLayoutY();
+            node = node.getParent();
+        } while (node != null);
+        return shift;
     }
 
     /**
-     * Find the Y coordinate in ancestor's coordinate system that corresponds to
-     * the Y=0 axis in descendant's coordinate system.
-     *
-     * @param descendant a Node that is a descendant (direct or indirectly) of
-     * the ancestor
-     * @param ancestor a Node that is an ancestor of descendant
+     * Returns true if the given x and y coordinate in the reference's
+     * coordinate system is in the chart's plot area, based on the xAxis and
+     * yAxis locations. This method works regardless of the started/stopped
+     * state.
      */
-    public static double getYShift(Node descendant, Node ancestor) {
-        double ret = 0.0;
-        Node curr = descendant;
-        while (curr != ancestor) {
-            ret += curr.getLayoutY();
-            curr = curr.getParent();
-            if (curr == null) {
-                throw new IllegalArgumentException("'descendant' Node is not a descendant of 'ancestor");
-            }
-        }
-
-        return ret;
+    public boolean isInPlotArea(double x, double y) {
+        return getPlotArea().contains(x, y);
     }
 
     /**
@@ -1203,6 +1287,63 @@ public class FXMLDocumentController implements Initializable {
         group.scaleYProperty().bind(ret.heightProperty().divide(h));
 
         return ret;
+    }
+
+    /**
+     * Returns the plot area in the reference's coordinate space.
+     */
+    public Rectangle2D getPlotArea() {
+        Axis<?> xAxis = scatterchart.getXAxis();
+        Axis<?> yAxis = scatterchart.getYAxis();
+
+        double xStart = getXShift(xAxis);
+        double yStart = getYShift(yAxis);
+
+        //If the direct method to get the width (which is based on its Node dimensions) is not found to
+        //be appropriate, an alternative method is commented.
+//		double width = xAxis.getDisplayPosition( xAxis.toRealValue( xAxis.getUpperBound() ) );
+        double width = xAxis.getWidth();
+//		double height = yAxis.getDisplayPosition( yAxis.toRealValue( yAxis.getLowerBound() ) );
+        double height = yAxis.getHeight();
+
+        return new Rectangle2D(xStart, yStart, width, height);
+    }
+
+    /**
+     * Given graphical coordinates in the reference's coordinate system, returns
+     * x and y axis value as a point via the
+     * {@link Axis#getValueForDisplay(double)} and
+     * {@link Axis#toNumericValue(Object)} methods.
+     *
+     * @param minX lower X value (upper left point)
+     * @param minY lower Y value (upper left point)
+     * @param maxX upper X value (bottom right point)
+     * @param maxY upper Y value (bottom right point)
+     */
+    @SuppressWarnings("unchecked")
+    public Rectangle2D getDataCoordinates(double minX, double minY, double maxX, double maxY) {
+        if (minX > maxX || minY > maxY) {
+            throw new IllegalArgumentException("min > max for X and/or Y");
+        }
+
+        Axis xAxis = scatterchart.getXAxis();
+        Axis yAxis = scatterchart.getYAxis();
+
+        double xStart = getXShift(xAxis);
+        double yStart = getYShift(yAxis);
+
+        double minDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(minX - xStart));
+        double maxDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(maxX - xStart));
+
+        //The "low" Y data value is actually at the maxY graphical location as Y graphical axis gets
+        //larger as you go down on the screen.
+        double minDataY = yAxis.toNumericValue(yAxis.getValueForDisplay(maxY - yStart));
+        double maxDataY = yAxis.toNumericValue(yAxis.getValueForDisplay(minY - yStart));
+
+        return new Rectangle2D(minDataX,
+                minDataY,
+                maxDataX - minDataX,
+                maxDataY - minDataY);
     }
 
 }
