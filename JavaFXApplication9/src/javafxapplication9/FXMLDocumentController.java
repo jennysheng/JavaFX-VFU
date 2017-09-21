@@ -30,7 +30,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.chart.Axis;
@@ -62,24 +61,13 @@ import javafx.util.Duration;
 public class FXMLDocumentController implements Initializable {
 
     private List<ScatterChart.Series<String, Double>> seriesCollection = new ArrayList<>();
-
     private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
-
     File selectedFile = null;
-
     ArrayList<Color> colorList = new ArrayList<Color>();
-    int TotalNbr;
+
     @FXML
     private Label outputLabel;
- 
 
-    public int getTotalNbr() {
-        return TotalNbr;
-    }
-
-    public void setTotalNbr(int TotalNbr) {
-        this.TotalNbr = TotalNbr;
-    }
     @FXML
     private ScatterChart<String, Double> scatterchart;
 
@@ -137,10 +125,19 @@ public class FXMLDocumentController implements Initializable {
     private final SimpleDoubleProperty rectX = new SimpleDoubleProperty();
     private final SimpleDoubleProperty rectY = new SimpleDoubleProperty();
     private SimpleBooleanProperty selected = new SimpleBooleanProperty(false);
-    private final BooleanProperty mouseWheelZoomAllowed = new SimpleBooleanProperty(true);
+
     Set<Node> nodes2, nodes3, nodes4, nodes5, nodes6, nodes7, nodes8;
     Rectangle selectRect;
-    private final Timeline zoomAnimation = new Timeline();
+    private Timeline zoomAnimation = new Timeline();
+    int TotalNbr;
+
+    public int getTotalNbr() {
+        return TotalNbr;
+    }
+
+    public void setTotalNbr(int TotalNbr) {
+        this.TotalNbr = TotalNbr;
+    }
 
     public void initialize(URL url, ResourceBundle rb) {
         colorList.add(Color.BLUE);
@@ -243,9 +240,10 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void singelPlot(MouseEvent event) {
-   xAxis.setAutoRanging(true);
+        xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
         SingelReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
+
         ScatterChart.Series<String, Double> seriesS1 = new ScatterChart.Series();
         ScatterChart.Series<String, Double> seriesS2 = new ScatterChart.Series();
         ScatterChart.Series<String, Double> seriesS3 = new ScatterChart.Series();
@@ -290,6 +288,7 @@ public class FXMLDocumentController implements Initializable {
             String newColor = "-fx-background-color: " + toRGBCode(c);
             for (Node n : nodes) {
                 n.setStyle(newColor);
+
             }
             TotalNbr++;
         } else {
@@ -388,6 +387,8 @@ public class FXMLDocumentController implements Initializable {
     private void autoPlot(MouseEvent event) throws InterruptedException {
         scatterchart.getData().clear();
         scatterchart.getData().removeAll();
+        xAxis.setAutoRanging(true);
+        yAxis.setAutoRanging(true);
         if (textFieldMs.getText() != null) {
             AutoReadButton.setDisable(false);
             if (checkbox1.isSelected()) {
@@ -440,10 +441,8 @@ public class FXMLDocumentController implements Initializable {
                                 String newColor2 = "-fx-background-color: " + toRGBCode(colorPicker2.getValue());
                                 if (checkbox1.isSelected() == true) {
                                     nodes2 = scatterchart.lookupAll(".series1");
-
                                 } else {
                                     nodes2 = scatterchart.lookupAll(".series0");
-
                                 }
                                 for (Node n : nodes2) {
                                     n.setStyle(newColor2);
@@ -698,7 +697,6 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             if (checkbox7.isSelected()) {
-
                 ScatterChart.Series<String, Double> seriesA7 = new ScatterChart.Series();
                 Timeline timeline7 = new Timeline();
                 timeline7.getKeyFrames().add(
@@ -1006,15 +1004,6 @@ public class FXMLDocumentController implements Initializable {
     private void Cleanscreen(ActionEvent event) {
         scatterchart.getData().clear();
         scatterchart.getData().removeAll();
-        for (int i = 0; i <= TotalNbr; i++) {
-            Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-            for (Node n : nodes) {
-                n.removeEventFilter(MouseEvent.MOUSE_PRESSED, DEFAULT_FILTER);
-                n.removeEventFilter(MouseEvent.MOUSE_DRAGGED, DEFAULT_FILTER);
-                n.removeEventFilter(MouseEvent.MOUSE_RELEASED, DEFAULT_FILTER);
-
-            }
-        }
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
         if (animation != null) {
@@ -1026,9 +1015,6 @@ public class FXMLDocumentController implements Initializable {
      * Find the X /Ycoordinate in ancestor's coordinate system that corresponds
      * to the X=0 axis in descendant's coordinate system.
      *
-     * @param descendant a Node that is a descendant (direct or indirectly) of
-     * the ancestor
-     * @param ancestor a Node that is an ancestor of descendant
      */
     private static double getXShift(Node node) {
         double shift = 0;
@@ -1047,8 +1033,6 @@ public class FXMLDocumentController implements Initializable {
         } while (node != null);
         return shift;
     }
-
-    
 
     /**
      * Make a best attempt to replace the original component with the
@@ -1186,6 +1170,7 @@ public class FXMLDocumentController implements Initializable {
 
                 xAxis.setAutoRanging(false);
                 yAxis.setAutoRanging(false);
+              
                 if (zoomAnimated.get()) {
                     zoomAnimation.stop();
                     zoomAnimation.getKeyFrames().setAll(
@@ -1207,7 +1192,7 @@ public class FXMLDocumentController implements Initializable {
                 selected.set(false);
             }
         });
-        
+
         return anchorpane;
     }
     public EventHandler<MouseEvent> DEFAULT_FILTER = new EventHandler<MouseEvent>() {
@@ -1220,7 +1205,6 @@ public class FXMLDocumentController implements Initializable {
         }
     };
 
-    
     /**
      * Returns the plot area in the reference's coordinate space.
      */
