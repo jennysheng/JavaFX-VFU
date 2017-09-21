@@ -51,7 +51,7 @@
             <ColorPicker fx:id="colorPicker1" prefHeight="25.0" prefWidth="82.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="17.0" prefWidth="163.0" GridPane.columnIndex="1" />
             <CheckBox fx:id="checkbox1" mnemonicParsing="false" text="Channel1" GridPane.rowIndex="1" />
-            <Button fx:id="SingelReadButton" mnemonicParsing="false" onMouseClicked="#singelPlot" prefHeight="25.0" prefWidth="100.0" text="SingelRead" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Button fx:id="SingleReadButton" mnemonicParsing="false" onMouseClicked="#singlePlot" prefHeight="25.0" prefWidth="100.0" text="SingleRead" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             <Button fx:id="AutoReadButton" mnemonicParsing="false" onMouseClicked="#autoPlot" prefHeight="25.0" prefWidth="96.0" text="AutoRead" GridPane.columnIndex="5" GridPane.rowIndex="5" />
             <TextField fx:id="textFieldMs" prefHeight="25.0" prefWidth="87.0" promptText="Antal ms" GridPane.columnIndex="5" GridPane.rowIndex="4" />
             <CheckBox fx:id="checkbox2" mnemonicParsing="false" text="Channel2" GridPane.rowIndex="3" />

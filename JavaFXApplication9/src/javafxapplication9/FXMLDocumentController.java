@@ -97,7 +97,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private CheckBox checkbox1;
-    @FXML
     private Button SingelReadButton;
 
     @FXML
@@ -130,6 +129,8 @@ public class FXMLDocumentController implements Initializable {
     Rectangle selectRect;
     private Timeline zoomAnimation = new Timeline();
     int TotalNbr;
+    @FXML
+    private Button SingleReadButton;
 
     public int getTotalNbr() {
         return TotalNbr;
@@ -239,10 +240,10 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void singelPlot(MouseEvent event) {
+    private void singlePlot(MouseEvent event) {
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
-        SingelReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
+        SingleReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
 
         ScatterChart.Series<String, Double> seriesS1 = new ScatterChart.Series();
         ScatterChart.Series<String, Double> seriesS2 = new ScatterChart.Series();
@@ -1138,7 +1139,7 @@ public class FXMLDocumentController implements Initializable {
                 double x = mouseEvent.getX();
                 //Clamp to the selection start
                 x = Math.max(x, selectRect.getTranslateX());
-                System.out.println("x2:" + x);
+
                 //Clamp to plot area
                 //  x = Math.min(x, plotArea.getMaxX());
                 rectX.set(x);
@@ -1150,7 +1151,6 @@ public class FXMLDocumentController implements Initializable {
                 //Clamp to plot area
                 //  y = Math.min(y, plotArea.getMaxY());
                 rectY.set(y);
-                System.out.println("y2:" + y);
 
             }
         });
@@ -1170,7 +1170,7 @@ public class FXMLDocumentController implements Initializable {
 
                 xAxis.setAutoRanging(false);
                 yAxis.setAutoRanging(false);
-              
+
                 if (zoomAnimated.get()) {
                     zoomAnimation.stop();
                     zoomAnimation.getKeyFrames().setAll(
