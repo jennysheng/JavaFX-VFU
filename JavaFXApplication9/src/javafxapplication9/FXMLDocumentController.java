@@ -141,13 +141,21 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+        checkbox1.setSelected(true);
+        checkbox2.setSelected(true);
+        checkbox3.setSelected(true);
+        checkbox4.setSelected(true);
+        checkbox5.setSelected(true);
+        checkbox6.setSelected(true);
+        checkbox7.setSelected(true);
+        checkbox8.setSelected(true);
         colorList.add(Color.BLUE);
         colorList.add(Color.RED);
         colorList.add(Color.GREEN);
         colorList.add(Color.YELLOW);
         colorList.add(Color.BLACK);
-        colorList.add(Color.BLUEVIOLET);
-        colorList.add(Color.PURPLE);
+        colorList.add(Color.CYAN);
+        colorList.add(Color.DARKBLUE);
         colorList.add(Color.GREY);
         colorPicker1.setValue(colorList.get(0));
         colorPicker2.setValue(colorList.get(1));
