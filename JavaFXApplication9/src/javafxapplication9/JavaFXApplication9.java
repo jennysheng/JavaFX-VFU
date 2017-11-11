@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafxapplication9.RWFile.ReadFromFile;
+import javafxapplication9.simulator.WriteToFile;
 
 /**
  *
@@ -23,6 +25,9 @@ public class JavaFXApplication9 extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+         
+   
+        
         
     }
 

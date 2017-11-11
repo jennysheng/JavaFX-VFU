@@ -8,6 +8,7 @@ package javafxapplication9;
 import com.sun.javafx.charts.Legend;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +54,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafxapplication9.RWFile.ReadFromFile;
+import javafxapplication9.simulator.WriteToFile;
 
 /**
  *
@@ -61,7 +64,7 @@ import javafx.util.Duration;
 public class FXMLDocumentController implements Initializable {
 
     private List<ScatterChart.Series<String, Double>> seriesCollection = new ArrayList<>();
-    private final ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
+
     File selectedFile = null;
     ArrayList<Color> colorList = new ArrayList<Color>();
 
@@ -131,6 +134,7 @@ public class FXMLDocumentController implements Initializable {
     int TotalNbr;
     @FXML
     private Button SingleReadButton;
+    ObservableList<DataLogger> channelsdata;
 
     public int getTotalNbr() {
         return TotalNbr;
@@ -165,6 +169,7 @@ public class FXMLDocumentController implements Initializable {
         colorPicker6.setValue(colorList.get(5));
         colorPicker7.setValue(colorList.get(6));
         colorPicker8.setValue(colorList.get(7));
+     
 
         scatterchart.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
@@ -183,61 +188,21 @@ public class FXMLDocumentController implements Initializable {
         });
 
     }
+    ReadFromFile rff;
 
     @FXML
-    private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException {
+    private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
-        readFromFile();
+           if (selectedFile != null) {
+//            WriteToFile wtf = new WriteToFile(selectedFile);
+//            wtf.start();
+            rff = new ReadFromFile(selectedFile);
+            rff.start();
+        }
+
         setupZooming(scatterchart, DEFAULT_FILTER);
 
-    }
-
-    public ObservableList<DataLogger> getChannelsdata() {
-        return channelsdata;
-    }
-
-    public ObservableList<DataLogger> readFromFile() throws ParseException {
-
-        StringBuilder filecontent = new StringBuilder();
-
-        if (selectedFile != null) {
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(new File(selectedFile.getPath())))) {
-
-                String line = reader.readLine();
-                int j = 0;
-
-                while ((line) != null) {
-                    line = reader.readLine();
-                    filecontent.append(line + "\t").trimToSize();
-                    j++;
-                }
-                String content = filecontent.toString();
-                String[] parts = content.split("\t");
-
-                System.out.println(j);
-                int i = 0;
-
-                while (i < ((j - 1) * 9)) {
-
-                    channelsdata.add(new DataLogger(parts[i],
-                            Double.parseDouble(parts[i + 1]),
-                            Double.parseDouble(parts[i + 2]),
-                            Double.parseDouble(parts[i + 3]),
-                            Double.parseDouble(parts[i + 4]),
-                            Double.parseDouble(parts[i + 5]),
-                            Double.parseDouble(parts[i + 6]),
-                            Double.parseDouble(parts[i + 7]),
-                            Double.parseDouble(parts[i + 8])));
-                    i += 9;
-                }
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return channelsdata;
     }
 
     public static String toRGBCode(Color color) {
@@ -262,14 +227,14 @@ public class FXMLDocumentController implements Initializable {
         ScatterChart.Series<String, Double> seriesS7 = new ScatterChart.Series();
         ScatterChart.Series<String, Double> seriesS8 = new ScatterChart.Series();
 
-        seriesS1.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value1));
-        seriesS2.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value2));
-        seriesS3.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value3));
-        seriesS4.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value4));
-        seriesS5.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value5));
-        seriesS6.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value6));
-        seriesS7.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value7));
-        seriesS8.getData().add(new ScatterChart.Data<>(getChannelsdata().iterator().next().date, getChannelsdata().iterator().next().value8));
+        seriesS1.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value1));
+        seriesS2.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value2));
+        seriesS3.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value3));
+        seriesS4.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value4));
+        seriesS5.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value5));
+        seriesS6.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value6));
+        seriesS7.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value7));
+        seriesS8.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value8));
 
         if (checkbox1.isSelected()) {
             scatterchart.getData().add(seriesS1);
@@ -388,7 +353,7 @@ public class FXMLDocumentController implements Initializable {
         } else {
             scatterchart.getData().remove(seriesS8);
         }
-        getChannelsdata().remove(0);
+        rff.getChannelsdata().remove(0);
 
     }
 
@@ -407,10 +372,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA1.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value1
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value1
                                     ));
                                 }
                                 String newColorA = "-fx-background-color: " + toRGBCode(colorPicker1.getValue());
@@ -418,7 +383,7 @@ public class FXMLDocumentController implements Initializable {
                                 for (Node n : nodesA) {
                                     n.setStyle(newColorA);
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
                             }
                         })
                 );
@@ -441,10 +406,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA2.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value2
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value2
                                     ));
                                 }
                                 String newColor2 = "-fx-background-color: " + toRGBCode(colorPicker2.getValue());
@@ -456,7 +421,7 @@ public class FXMLDocumentController implements Initializable {
                                 for (Node n : nodes2) {
                                     n.setStyle(newColor2);
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
                             }
                         })
                 );
@@ -479,10 +444,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA3.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value3
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value3
                                     ));
                                 }
                                 String newColor3 = "-fx-background-color: " + toRGBCode(colorPicker3.getValue());
@@ -499,7 +464,7 @@ public class FXMLDocumentController implements Initializable {
                                 for (Node n : nodes3) {
                                     n.setStyle(newColor3);
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
 
                             }
                         })
@@ -522,10 +487,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA4.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value4
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value4
                                     ));
                                 }
                                 String newColor4 = "-fx-background-color: " + toRGBCode(colorPicker4.getValue());
@@ -548,7 +513,7 @@ public class FXMLDocumentController implements Initializable {
                                 for (Node n : nodes4) {
                                     n.setStyle(newColor4);
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
 
                             }
                         })
@@ -572,10 +537,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA5.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value5
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value5
                                     ));
                                 }
                                 String newColor5 = "-fx-background-color: " + toRGBCode(colorPicker5.getValue());
@@ -609,7 +574,7 @@ public class FXMLDocumentController implements Initializable {
                                 for (Node n : nodes5) {
                                     n.setStyle(newColor5);
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
 
                             }
                         })
@@ -633,10 +598,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA6.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value6
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value6
                                     ));
                                 }
                                 String newColor6 = "-fx-background-color: " + toRGBCode(colorPicker6.getValue());
@@ -688,7 +653,7 @@ public class FXMLDocumentController implements Initializable {
                                 for (Node n : nodes6) {
                                     n.setStyle(newColor6);
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
 
                             }
                         })
@@ -712,10 +677,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA7.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value7
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value7
                                     ));
                                 }
                                 String newColor7 = "-fx-background-color: " + toRGBCode(colorPicker7.getValue());
@@ -805,7 +770,7 @@ public class FXMLDocumentController implements Initializable {
                                     n.setStyle(newColor7);
                                     n.requestFocus();
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
 
                             }
                         })
@@ -830,10 +795,10 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (getChannelsdata().iterator().hasNext()) {
+                                if (rff.getChannelsdata().iterator().hasNext()) {
                                     seriesA8.getData().add(new ScatterChart.Data<String, Double>(
-                                            getChannelsdata().iterator().next().date,
-                                            getChannelsdata().iterator().next().value8
+                                            rff.getChannelsdata().iterator().next().date,
+                                            rff.getChannelsdata().iterator().next().value8
                                     ));
                                 }
                                 String newColor8 = "-fx-background-color: " + toRGBCode(colorPicker8.getValue());
@@ -987,7 +952,7 @@ public class FXMLDocumentController implements Initializable {
                                 for (Node n : nodes8) {
                                     n.setStyle(newColor8);
                                 }
-                                getChannelsdata().remove(0);
+                                rff.getChannelsdata().remove(0);
                             }
                         })
                 );
