@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,36 +27,49 @@ public class WriteToFile extends Thread {
 
     Random randomGenerator = new Random();
     File selectedFile = null;
+    FileWriter fw;
+      BufferedWriter writer;
+        PrintWriter out ;
 
     public WriteToFile(File selectedFile) {
         this.selectedFile = selectedFile;
 
     }
+    int lineNbr = 0;
+   
 
     @Override
     public void run() {
-       
 
-          
+        try {
+            // append to end of file
+            fw = new FileWriter(selectedFile.getPath(), true);
+            writer = new BufferedWriter(fw);
+            out = new PrintWriter(writer);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss:S");
+            Date date = new Date();
+            int i=0;
             while (true) {
+                out.append(dateFormat.format(date) + "\t");
 
-                try {
-                    // append to end of file
-                    FileWriter fw = new FileWriter(selectedFile.getAbsoluteFile(), true);
-                    BufferedWriter writer = new BufferedWriter(fw);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss:S");
-                    Date date = new Date();
-                     writer.append(dateFormat.format(date)+"\t");
-                    for (int idx = 1; idx <= 8; ++idx) {
-                        double randomNbr = randomGenerator.nextDouble();                      
-                        writer.append((char) randomNbr + "\t");
-                    }
-                  
-                } catch (IOException e) {
-                    e.printStackTrace();
+                for (int idx = 1; idx <= 8; ++idx) {
+                    double randomNbr = randomGenerator.nextDouble();
+                    out.append(String.valueOf(randomNbr) + "\t");
 
+                    lineNbr++;
                 }
+                out.append("\r\n");  
+                if(lineNbr==2000){
+                    break;                  
+                    
+                }
+
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }finally{
+             out.close();
         }
     }
-
+}
