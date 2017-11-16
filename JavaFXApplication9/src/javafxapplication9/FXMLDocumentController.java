@@ -12,8 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -132,6 +135,7 @@ public class FXMLDocumentController implements Initializable {
     Rectangle selectRect;
     private Timeline zoomAnimation = new Timeline();
     int TotalNbr;
+    File dir;
     @FXML
     private Button SingleReadButton;
     ObservableList<DataLogger> channelsdata;
@@ -169,7 +173,6 @@ public class FXMLDocumentController implements Initializable {
         colorPicker6.setValue(colorList.get(5));
         colorPicker7.setValue(colorList.get(6));
         colorPicker8.setValue(colorList.get(7));
-     
 
         scatterchart.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
@@ -192,12 +195,12 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException {
-        FileChooser fileChooser = new FileChooser();
-        selectedFile = fileChooser.showOpenDialog(null);
-           if (selectedFile != null) {
+        // FileChooser fileChooser = new FileChooser();
+        // selectedFile = fileChooser.showOpenDialog(null);
+        if (dir != null) {
 //            WriteToFile wtf = new WriteToFile(selectedFile);
 //            wtf.start();
-            rff = new ReadFromFile(selectedFile);
+            rff = new ReadFromFile(dir);
             rff.start();
         }
 
@@ -1233,6 +1236,33 @@ public class FXMLDocumentController implements Initializable {
                 minDataY,
                 maxDataX - minDataX,
                 maxDataY - minDataY);
+    }
+
+    @FXML
+    private void handleWriteAction(ActionEvent event) {
+        // FileChooser fileChooser = new FileChooser();
+        // selectedFile = fileChooser.showOpenDialog(null);
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date dateobj = new Date();
+        //System.getProperty returns absolute path
+        File f = new File(System.getProperty("user.dir") + "/folder/file.txt");
+        if (!f.getParentFile().exists()) {
+            f.getParentFile().mkdirs();
+        }
+        //Remove if clause if you want to overwrite file
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        dir = new File(f.getParentFile(), f.getName());
+        System.out.println("dir" + dir);
+        // WriteToFile wtf=new WriteToFile(selectedFile);
+        WriteToFile wtf = new WriteToFile(dir);
+        wtf.start();
     }
 
 }
