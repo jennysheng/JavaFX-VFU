@@ -157,6 +157,7 @@ public class FXMLDocumentController implements Initializable {
         checkbox6.setSelected(true);
         checkbox7.setSelected(true);
         checkbox8.setSelected(true);
+        textFieldMs.setText("1000");
         colorList.add(Color.BLUE);
         colorList.add(Color.RED);
         colorList.add(Color.GREEN);
