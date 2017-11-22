@@ -71,8 +71,7 @@ public class FXMLDocumentController implements Initializable {
     File selectedFile = null;
     ArrayList<Color> colorList = new ArrayList<Color>();
 
-    @FXML
-    private Label outputLabel;
+ 
 
     @FXML
     private ScatterChart<String, Double> scatterchart;
@@ -127,6 +126,8 @@ public class FXMLDocumentController implements Initializable {
     private CheckBox checkbox8;
     @FXML
     private Button Cleanscreen;
+
+    
     private final SimpleDoubleProperty rectX = new SimpleDoubleProperty();
     private final SimpleDoubleProperty rectY = new SimpleDoubleProperty();
     private SimpleBooleanProperty selected = new SimpleBooleanProperty(false);
@@ -139,6 +140,15 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button SingleReadButton;
     ObservableList<DataLogger> channelsdata;
+    @FXML
+    private Label outputLabel;
+    @FXML
+    private Button readFile;
+    @FXML
+    private Button WritetoFile;
+ 
+
+   
 
     public int getTotalNbr() {
         return TotalNbr;
@@ -157,15 +167,15 @@ public class FXMLDocumentController implements Initializable {
         checkbox6.setSelected(true);
         checkbox7.setSelected(true);
         checkbox8.setSelected(true);
-        textFieldMs.setText("1000");
-        colorList.add(Color.BLUE);
-        colorList.add(Color.RED);
-        colorList.add(Color.GREEN);
-        colorList.add(Color.YELLOW);
-        colorList.add(Color.BLACK);
-        colorList.add(Color.CYAN);
-        colorList.add(Color.DARKBLUE);
-        colorList.add(Color.GREY);
+     
+        colorList.add(Color.rgb(000, 051, 102));
+        colorList.add(Color.rgb(255,051,000));
+        colorList.add(Color.rgb(255,204,000));
+        colorList.add(Color.rgb(000,153,000));
+        colorList.add(Color.rgb(102,000,000));
+        colorList.add(Color.rgb(051,204,255));
+        colorList.add(Color.rgb(051,051,000));
+        colorList.add(Color.rgb(204,204,000));
         colorPicker1.setValue(colorList.get(0));
         colorPicker2.setValue(colorList.get(1));
         colorPicker3.setValue(colorList.get(2));
@@ -175,35 +185,21 @@ public class FXMLDocumentController implements Initializable {
         colorPicker7.setValue(colorList.get(6));
         colorPicker8.setValue(colorList.get(7));
 
-        scatterchart.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                double yStart = scatterchart.getLayoutY();
-                double xStart = scatterchart.getLayoutX();
-                double axisYRelativeMousePosition = mouseEvent.getY() - yStart;
-                outputLabel.setText(String.format(
-                        "%d, %d (%d, %d); %d - %d",
-                        (int) mouseEvent.getSceneX(), (int) mouseEvent.getSceneY(),
-                        (int) mouseEvent.getX(), (int) mouseEvent.getY(),
-                        (int) xStart,
-                        (int) scatterchart.getYAxis().getValueForDisplay(axisYRelativeMousePosition).intValue()
-                ));
-            }
-        });
+       
 
     }
     ReadFromFile rff;
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException {
-        // FileChooser fileChooser = new FileChooser();
-        // selectedFile = fileChooser.showOpenDialog(null);
-        if (dir != null) {
-//            WriteToFile wtf = new WriteToFile(selectedFile);
-//            wtf.start();
-            rff = new ReadFromFile(dir);
-            rff.start();
-        }
+         FileChooser fileChooser = new FileChooser();
+         selectedFile = fileChooser.showOpenDialog(null);
+      //  if (dir != null) {
+         rff= new ReadFromFile(selectedFile);
+         rff.start();
+           // rff = new ReadFromFile(dir);
+           // rff.start();
+       // }
 
         setupZooming(scatterchart, DEFAULT_FILTER);
 
@@ -1251,13 +1247,13 @@ public class FXMLDocumentController implements Initializable {
             f.getParentFile().mkdirs();
         }
         //Remove if clause if you want to overwrite file
-        if (!f.exists()) {
+        //if (!f.exists()) {
             try {
                 f.createNewFile();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        //}
 
         dir = new File(f.getParentFile(), f.getName());
         System.out.println("dir" + dir);
