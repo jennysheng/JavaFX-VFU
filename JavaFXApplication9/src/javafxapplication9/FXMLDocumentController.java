@@ -142,10 +142,6 @@ public class FXMLDocumentController implements Initializable {
     ObservableList<DataLogger> channelsdata;
     @FXML
     private Label outputLabel;
-    @FXML
-    private Button readFile;
-    @FXML
-    private Button WritetoFile;
  
 
    
@@ -1235,9 +1231,11 @@ public class FXMLDocumentController implements Initializable {
                 maxDataY - minDataY);
     }
 
+   
+
     @FXML
-    private void handleWriteAction(ActionEvent event) {
-        // FileChooser fileChooser = new FileChooser();
+    private void onWriteAction(ActionEvent event) {
+         // FileChooser fileChooser = new FileChooser();
         // selectedFile = fileChooser.showOpenDialog(null);
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date dateobj = new Date();

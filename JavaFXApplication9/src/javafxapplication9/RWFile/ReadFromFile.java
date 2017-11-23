@@ -52,7 +52,7 @@ public class ReadFromFile extends Thread {
                         System.out.println("line:" + lineNbr + line+":");
 
                         String[] parts = line.split("\t");
-                     if(channelsdata.size()<9){
+                     
                             channelsdata.add(new DataLogger(parts[0],
                                     Double.parseDouble(parts[1]),
                                     Double.parseDouble(parts[2]),
@@ -64,7 +64,7 @@ public class ReadFromFile extends Thread {
                                     Double.parseDouble(parts[8])));
                             lineNbr++;
                      }
-                    }
+                    
                 }
 
             } catch (IOException e) {
