@@ -48,7 +48,7 @@ public class ReadFromFile extends Thread {
                 while (line != null) {
 
                     line = reader.readLine() + "\t";
-                    if (line != null) {
+                    while (line != null) {
                         System.out.println("line" + lineNbr + line);
 
                         String[] parts = line.split("\t");
