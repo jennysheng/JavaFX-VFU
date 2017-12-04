@@ -142,10 +142,6 @@ public class FXMLDocumentController implements Initializable {
     ObservableList<DataLogger> channelsdata;
     @FXML
     private Label outputLabel;
-    @FXML
-    private Button readFile;
-    @FXML
-    private Button WritetoFile;
  
 
    
@@ -184,6 +180,7 @@ public class FXMLDocumentController implements Initializable {
         colorPicker6.setValue(colorList.get(5));
         colorPicker7.setValue(colorList.get(6));
         colorPicker8.setValue(colorList.get(7));
+        
 
        
 
@@ -983,6 +980,7 @@ public class FXMLDocumentController implements Initializable {
         if (animation != null) {
             animation.stop();
         }
+        rff.setChannelsdata(null);
     }
 
     /**
@@ -1235,7 +1233,6 @@ public class FXMLDocumentController implements Initializable {
                 maxDataY - minDataY);
     }
 
-    @FXML
     private void handleWriteAction(ActionEvent event) {
         // FileChooser fileChooser = new FileChooser();
         // selectedFile = fileChooser.showOpenDialog(null);
