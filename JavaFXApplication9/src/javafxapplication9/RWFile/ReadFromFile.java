@@ -24,9 +24,13 @@ import javafxapplication9.simulator.WriteToFile;
  *
  * @author Jenny_2
  */
-public class ReadFromFile extends Thread {
+public class ReadFromFile {
 
     ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
+
+    public void setChannelsdata(ObservableList<DataLogger> channelsdata) {
+        this.channelsdata = channelsdata;
+    }
     int lineNbr = 0;
 
     File selectedFile = null;
@@ -36,8 +40,8 @@ public class ReadFromFile extends Thread {
 
     }
 
-    @Override
-    public void run() {
+ 
+    public void read() {
 
         if (selectedFile != null) {
 
@@ -48,8 +52,8 @@ public class ReadFromFile extends Thread {
                 while (line != null) {
 
                     line = reader.readLine() + "\t";
-                    while (line != null) {
-                        System.out.println("line" + lineNbr + line);
+                    if(line != null) {
+                        System.out.println("line:" + lineNbr +":"+ line);
 
                         String[] parts = line.split("\t");
                      
@@ -63,6 +67,9 @@ public class ReadFromFile extends Thread {
                                     Double.parseDouble(parts[7]),
                                     Double.parseDouble(parts[8])));
                             lineNbr++;
+                            if(lineNbr==1000){
+                                break;
+                            }
                         
                     }
                 }

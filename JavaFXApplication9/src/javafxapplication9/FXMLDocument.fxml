@@ -11,25 +11,6 @@
 
 <AnchorPane id="AnchorPane" fx:id="anchorpane" prefHeight="623.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication9.FXMLDocumentController">
     <children>
-        <MenuBar layoutY="15.0">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleReadAction" text="ReadFile" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleWriteAction" text="WriteFile" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
       <GridPane layoutX="18.0" layoutY="410.0" prefHeight="165.0" prefWidth="592.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="94.0" />
@@ -82,5 +63,7 @@
       <TextFlow layoutX="282.0" layoutY="21.0" prefHeight="26.0" prefWidth="217.0" />
       <Label fx:id="outputLabel" layoutX="314.0" layoutY="47.0" />
       <Label fx:id="outputLabel" layoutX="280.0" layoutY="47.0" prefHeight="17.0" prefWidth="185.0" />
+      <Button layoutX="98.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleReadAction" text="Read" />
+      <Button layoutX="152.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleWriteAction" text="Write" />
     </children>
 </AnchorPane>

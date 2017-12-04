@@ -71,8 +71,6 @@ public class FXMLDocumentController implements Initializable {
     File selectedFile = null;
     ArrayList<Color> colorList = new ArrayList<Color>();
 
- 
-
     @FXML
     private ScatterChart<String, Double> scatterchart;
 
@@ -127,7 +125,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button Cleanscreen;
 
-    
     private final SimpleDoubleProperty rectX = new SimpleDoubleProperty();
     private final SimpleDoubleProperty rectY = new SimpleDoubleProperty();
     private SimpleBooleanProperty selected = new SimpleBooleanProperty(false);
@@ -142,13 +139,6 @@ public class FXMLDocumentController implements Initializable {
     ObservableList<DataLogger> channelsdata;
     @FXML
     private Label outputLabel;
-    @FXML
-    private Button readFile;
-    @FXML
-    private Button WritetoFile;
- 
-
-   
 
     public int getTotalNbr() {
         return TotalNbr;
@@ -167,15 +157,14 @@ public class FXMLDocumentController implements Initializable {
         checkbox6.setSelected(true);
         checkbox7.setSelected(true);
         checkbox8.setSelected(true);
-     
         colorList.add(Color.rgb(000, 051, 102));
-        colorList.add(Color.rgb(255,051,000));
-        colorList.add(Color.rgb(255,204,000));
-        colorList.add(Color.rgb(000,153,000));
-        colorList.add(Color.rgb(102,000,000));
-        colorList.add(Color.rgb(051,204,255));
-        colorList.add(Color.rgb(051,051,000));
-        colorList.add(Color.rgb(204,204,000));
+        colorList.add(Color.rgb(255, 051, 000));
+        colorList.add(Color.rgb(255, 204, 000));
+        colorList.add(Color.rgb(000, 153, 000));
+        colorList.add(Color.rgb(102, 000, 000));
+        colorList.add(Color.rgb(051, 204, 255));
+        colorList.add(Color.rgb(051, 051, 000));
+        colorList.add(Color.rgb(204, 204, 000));
         colorPicker1.setValue(colorList.get(0));
         colorPicker2.setValue(colorList.get(1));
         colorPicker3.setValue(colorList.get(2));
@@ -184,26 +173,10 @@ public class FXMLDocumentController implements Initializable {
         colorPicker6.setValue(colorList.get(5));
         colorPicker7.setValue(colorList.get(6));
         colorPicker8.setValue(colorList.get(7));
-
-       
+        textFieldMs.setText("1000");
 
     }
     ReadFromFile rff;
-
-    @FXML
-    private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException {
-         FileChooser fileChooser = new FileChooser();
-         selectedFile = fileChooser.showOpenDialog(null);
-      //  if (dir != null) {
-         rff= new ReadFromFile(selectedFile);
-         rff.start();
-           // rff = new ReadFromFile(dir);
-           // rff.start();
-       // }
-
-        setupZooming(scatterchart, DEFAULT_FILTER);
-
-    }
 
     public static String toRGBCode(Color color) {
         return String.format("#%02X%02X%02X",
@@ -675,6 +648,7 @@ public class FXMLDocumentController implements Initializable {
                 Timeline timeline7 = new Timeline();
                 timeline7.getKeyFrames().add(
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
+                            
                             @Override
                             public void handle(ActionEvent actionEvent) {
                                 if (rff.getChannelsdata().iterator().hasNext()) {
@@ -983,258 +957,13 @@ public class FXMLDocumentController implements Initializable {
         if (animation != null) {
             animation.stop();
         }
+        rff.setChannelsdata(null);
     }
 
-    /**
-     * Find the X /Ycoordinate in ancestor's coordinate system that corresponds
-     * to the X=0 axis in descendant's coordinate system.
-     *
-     */
-    private static double getXShift(Node node) {
-        double shift = 0;
-        do {
-            shift += node.getLayoutX();
-            node = node.getParent();
-        } while (node != null);
-        return shift;
-    }
+ 
+   
 
-    private static double getYShift(Node node) {
-        double shift = 0;
-        do {
-            shift += node.getLayoutY();
-            node = node.getParent();
-        } while (node != null);
-        return shift;
-    }
-
-    /**
-     * Make a best attempt to replace the original component with the
-     * replacement, and keep the same position and layout constraints in the
-     * container.
-     * <p>
-     * Currently this method is probably not perfect. It uses three strategies:
-     * <ol>
-     * <li>If the original has any properties, move all of them to the
-     * replacement</li>
-     * <li>If the parent of the original is a {@link BorderPane}, preserve the
-     * position</li>
-     * <li>Preserve the order of the children in the parent's list</li>
-     * </ol>
-     * <p>
-     * This method does not transfer any handlers (mouse handlers for example).
-     *
-     * @param original non-null Node whose parent is a {@link Pane}.
-     * @param replacement non-null Replacement Node
-     */
-    public void replaceComponent(Node original, Node replacement) {
-        Pane parent = (Pane) original.getParent();
-        //transfer any properties (usually constraints)
-        replacement.getProperties().putAll(original.getProperties());
-        original.getProperties().clear();
-
-        ObservableList<Node> children = parent.getChildren();
-        int originalIndex = children.indexOf(original);
-        if (parent instanceof BorderPane) {
-            BorderPane borderPane = (BorderPane) parent;
-            if (borderPane.getTop() == original) {
-                children.remove(original);
-                borderPane.setTop(replacement);
-
-            } else if (borderPane.getLeft() == original) {
-                children.remove(original);
-                borderPane.setLeft(replacement);
-
-            } else if (borderPane.getCenter() == original) {
-                children.remove(original);
-                borderPane.setCenter(replacement);
-
-            } else if (borderPane.getRight() == original) {
-                children.remove(original);
-                borderPane.setRight(replacement);
-
-            } else if (borderPane.getBottom() == original) {
-                children.remove(original);
-                borderPane.setBottom(replacement);
-            }
-        } else {
-            //Hope that preserving the properties and position in the list is sufficient
-            children.set(originalIndex, replacement);
-        }
-    }
-
-    public Region setupZooming(XYChart<?, ?> chart, EventHandler<? super MouseEvent> mouseFilter) {
-        anchorpane = new AnchorPane();
-        if (chart.getParent() != null) {
-            replaceComponent(chart, anchorpane);
-        }
-
-        selectRect = new Rectangle(0, 0, 0, 0);
-        selectRect.setFill(Color.DODGERBLUE);
-        selectRect.setMouseTransparent(false);
-        selectRect.setOpacity(0.3);
-        selectRect.setStroke(Color.rgb(0, 0x29, 0x66));
-        selectRect.setStrokeType(StrokeType.INSIDE);
-        selectRect.setStrokeWidth(3.0);
-        //anchorpane..setAlignment(selectRect, Pos.TOP_LEFT);
-
-        anchorpane.getChildren().addAll(chart, selectRect);
-        scatterchart.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                selected.set(true);
-                double x = mouseEvent.getX();
-                double y = mouseEvent.getY();
-                selectRect.setTranslateX(x);
-                selectRect.setTranslateY(y);
-                rectX.set(x);
-                rectY.set(y);
-                //animated rectangle:
-                selectRect.widthProperty().bind(rectX.subtract(x));
-                selectRect.heightProperty().bind(rectY.subtract(y));
-                selectRect.visibleProperty().bind(selected);
-                Rectangle2D plotArea = getPlotArea();
-                selectRect.setTranslateX(x);
-                selectRect.setTranslateY(plotArea.getMinY());
-                rectX.set(x);
-                rectY.set(plotArea.getMaxY());
-            }
-        });
-
-        scatterchart.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (!selected.get()) {
-                    return;
-                }
-                Rectangle2D plotArea = getPlotArea();
-
-                double x = mouseEvent.getX();
-                //Clamp to the selection start
-                x = Math.max(x, selectRect.getTranslateX());
-
-                //Clamp to plot area
-                //  x = Math.min(x, plotArea.getMaxX());
-                rectX.set(x);
-
-                double y = mouseEvent.getY();
-                //Clamp to the selection start
-
-                y = Math.max(y, selectRect.getTranslateY());
-                //Clamp to plot area
-                //  y = Math.min(y, plotArea.getMaxY());
-                rectY.set(y);
-
-            }
-        });
-
-        scatterchart.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-                if (!selected.get()) {
-                    return;
-                }
-
-                Rectangle2D zoomWindow = getDataCoordinates2(
-                        selectRect.getTranslateX(), selectRect.getTranslateY(),
-                        rectX.get(), rectY.get()
-                );
-
-                xAxis.setAutoRanging(false);
-                yAxis.setAutoRanging(false);
-
-                if (zoomAnimated.get()) {
-                    zoomAnimation.stop();
-                    zoomAnimation.getKeyFrames().setAll(
-                            new KeyFrame(Duration.ZERO,
-                                    new KeyValue(yAxis.lowerBoundProperty(), yAxis.getLowerBound()),
-                                    new KeyValue(yAxis.upperBoundProperty(), yAxis.getUpperBound())
-                            ),
-                            new KeyFrame(Duration.millis(1000),
-                                    new KeyValue(yAxis.lowerBoundProperty(), zoomWindow.getMinY()),
-                                    new KeyValue(yAxis.upperBoundProperty(), zoomWindow.getMaxY())
-                            )
-                    );
-                    zoomAnimation.play();
-                } else {
-                    zoomAnimation.stop();
-                    yAxis.setLowerBound(zoomWindow.getMinY());
-                    yAxis.setUpperBound(zoomWindow.getMaxY());
-                }
-                selected.set(false);
-            }
-        });
-
-        return anchorpane;
-    }
-    public EventHandler<MouseEvent> DEFAULT_FILTER = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            //The ChartPanManager uses this reference, so if behavior changes, copy to users first.
-            if (mouseEvent.getButton() != MouseButton.PRIMARY) {
-                mouseEvent.consume();
-            }
-        }
-    };
-
-    /**
-     * Returns the plot area in the reference's coordinate space.
-     */
-    public Rectangle2D getPlotArea() {
-        Axis<?> xAxis = scatterchart.getXAxis();
-        Axis<?> yAxis = scatterchart.getYAxis();
-
-        double xStart = getXShift(xAxis);
-        double yStart = getYShift(yAxis);
-
-        //If the direct method to get the width (which is based on its Node dimensions) is not found to
-        //be appropriate, an alternative method is commented.
-        //double width = xAxis.getDisplayPosition( xAxis.toRealValue( xAxis.getLowerBound() )  );
-        double width = xAxis.getWidth();
-        //double height = yAxis.getDisplayPosition( yAxis.toRealValue( yAxis.getLowerBound() ) );
-        double height = yAxis.getHeight();
-
-        return new Rectangle2D(xStart, yStart, width, height);
-    }
-
-    /**
-     * Given graphical coordinates in the reference's coordinate system, returns
-     * x and y axis value as a point via the
-     * {@link Axis#getValueForDisplay(double)} and
-     * {@link Axis#toNumericValue(Object)} methods.
-     *
-     * @param minX lower X value (upper left point)
-     * @param minY lower Y value (upper left point)
-     * @param maxX upper X value (bottom right point)
-     * @param maxY upper Y value (bottom right point)
-     */
-    @SuppressWarnings("unchecked")
-    public Rectangle2D getDataCoordinates2(double minX, double minY, double maxX, double maxY) {
-        if (minX > maxX || minY > maxY) {
-            throw new IllegalArgumentException("min > max for X and/or Y");
-        }
-
-        Axis xAxis = scatterchart.getXAxis();
-        Axis yAxis = scatterchart.getYAxis();
-
-        double xStart = getXShift(xAxis);
-        double yStart = getYShift(yAxis);
-
-        double minDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(minX - xStart));
-        double maxDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(maxX - xStart));
-
-        //The "low" Y data value is actually at the maxY graphical location as Y graphical axis gets
-        //larger as you go down on the screen.
-        double minDataY = yAxis.toNumericValue(yAxis.getValueForDisplay(maxY - yStart));
-        double maxDataY = yAxis.toNumericValue(yAxis.getValueForDisplay(minY - yStart));
-
-        return new Rectangle2D(minDataX,
-                minDataY,
-                maxDataX - minDataX,
-                maxDataY - minDataY);
-    }
-
+       
     @FXML
     private void handleWriteAction(ActionEvent event) {
         // FileChooser fileChooser = new FileChooser();
@@ -1248,11 +977,11 @@ public class FXMLDocumentController implements Initializable {
         }
         //Remove if clause if you want to overwrite file
         //if (!f.exists()) {
-            try {
-                f.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            f.createNewFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //}
 
         dir = new File(f.getParentFile(), f.getName());
@@ -1262,4 +991,18 @@ public class FXMLDocumentController implements Initializable {
         wtf.start();
     }
 
+    @FXML
+    private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        selectedFile = fileChooser.showOpenDialog(null);
+        // if (dir != null) {
+        rff = new ReadFromFile(selectedFile);
+        rff.read();
+        // rff = new ReadFromFile(dir);
+        // rff.read();
+        // }
+
+      
+
+    }
 }
