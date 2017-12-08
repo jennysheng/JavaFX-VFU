@@ -1699,6 +1699,7 @@ public class FXMLDocumentController implements Initializable {
             animation.stop();
         }
         rff.setChannelsdata(null);
+     
     }
 
     @FXML
@@ -1729,7 +1730,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException {
+    private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException, IOException {
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
         // if (dir != null) {
