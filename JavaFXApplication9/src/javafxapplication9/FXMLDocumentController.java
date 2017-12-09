@@ -141,11 +141,14 @@ public class FXMLDocumentController implements Initializable {
     private RadioButton SampleRadio;
     @FXML
     private RadioButton timeRadio;
+    ScatterChart.Series<String, Double> series1, series2, series3, series4, series5, series6, series7, series8;
+    @FXML
+    private Label fileLabel;
 
     public int getTotalNbr() {
         return TotalNbr;
     }
-    int i = 0, a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0;
+    int i = 1, a = 1, b = 1, c = 1, d = 1, e = 1, f = 1, g = 1, h = 1;
 
     public void setTotalNbr(int TotalNbr) {
         this.TotalNbr = TotalNbr;
@@ -177,6 +180,7 @@ public class FXMLDocumentController implements Initializable {
         colorPicker7.setValue(colorList.get(6));
         colorPicker8.setValue(colorList.get(7));
         textFieldMs.setText("1000");
+        SampleRadio.setSelected(true);
 
     }
     ReadFromFile rff;
@@ -196,155 +200,31 @@ public class FXMLDocumentController implements Initializable {
         xAxis.setAnimated(false);
         scatterchart.setLegendVisible(false);
         if (timeRadio.isSelected()) {
-            ScatterChart.Series<String, Double> seriesS1 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS2 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS3 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS4 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS5 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS6 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS7 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS8 = new ScatterChart.Series();
-
-            seriesS1.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value1));
-            seriesS2.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value2));
-            seriesS3.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value3));
-            seriesS4.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value4));
-            seriesS5.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value5));
-            seriesS6.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value6));
-            seriesS7.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value7));
-            seriesS8.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value8));
-
-            if (checkbox1.isSelected()) {
-                scatterchart.getData().add(seriesS1);
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker1.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-
-                }
-                TotalNbr++;
-
-            } else {
-                scatterchart.getData().remove(seriesS1);
-            }
-            if (checkbox2.isSelected()) {
-                scatterchart.getData().add(seriesS2);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker2.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(seriesS2);
-            }
-
-            if (checkbox3.isSelected()) {
-                scatterchart.getData().add(seriesS3);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker3.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(seriesS3);
-            }
-            if (checkbox4.isSelected()) {
-                scatterchart.getData().add(seriesS4);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker4.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(seriesS4);
-            }
-            if (checkbox5.isSelected()) {
-                scatterchart.getData().add(seriesS5);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker5.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(seriesS5);
-            }
-            if (checkbox6.isSelected()) {
-                scatterchart.getData().add(seriesS6);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker6.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(seriesS6);
-            }
-            if (checkbox7.isSelected()) {
-                scatterchart.getData().add(seriesS7);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker7.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(seriesS7);
-            }
-            if (checkbox8.isSelected()) {
-                scatterchart.getData().add(seriesS8);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker8.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(seriesS8);
-            }
+            SampleRadio.setSelected(false);
+            series1 = new ScatterChart.Series();
+            series2 = new ScatterChart.Series();
+            series3 = new ScatterChart.Series();
+            series4 = new ScatterChart.Series();
+            series5 = new ScatterChart.Series();
+            series6 = new ScatterChart.Series();
+            series7 = new ScatterChart.Series();
+            series8 = new ScatterChart.Series();
+while(rff.getChannelsdata().iterator().hasNext()){
+            series1.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value1));
+            series2.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value2));
+            series3.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value3));
+            series4.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value4));
+            series5.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value5));
+            series6.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value6));
+            series7.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value7));
+            series8.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value8));
+            System.out.println("rff.iter.date" + rff.getChannelsdata().iterator().next().value1);
             rff.getChannelsdata().remove(0);
-        } else if (SampleRadio.isSelected()) {
 
-            ScatterChart.Series<String, Double> seriesS1 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS2 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS3 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS4 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS5 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS6 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS7 = new ScatterChart.Series();
-            ScatterChart.Series<String, Double> seriesS8 = new ScatterChart.Series();
-
-            seriesS1.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value1));
-            seriesS2.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value2));
-            seriesS3.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value3));
-            seriesS4.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value4));
-            seriesS5.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value5));
-            seriesS6.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value6));
-            seriesS7.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value7));
-            seriesS8.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value8));
+}
 
             if (checkbox1.isSelected()) {
-                scatterchart.getData().add(seriesS1);
-
+                scatterchart.getData().add(series1);
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker1.getValue();
                 String newColor = "-fx-background-color: " + toRGBCode(c);
@@ -355,25 +235,23 @@ public class FXMLDocumentController implements Initializable {
                 TotalNbr++;
 
             } else {
-                scatterchart.getData().remove(seriesS1);
+                scatterchart.getData().remove(series1);
             }
             if (checkbox2.isSelected()) {
-                scatterchart.getData().add(seriesS2);
-
+                scatterchart.getData().add(series2);
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker2.getValue();
                 String newColor = "-fx-background-color: " + toRGBCode(c);
                 for (Node n : nodes) {
                     n.setStyle(newColor);
-
                 }
                 TotalNbr++;
             } else {
-                scatterchart.getData().remove(seriesS2);
+                scatterchart.getData().remove(series2);
             }
 
             if (checkbox3.isSelected()) {
-                scatterchart.getData().add(seriesS3);
+                scatterchart.getData().add(series3);
 
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker3.getValue();
@@ -383,11 +261,10 @@ public class FXMLDocumentController implements Initializable {
                 }
                 TotalNbr++;
             } else {
-                scatterchart.getData().remove(seriesS3);
+                scatterchart.getData().remove(series3);
             }
             if (checkbox4.isSelected()) {
-                scatterchart.getData().add(seriesS4);
-
+                scatterchart.getData().add(series4);
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker4.getValue();
                 String newColor = "-fx-background-color: " + toRGBCode(c);
@@ -396,11 +273,10 @@ public class FXMLDocumentController implements Initializable {
                 }
                 TotalNbr++;
             } else {
-                scatterchart.getData().remove(seriesS4);
+                scatterchart.getData().remove(series4);
             }
             if (checkbox5.isSelected()) {
-                scatterchart.getData().add(seriesS5);
-
+                scatterchart.getData().add(series5);
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker5.getValue();
                 String newColor = "-fx-background-color: " + toRGBCode(c);
@@ -409,10 +285,10 @@ public class FXMLDocumentController implements Initializable {
                 }
                 TotalNbr++;
             } else {
-                scatterchart.getData().remove(seriesS5);
+                scatterchart.getData().remove(series5);
             }
             if (checkbox6.isSelected()) {
-                scatterchart.getData().add(seriesS6);
+                scatterchart.getData().add(series6);
 
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker6.getValue();
@@ -422,11 +298,10 @@ public class FXMLDocumentController implements Initializable {
                 }
                 TotalNbr++;
             } else {
-                scatterchart.getData().remove(seriesS6);
+                scatterchart.getData().remove(series6);
             }
             if (checkbox7.isSelected()) {
-                scatterchart.getData().add(seriesS7);
-
+                scatterchart.getData().add(series7);
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker7.getValue();
                 String newColor = "-fx-background-color: " + toRGBCode(c);
@@ -435,11 +310,10 @@ public class FXMLDocumentController implements Initializable {
                 }
                 TotalNbr++;
             } else {
-                scatterchart.getData().remove(seriesS7);
+                scatterchart.getData().remove(series7);
             }
             if (checkbox8.isSelected()) {
-                scatterchart.getData().add(seriesS8);
-
+                scatterchart.getData().add(series8);
                 Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
                 Color c = colorPicker8.getValue();
                 String newColor = "-fx-background-color: " + toRGBCode(c);
@@ -448,16 +322,154 @@ public class FXMLDocumentController implements Initializable {
                 }
                 TotalNbr++;
             } else {
-                scatterchart.getData().remove(seriesS8);
+                scatterchart.getData().remove(series8);
             }
+         //   rff.getChannelsdata().remove(0);
+        } else if (SampleRadio.isSelected()) {
+            timeRadio.setSelected(false);
+            series1 = new ScatterChart.Series();
+            series2 = new ScatterChart.Series();
+            series3 = new ScatterChart.Series();
+            series4 = new ScatterChart.Series();
+            series5 = new ScatterChart.Series();
+            series6 = new ScatterChart.Series();
+            series7 = new ScatterChart.Series();
+            series8 = new ScatterChart.Series();
+while(rff.getChannelsdata().iterator().hasNext()){
+            series1.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value1));
+            series2.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value2));
+            series3.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value3));
+            series4.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value4));
+            series5.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value5));
+            series6.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value6));
+            series7.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value7));
+            series8.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value8));
+            System.out.println("2rff.iter.date" + rff.getChannelsdata().iterator().next().value1);
             rff.getChannelsdata().remove(0);
             i++;
+            
+}
+
+            if (checkbox1.isSelected()) {
+                scatterchart.getData().add(series1);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker1.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+
+                }
+                TotalNbr++;
+
+            } else {
+                scatterchart.getData().remove(series1);
+            }
+            if (checkbox2.isSelected()) {
+                scatterchart.getData().add(series2);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker2.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+
+                }
+                TotalNbr++;
+            } else {
+                scatterchart.getData().remove(series2);
+            }
+
+            if (checkbox3.isSelected()) {
+                scatterchart.getData().add(series3);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker3.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+                }
+                TotalNbr++;
+            } else {
+                scatterchart.getData().remove(series3);
+            }
+            if (checkbox4.isSelected()) {
+                scatterchart.getData().add(series4);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker4.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+                }
+                TotalNbr++;
+            } else {
+                scatterchart.getData().remove(series4);
+            }
+            if (checkbox5.isSelected()) {
+                scatterchart.getData().add(series5);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker5.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+                }
+                TotalNbr++;
+            } else {
+                scatterchart.getData().remove(series5);
+            }
+            if (checkbox6.isSelected()) {
+                scatterchart.getData().add(series6);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker6.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+                }
+                TotalNbr++;
+            } else {
+                scatterchart.getData().remove(series6);
+            }
+            if (checkbox7.isSelected()) {
+                scatterchart.getData().add(series7);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker7.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+                }
+                TotalNbr++;
+            } else {
+                scatterchart.getData().remove(series7);
+            }
+            if (checkbox8.isSelected()) {
+                scatterchart.getData().add(series8);
+
+                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
+                Color c = colorPicker8.getValue();
+                String newColor = "-fx-background-color: " + toRGBCode(c);
+                for (Node n : nodes) {
+                    n.setStyle(newColor);
+                }
+                TotalNbr++;
+            } else {
+                scatterchart.getData().remove(series8);
+            }
+         //   rff.getChannelsdata().remove(0);
+           
 
         }
     }
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
+            if(AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")){
+                AutoReadButton.setStyle("");
+            }else{
+        AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");}
         scatterchart.getData().clear();
         scatterchart.getData().removeAll();
         xAxis.setAutoRanging(true);
@@ -465,18 +477,20 @@ public class FXMLDocumentController implements Initializable {
         xAxis.setAnimated(false);
         if (textFieldMs.getText() != null) {
             if (timeRadio.isSelected()) {
+                SampleRadio.setSelected(false);
                 if (checkbox1.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA1 = new ScatterChart.Series();
+                    series1 = new ScatterChart.Series();
                     Timeline timeline1 = new Timeline();
                     timeline1.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA1.getData().add(new ScatterChart.Data<String, Double>(
+                                        series1.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value1
                                         ));
+                                        System.out.println("auto+rff.iter.value1" + rff.getChannelsdata().iterator().next().value1);
                                     }
                                     String newColorA = "-fx-background-color: " + toRGBCode(colorPicker1.getValue());
                                     Set<Node> nodesA = scatterchart.lookupAll(".series0");
@@ -491,7 +505,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline1.setCycleCount(Animation.INDEFINITE);
                     animation1 = new SequentialTransition();
                     animation1.getChildren().add(timeline1);
-                    scatterchart.getData().add(seriesA1);
+                    scatterchart.getData().add(series1);
                     animation1.play();
 
                 } else {
@@ -500,14 +514,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox2.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA2 = new ScatterChart.Series();
+                    series2 = new ScatterChart.Series();
                     Timeline timeline2 = new Timeline();
                     timeline2.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA2.getData().add(new ScatterChart.Data<String, Double>(
+                                        series2.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value2
                                         ));
@@ -529,7 +543,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline2.setCycleCount(Animation.INDEFINITE);
                     animation2 = new SequentialTransition();
                     animation2.getChildren().add(timeline2);
-                    scatterchart.getData().add(seriesA2);
+                    scatterchart.getData().add(series2);
                     animation2.play();
 
                 } else {
@@ -538,14 +552,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox3.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA3 = new ScatterChart.Series();
+                    series3 = new ScatterChart.Series();
                     Timeline timeline3 = new Timeline();
                     timeline3.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA3.getData().add(new ScatterChart.Data<String, Double>(
+                                        series3.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value3
                                         ));
@@ -572,7 +586,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline3.setCycleCount(Animation.INDEFINITE);
                     animation3 = new SequentialTransition();
                     animation3.getChildren().add(timeline3);
-                    scatterchart.getData().add(seriesA3);
+                    scatterchart.getData().add(series3);
                     animation3.play();
 
                 } else {
@@ -581,14 +595,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox4.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA4 = new ScatterChart.Series();
+                    series4 = new ScatterChart.Series();
                     Timeline timeline4 = new Timeline();
                     timeline4.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA4.getData().add(new ScatterChart.Data<String, Double>(
+                                        series4.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value4
                                         ));
@@ -622,7 +636,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline4.setCycleCount(Animation.INDEFINITE);
                     animation4 = new SequentialTransition();
                     animation4.getChildren().add(timeline4);
-                    scatterchart.getData().add(seriesA4);
+                    scatterchart.getData().add(series4);
                     animation4.play();
 
                 } else {
@@ -631,14 +645,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox5.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA5 = new ScatterChart.Series();
+                    series5 = new ScatterChart.Series();
                     Timeline timeline5 = new Timeline();
                     timeline5.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA5.getData().add(new ScatterChart.Data<String, Double>(
+                                        series5.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value5
                                         ));
@@ -683,7 +697,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline5.setCycleCount(Animation.INDEFINITE);
                     animation5 = new SequentialTransition();
                     animation5.getChildren().add(timeline5);
-                    scatterchart.getData().add(seriesA5);
+                    scatterchart.getData().add(series5);
                     animation5.play();
 
                 } else {
@@ -692,14 +706,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox6.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA6 = new ScatterChart.Series();
+                    series6 = new ScatterChart.Series();
                     Timeline timeline6 = new Timeline();
                     timeline6.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA6.getData().add(new ScatterChart.Data<String, Double>(
+                                        series6.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value6
                                         ));
@@ -762,7 +776,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline6.setCycleCount(Animation.INDEFINITE);
                     animation6 = new SequentialTransition();
                     animation6.getChildren().add(timeline6);
-                    scatterchart.getData().add(seriesA6);
+                    scatterchart.getData().add(series6);
                     animation6.play();
 
                 } else {
@@ -771,7 +785,7 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox7.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA7 = new ScatterChart.Series();
+                    series7 = new ScatterChart.Series();
                     Timeline timeline7 = new Timeline();
                     timeline7.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
@@ -779,7 +793,7 @@ public class FXMLDocumentController implements Initializable {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA7.getData().add(new ScatterChart.Data<String, Double>(
+                                        series7.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value7
                                         ));
@@ -880,7 +894,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline7.setCycleCount(Animation.INDEFINITE);
                     animation7 = new SequentialTransition();
                     animation7.getChildren().add(timeline7);
-                    scatterchart.getData().add(seriesA7);
+                    scatterchart.getData().add(series7);
                     animation7.play();
 
                 } else {
@@ -889,15 +903,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox8.isSelected()) {
-
-                    ScatterChart.Series<String, Double> seriesA8 = new ScatterChart.Series();
+                    series8 = new ScatterChart.Series();
                     Timeline timeline8 = new Timeline();
                     timeline8.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA8.getData().add(new ScatterChart.Data<String, Double>(
+                                        series8.getData().add(new ScatterChart.Data<String, Double>(
                                                 rff.getChannelsdata().iterator().next().date,
                                                 rff.getChannelsdata().iterator().next().value8
                                         ));
@@ -1061,7 +1074,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline8.setCycleCount(Animation.INDEFINITE);
                     animation8 = new SequentialTransition();
                     animation8.getChildren().add(timeline8);
-                    scatterchart.getData().add(seriesA8);
+                    scatterchart.getData().add(series8);
                     animation8.play();
 
                 } else {
@@ -1070,15 +1083,16 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
             } else if (SampleRadio.isSelected()) {
+                timeRadio.setSelected(false);
                 if (checkbox1.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA1 = new ScatterChart.Series();
+                    series1 = new ScatterChart.Series();
                     Timeline timeline1 = new Timeline();
                     timeline1.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA1.getData().add(new ScatterChart.Data<String, Double>(
+                                        series1.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(a),
                                                 rff.getChannelsdata().iterator().next().value1
                                         ));
@@ -1097,7 +1111,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline1.setCycleCount(Animation.INDEFINITE);
                     animation1 = new SequentialTransition();
                     animation1.getChildren().add(timeline1);
-                    scatterchart.getData().add(seriesA1);
+                    scatterchart.getData().add(series1);
                     animation1.play();
 
                 } else {
@@ -1106,14 +1120,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox2.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA2 = new ScatterChart.Series();
+                    series2 = new ScatterChart.Series();
                     Timeline timeline2 = new Timeline();
                     timeline2.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA2.getData().add(new ScatterChart.Data<String, Double>(
+                                        series2.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(b),
                                                 rff.getChannelsdata().iterator().next().value2
                                         ));
@@ -1136,7 +1150,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline2.setCycleCount(Animation.INDEFINITE);
                     animation2 = new SequentialTransition();
                     animation2.getChildren().add(timeline2);
-                    scatterchart.getData().add(seriesA2);
+                    scatterchart.getData().add(series2);
                     animation2.play();
 
                 } else {
@@ -1145,14 +1159,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox3.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA3 = new ScatterChart.Series();
+                    series3 = new ScatterChart.Series();
                     Timeline timeline3 = new Timeline();
                     timeline3.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA3.getData().add(new ScatterChart.Data<String, Double>(
+                                        series3.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(c),
                                                 rff.getChannelsdata().iterator().next().value3
                                         ));
@@ -1180,7 +1194,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline3.setCycleCount(Animation.INDEFINITE);
                     animation3 = new SequentialTransition();
                     animation3.getChildren().add(timeline3);
-                    scatterchart.getData().add(seriesA3);
+                    scatterchart.getData().add(series3);
                     animation3.play();
 
                 } else {
@@ -1189,14 +1203,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox4.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA4 = new ScatterChart.Series();
+                    series4 = new ScatterChart.Series();
                     Timeline timeline4 = new Timeline();
                     timeline4.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA4.getData().add(new ScatterChart.Data<String, Double>(
+                                        series4.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(d),
                                                 rff.getChannelsdata().iterator().next().value4
                                         ));
@@ -1223,6 +1237,7 @@ public class FXMLDocumentController implements Initializable {
                                     }
                                     rff.getChannelsdata().remove(0);
                                     d++;
+                                    System.out.println("d" + d);
 
                                 }
                             })
@@ -1231,7 +1246,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline4.setCycleCount(Animation.INDEFINITE);
                     animation4 = new SequentialTransition();
                     animation4.getChildren().add(timeline4);
-                    scatterchart.getData().add(seriesA4);
+                    scatterchart.getData().add(series4);
                     animation4.play();
 
                 } else {
@@ -1240,14 +1255,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox5.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA5 = new ScatterChart.Series();
+                    series5 = new ScatterChart.Series();
                     Timeline timeline5 = new Timeline();
                     timeline5.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA5.getData().add(new ScatterChart.Data<String, Double>(
+                                        series5.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(e),
                                                 rff.getChannelsdata().iterator().next().value5
                                         ));
@@ -1293,7 +1308,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline5.setCycleCount(Animation.INDEFINITE);
                     animation5 = new SequentialTransition();
                     animation5.getChildren().add(timeline5);
-                    scatterchart.getData().add(seriesA5);
+                    scatterchart.getData().add(series5);
                     animation5.play();
 
                 } else {
@@ -1302,14 +1317,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox6.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA6 = new ScatterChart.Series();
+                    series6 = new ScatterChart.Series();
                     Timeline timeline6 = new Timeline();
                     timeline6.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA6.getData().add(new ScatterChart.Data<String, Double>(
+                                        series6.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(f),
                                                 rff.getChannelsdata().iterator().next().value6
                                         ));
@@ -1373,7 +1388,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline6.setCycleCount(Animation.INDEFINITE);
                     animation6 = new SequentialTransition();
                     animation6.getChildren().add(timeline6);
-                    scatterchart.getData().add(seriesA6);
+                    scatterchart.getData().add(series6);
                     animation6.play();
 
                 } else {
@@ -1382,7 +1397,7 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox7.isSelected()) {
-                    ScatterChart.Series<String, Double> seriesA7 = new ScatterChart.Series();
+                    series7 = new ScatterChart.Series();
                     Timeline timeline7 = new Timeline();
                     timeline7.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
@@ -1390,7 +1405,7 @@ public class FXMLDocumentController implements Initializable {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA7.getData().add(new ScatterChart.Data<String, Double>(
+                                        series7.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(g),
                                                 rff.getChannelsdata().iterator().next().value7
                                         ));
@@ -1491,7 +1506,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline7.setCycleCount(Animation.INDEFINITE);
                     animation7 = new SequentialTransition();
                     animation7.getChildren().add(timeline7);
-                    scatterchart.getData().add(seriesA7);
+                    scatterchart.getData().add(series7);
                     animation7.play();
 
                 } else {
@@ -1500,15 +1515,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
                 if (checkbox8.isSelected()) {
-
-                    ScatterChart.Series<String, Double> seriesA8 = new ScatterChart.Series();
+                    series8 = new ScatterChart.Series();
                     Timeline timeline8 = new Timeline();
                     timeline8.getKeyFrames().add(
                             new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     if (rff.getChannelsdata().iterator().hasNext()) {
-                                        seriesA8.getData().add(new ScatterChart.Data<String, Double>(
+                                        series8.getData().add(new ScatterChart.Data<String, Double>(
                                                 String.valueOf(h),
                                                 rff.getChannelsdata().iterator().next().value8
                                         ));
@@ -1673,7 +1687,7 @@ public class FXMLDocumentController implements Initializable {
                     timeline8.setCycleCount(Animation.INDEFINITE);
                     animation8 = new SequentialTransition();
                     animation8.getChildren().add(timeline8);
-                    scatterchart.getData().add(seriesA8);
+                    scatterchart.getData().add(series8);
                     animation8.play();
 
                 } else {
@@ -1686,7 +1700,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.setLegendVisible(false);
 
         }
-
+        
     }
 
     @FXML
@@ -1699,7 +1713,7 @@ public class FXMLDocumentController implements Initializable {
             animation.stop();
         }
         rff.setChannelsdata(null);
-     
+
     }
 
     @FXML
@@ -1736,9 +1750,24 @@ public class FXMLDocumentController implements Initializable {
         // if (dir != null) {
         rff = new ReadFromFile(selectedFile);
         rff.read();
+        fileLabel.setText(selectedFile.getPath());
         // rff = new ReadFromFile(dir);
         // rff.read();
         // }
 
     }
+
+    @FXML
+    private void sampleHandleAction(ActionEvent event) {
+        timeRadio.setSelected(false);
+    }
+
+    @FXML
+    private void timeHandleAction(ActionEvent event) {
+        SampleRadio.setSelected(false);
+    }
+
+  
+
+  
 }

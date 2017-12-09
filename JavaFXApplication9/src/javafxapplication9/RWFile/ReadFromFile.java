@@ -54,6 +54,7 @@ public class ReadFromFile {
                     line = reader.readLine();
                     if(line!=null){
                     filecontent.append(line + "\t").trimToSize();
+                        System.out.println("line"+j+":"+line);
                     j++;
                 }
                 }
@@ -63,7 +64,7 @@ public class ReadFromFile {
                
                 int i = 0;
 
-                while (i < ((j - 1) * 9)) {
+                while (i < (j  * 9)) {
 
                     channelsdata.add(new DataLogger(parts[i],
                             Double.parseDouble(parts[i + 1]),
@@ -74,9 +75,11 @@ public class ReadFromFile {
                             Double.parseDouble(parts[i + 6]),
                             Double.parseDouble(parts[i + 7]),
                             Double.parseDouble(parts[i + 8])));
-                    System.out.println(parts[i]);
+                    System.out.println("parts[i+8]"+parts[i+8]);
                     System.out.println("j"+j);
+                      
                     i += 9;
+                      System.out.println("i"+i);
                 }
                 reader.close();
             } catch (IOException e) {

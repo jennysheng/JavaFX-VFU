@@ -64,7 +64,8 @@
       <Label fx:id="outputLabel" layoutX="280.0" layoutY="47.0" prefHeight="17.0" prefWidth="185.0" />
       <Button layoutX="18.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleReadAction" text="Read" />
       <Button layoutX="71.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleWriteAction" text="Write" />
-      <RadioButton fx:id="SampleRadio" layoutX="271.0" layoutY="47.0" mnemonicParsing="false" text="Sample" />
-      <RadioButton fx:id="timeRadio" layoutX="377.0" layoutY="45.0" mnemonicParsing="false" text="Time" />
+      <RadioButton fx:id="SampleRadio" layoutX="271.0" layoutY="47.0" mnemonicParsing="false" onAction="#sampleHandleAction" text="Sample" />
+      <RadioButton fx:id="timeRadio" layoutX="377.0" layoutY="45.0" mnemonicParsing="false" onAction="#timeHandleAction" text="Time" />
+      <Label fx:id="fileLabel" layoutX="149.0" layoutY="26.0" prefHeight="17.0" prefWidth="438.0" text="Label" />
     </children>
 </AnchorPane>
