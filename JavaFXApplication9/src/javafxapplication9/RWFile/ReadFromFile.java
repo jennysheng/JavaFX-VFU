@@ -27,7 +27,7 @@ import javafxapplication9.simulator.WriteToFile;
  *
  * @author Jenny_2
  */
-public class ReadFromFile {
+public class ReadFromFile extends Thread {
 
     ObservableList<DataLogger> channelsdata = FXCollections.observableArrayList();
 
@@ -39,54 +39,58 @@ public class ReadFromFile {
         this.selectedFile = selectedFile;
     }
 
-    public ObservableList<DataLogger> read() throws ParseException {
+    @Override
+    public void run() {
+        synchronized (this) {
 
-        StringBuilder filecontent = new StringBuilder();
+            StringBuilder filecontent = new StringBuilder();
 
-        if (selectedFile != null) {
+            if (selectedFile != null) {
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(new File(selectedFile.getPath())))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(new File(selectedFile.getPath())))) {
 
-                String line = reader.readLine();
-                int j = 0;
+                    String line = reader.readLine();
+                    int j = 0;
 
-                while ((line) != null) {
-                    line = reader.readLine();
-                    if(line!=null){
-                    filecontent.append(line + "\t").trimToSize();
-                        System.out.println("line"+j+":"+line);
-                    j++;
+                    while ((line) != null) {
+                        line = reader.readLine();
+                        if (line != null) {
+                            filecontent.append(line + "\t").trimToSize();
+                            System.out.println("line" + j + ":" + line);
+                            j++;
+                        }
+                    }
+                    String content = filecontent.toString();
+                    String[] parts = content.split("\t");
+
+                    int i = 0;
+
+                    while (i < (j * 9)) {
+
+                        channelsdata.add(new DataLogger(parts[i],
+                                Double.parseDouble(parts[i + 1]),
+                                Double.parseDouble(parts[i + 2]),
+                                Double.parseDouble(parts[i + 3]),
+                                Double.parseDouble(parts[i + 4]),
+                                Double.parseDouble(parts[i + 5]),
+                                Double.parseDouble(parts[i + 6]),
+                                Double.parseDouble(parts[i + 7]),
+                                Double.parseDouble(parts[i + 8])));
+                        System.out.println("parts[i+8]" + parts[i + 8]);
+                        System.out.println("j" + j);
+
+                        i += 9;
+                        System.out.println("i" + i);
+                    }
+                    notifyAll();
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+
                 }
-                }
-                String content = filecontent.toString();
-                String[] parts = content.split("\t");
 
-               
-                int i = 0;
-
-                while (i < (j  * 9)) {
-
-                    channelsdata.add(new DataLogger(parts[i],
-                            Double.parseDouble(parts[i + 1]),
-                            Double.parseDouble(parts[i + 2]),
-                            Double.parseDouble(parts[i + 3]),
-                            Double.parseDouble(parts[i + 4]),
-                            Double.parseDouble(parts[i + 5]),
-                            Double.parseDouble(parts[i + 6]),
-                            Double.parseDouble(parts[i + 7]),
-                            Double.parseDouble(parts[i + 8])));
-                    System.out.println("parts[i+8]"+parts[i+8]);
-                    System.out.println("j"+j);
-                      
-                    i += 9;
-                      System.out.println("i"+i);
-                }
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-        return channelsdata;
     }
 
     public void setChannelsdata(ObservableList<DataLogger> channelsdata) {

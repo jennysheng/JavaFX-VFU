@@ -20,11 +20,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -66,89 +70,89 @@ import javax.swing.JOptionPane;
  *
  * @author Jenny_2
  */
-public class FXMLDocumentController implements Initializable {
+public class FXMLDocumentController implements Initializable{
 
-    private List<ScatterChart.Series<String, Double>> seriesCollection = new ArrayList<>();
-
+    public List<ScatterChart.Series<String, Double>> seriesCollection = new ArrayList<>();
+    FXMLDocumentController a;
     File selectedFile = null;
     ArrayList<Color> colorList = new ArrayList<Color>();
 
     @FXML
-    private ScatterChart<String, Double> scatterchart;
+    public ScatterChart<String, Double> scatterchart;
 
     @FXML
-    private ColorPicker colorPicker1;
+    public ColorPicker colorPicker1;
     @FXML
-    private ColorPicker colorPicker4;
+    public ColorPicker colorPicker4;
     @FXML
-    private ColorPicker colorPicker3;
+    public ColorPicker colorPicker3;
     @FXML
-    private ColorPicker colorPicker2;
+    public ColorPicker colorPicker2;
     @FXML
-    private ColorPicker colorPicker5;
+    public ColorPicker colorPicker5;
     @FXML
-    private ColorPicker colorPicker6;
+    public ColorPicker colorPicker6;
     @FXML
-    private ColorPicker colorPicker7;
+    public ColorPicker colorPicker7;
     @FXML
-    private ColorPicker colorPicker8;
+    public ColorPicker colorPicker8;
 
     @FXML
-    private AnchorPane anchorpane;
+    public AnchorPane anchorpane;
     @FXML
-    private NumberAxis yAxis;
+    public NumberAxis yAxis;
     @FXML
-    private CategoryAxis xAxis;
+    public CategoryAxis xAxis;
 
     @FXML
-    private CheckBox checkbox1;
-    private Button SingelReadButton;
+    public CheckBox checkbox1;
+    public Button SingelReadButton;
+    final static Object semaphore = null;
 
     @FXML
-    private Button AutoReadButton;
-    private SequentialTransition animation, animation1, animation2, animation3, animation4, animation5, animation6, animation7, animation8;
-    private final BooleanProperty zoomAnimated = new SimpleBooleanProperty(true);
+    public Button AutoReadButton;
+    public SequentialTransition animation, animation1, animation2, animation3, animation4, animation5, animation6, animation7, animation8;
+    public final BooleanProperty zoomAnimated = new SimpleBooleanProperty(true);
     @FXML
-    private TextField textFieldMs;
+    public TextField textFieldMs;
     @FXML
-    private CheckBox checkbox2;
+    public CheckBox checkbox2;
     @FXML
-    private CheckBox checkbox3;
+    public CheckBox checkbox3;
     @FXML
-    private CheckBox checkbox4;
+    public CheckBox checkbox4;
     @FXML
-    private CheckBox checkbox5;
+    public CheckBox checkbox5;
     @FXML
-    private CheckBox checkbox6;
+    public CheckBox checkbox6;
     @FXML
-    private CheckBox checkbox7;
+    public CheckBox checkbox7;
     @FXML
-    private CheckBox checkbox8;
+    public CheckBox checkbox8;
 
     Set<Node> nodes2, nodes3, nodes4, nodes5, nodes6, nodes7, nodes8;
     Rectangle selectRect;
-    private Timeline zoomAnimation = new Timeline();
+    public Timeline zoomAnimation = new Timeline();
     int TotalNbr;
     File dir;
     @FXML
-    private Button SingleReadButton;
+    public Button SingleReadButton;
     ObservableList<DataLogger> channelsdata;
     @FXML
-    private Label outputLabel;
+    public Label outputLabel;
     @FXML
-    private Button Cleanscreen;
+    public Button Cleanscreen;
     @FXML
-    private RadioButton SampleRadio;
+    public RadioButton SampleRadio;
     @FXML
-    private RadioButton timeRadio;
+    public RadioButton timeRadio;
     ScatterChart.Series<String, Double> series1, series2, series3, series4, series5, series6, series7, series8;
     @FXML
-    private Label fileLabel;
+    public Label fileLabel;
 
     public int getTotalNbr() {
         return TotalNbr;
     }
-    int i = 1, a = 1, b = 1, c = 1, d = 1, e = 1, f = 1, g = 1, h = 1;
 
     public void setTotalNbr(int TotalNbr) {
         this.TotalNbr = TotalNbr;
@@ -192,24 +196,53 @@ public class FXMLDocumentController implements Initializable {
                 (int) (color.getBlue() * 255));
     }
 
-    @FXML
-    private void singlePlot(MouseEvent event) {
+    
+//    public void run() {
+//        synchronized (this) {
+//            try {
+//                wait();
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            if (timeRadio.isSelected()) {
+//                timeplot();            
+//            } else if (SampleRadio.isSelected()) {
+//                sampleplot();
+//            }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//           
+//        }
+//    }
+
+    void jennySingleplot() {
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
-        SingleReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
         xAxis.setAnimated(false);
         scatterchart.setLegendVisible(false);
         if (timeRadio.isSelected()) {
-            SampleRadio.setSelected(false);
-            series1 = new ScatterChart.Series();
-            series2 = new ScatterChart.Series();
-            series3 = new ScatterChart.Series();
-            series4 = new ScatterChart.Series();
-            series5 = new ScatterChart.Series();
-            series6 = new ScatterChart.Series();
-            series7 = new ScatterChart.Series();
-            series8 = new ScatterChart.Series();
-while(rff.getChannelsdata().iterator().hasNext()){
+            timeplot();
+        } else if (SampleRadio.isSelected()) {
+            sampleplot();
+        }
+        
+
+    }
+
+    void timeplot() {
+        SampleRadio.setSelected(false);
+        series1 = new ScatterChart.Series();
+        series2 = new ScatterChart.Series();
+        series3 = new ScatterChart.Series();
+        series4 = new ScatterChart.Series();
+        series5 = new ScatterChart.Series();
+        series6 = new ScatterChart.Series();
+        series7 = new ScatterChart.Series();
+        series8 = new ScatterChart.Series();
+        while (rff.getChannelsdata().iterator().hasNext()) {
             series1.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value1));
             series2.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value2));
             series3.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value3));
@@ -218,124 +251,75 @@ while(rff.getChannelsdata().iterator().hasNext()){
             series6.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value6));
             series7.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value7));
             series8.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().iterator().next().date, rff.getChannelsdata().iterator().next().value8));
-            System.out.println("rff.iter.date" + rff.getChannelsdata().iterator().next().value1);
+            System.out.println("timeplot" + rff.getChannelsdata().iterator().next().value1);
             rff.getChannelsdata().remove(0);
 
-}
+        }
 
-            if (checkbox1.isSelected()) {
-                scatterchart.getData().add(series1);
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker1.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
+        if (checkbox1.isSelected()) {
+            scatterchart.getData().add(series1);
+            changecolor1();
+        } else {
+            scatterchart.getData().remove(series1);
+        }
+        if (checkbox2.isSelected()) {
+            scatterchart.getData().add(series2);
+            changecolor2();
+        } else {
+            scatterchart.getData().remove(series2);
+        }
 
-                }
-                TotalNbr++;
+        if (checkbox3.isSelected()) {
+            scatterchart.getData().add(series3);
+            changecolor3();
+        } else {
+            scatterchart.getData().remove(series3);
+        }
+        if (checkbox4.isSelected()) {
+            scatterchart.getData().add(series4);
+            changecolor4();
+        } else {
+            scatterchart.getData().remove(series4);
+        }
+        if (checkbox5.isSelected()) {
+            scatterchart.getData().add(series5);
+            changecolor5();
+        } else {
+            scatterchart.getData().remove(series5);
+        }
+        if (checkbox6.isSelected()) {
+            scatterchart.getData().add(series6);
+            changecolor6();
+        } else {
+            scatterchart.getData().remove(series6);
+        }
+        if (checkbox7.isSelected()) {
+            scatterchart.getData().add(series7);
+            changecolor7();
+        } else {
+            scatterchart.getData().remove(series7);
+        }
+        if (checkbox8.isSelected()) {
+            scatterchart.getData().add(series8);
+            changecolor8();
 
-            } else {
-                scatterchart.getData().remove(series1);
-            }
-            if (checkbox2.isSelected()) {
-                scatterchart.getData().add(series2);
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker2.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series2);
-            }
+        } else {
+            scatterchart.getData().remove(series8);
+        }
+    }
 
-            if (checkbox3.isSelected()) {
-                scatterchart.getData().add(series3);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker3.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series3);
-            }
-            if (checkbox4.isSelected()) {
-                scatterchart.getData().add(series4);
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker4.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series4);
-            }
-            if (checkbox5.isSelected()) {
-                scatterchart.getData().add(series5);
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker5.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series5);
-            }
-            if (checkbox6.isSelected()) {
-                scatterchart.getData().add(series6);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker6.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series6);
-            }
-            if (checkbox7.isSelected()) {
-                scatterchart.getData().add(series7);
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker7.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series7);
-            }
-            if (checkbox8.isSelected()) {
-                scatterchart.getData().add(series8);
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker8.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series8);
-            }
-         //   rff.getChannelsdata().remove(0);
-        } else if (SampleRadio.isSelected()) {
-            timeRadio.setSelected(false);
-            series1 = new ScatterChart.Series();
-            series2 = new ScatterChart.Series();
-            series3 = new ScatterChart.Series();
-            series4 = new ScatterChart.Series();
-            series5 = new ScatterChart.Series();
-            series6 = new ScatterChart.Series();
-            series7 = new ScatterChart.Series();
-            series8 = new ScatterChart.Series();
-while(rff.getChannelsdata().iterator().hasNext()){
+    void sampleplot() {
+        int i = 1;
+        timeRadio.setSelected(false);
+        series1 = new ScatterChart.Series();
+        series2 = new ScatterChart.Series();
+        series3 = new ScatterChart.Series();
+        series4 = new ScatterChart.Series();
+        series5 = new ScatterChart.Series();
+        series6 = new ScatterChart.Series();
+        series7 = new ScatterChart.Series();
+        series8 = new ScatterChart.Series();
+        while (rff.getChannelsdata().iterator().hasNext()) {
             series1.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value1));
             series2.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value2));
             series3.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value3));
@@ -344,1376 +328,140 @@ while(rff.getChannelsdata().iterator().hasNext()){
             series6.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value6));
             series7.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value7));
             series8.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value8));
-            System.out.println("2rff.iter.date" + rff.getChannelsdata().iterator().next().value1);
+            System.out.println("sampleplot" + rff.getChannelsdata().iterator().next().value1);
             rff.getChannelsdata().remove(0);
             i++;
+
+        }
+
+        if (checkbox1.isSelected()) {
+            scatterchart.getData().add(series1);
+            changecolor1();
+
+        } else {
+            scatterchart.getData().remove(series1);
+        }
+        if (checkbox2.isSelected()) {
+            scatterchart.getData().add(series2);
+            changecolor2();
+        } else {
+            scatterchart.getData().remove(series2);
+        }
+
+        if (checkbox3.isSelected()) {
+            scatterchart.getData().add(series3);
+            changecolor3();
+        } else {
+            scatterchart.getData().remove(series3);
+        }
+        if (checkbox4.isSelected()) {
+            scatterchart.getData().add(series4);
+            changecolor4();
+        } else {
+            scatterchart.getData().remove(series4);
+        }
+        if (checkbox5.isSelected()) {
+            scatterchart.getData().add(series5);
+            changecolor5();
+        } else {
+            scatterchart.getData().remove(series5);
+        }
+        if (checkbox6.isSelected()) {
+            scatterchart.getData().add(series6);
+            changecolor6();
+        } else {
+            scatterchart.getData().remove(series6);
+        }
+        if (checkbox7.isSelected()) {
+            scatterchart.getData().add(series7);
+            changecolor7();
+        } else {
+            scatterchart.getData().remove(series7);
+        }
+        if (checkbox8.isSelected()) {
+            scatterchart.getData().add(series8);
+            changecolor8();
+        } else {
+            scatterchart.getData().remove(series8);
+        }
+
+    }
+ 
+    @FXML
+    private void singlePlot(MouseEvent event) {
+  rff = new ReadFromFile(selectedFile);
+        if (SingleReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
+            //off------------------------------------------
+            SingleReadButton.setStyle("");
+            SingleReadButton.setText("On");
+            scatterchart.getData().clear();
+            rff.stop();
+          
             
-}
 
-            if (checkbox1.isSelected()) {
-                scatterchart.getData().add(series1);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker1.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-
-                }
-                TotalNbr++;
-
-            } else {
-                scatterchart.getData().remove(series1);
-            }
-            if (checkbox2.isSelected()) {
-                scatterchart.getData().add(series2);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker2.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series2);
-            }
-
-            if (checkbox3.isSelected()) {
-                scatterchart.getData().add(series3);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker3.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series3);
-            }
-            if (checkbox4.isSelected()) {
-                scatterchart.getData().add(series4);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker4.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series4);
-            }
-            if (checkbox5.isSelected()) {
-                scatterchart.getData().add(series5);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker5.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series5);
-            }
-            if (checkbox6.isSelected()) {
-                scatterchart.getData().add(series6);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker6.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series6);
-            }
-            if (checkbox7.isSelected()) {
-                scatterchart.getData().add(series7);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker7.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series7);
-            }
-            if (checkbox8.isSelected()) {
-                scatterchart.getData().add(series8);
-
-                Set<Node> nodes = scatterchart.lookupAll(".series" + String.valueOf(TotalNbr));
-                Color c = colorPicker8.getValue();
-                String newColor = "-fx-background-color: " + toRGBCode(c);
-                for (Node n : nodes) {
-                    n.setStyle(newColor);
-                }
-                TotalNbr++;
-            } else {
-                scatterchart.getData().remove(series8);
-            }
-         //   rff.getChannelsdata().remove(0);
-           
-
+        } else {
+            //on-----------------------------------
+          
+           // rff = new ReadFromFile(dir);
+            rff.start();
+            SingleReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
+            SingleReadButton.setText("Off");
+            scatterchart.setVisible(true);                     
+            jennySingleplot();
         }
     }
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
-            if(AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")){
-                AutoReadButton.setStyle("");
-            }else{
-        AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");}
-        scatterchart.getData().clear();
-        scatterchart.getData().removeAll();
-        xAxis.setAutoRanging(true);
-        yAxis.setAutoRanging(true);
-        xAxis.setAnimated(false);
-        if (textFieldMs.getText() != null) {
-            if (timeRadio.isSelected()) {
-                SampleRadio.setSelected(false);
-                if (checkbox1.isSelected()) {
-                    series1 = new ScatterChart.Series();
-                    Timeline timeline1 = new Timeline();
-                    timeline1.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series1.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value1
-                                        ));
-                                        System.out.println("auto+rff.iter.value1" + rff.getChannelsdata().iterator().next().value1);
-                                    }
-                                    String newColorA = "-fx-background-color: " + toRGBCode(colorPicker1.getValue());
-                                    Set<Node> nodesA = scatterchart.lookupAll(".series0");
-                                    for (Node n : nodesA) {
-                                        n.setStyle(newColorA);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                }
-                            })
-                    );
-
-                    timeline1.setCycleCount(Animation.INDEFINITE);
-                    animation1 = new SequentialTransition();
-                    animation1.getChildren().add(timeline1);
-                    scatterchart.getData().add(series1);
-                    animation1.play();
-
-                } else {
-                    if (animation1 != null) {
-                        animation1.stop();
-                    }
-                }
-                if (checkbox2.isSelected()) {
-                    series2 = new ScatterChart.Series();
-                    Timeline timeline2 = new Timeline();
-                    timeline2.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series2.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value2
-                                        ));
-                                    }
-                                    String newColor2 = "-fx-background-color: " + toRGBCode(colorPicker2.getValue());
-                                    if (checkbox1.isSelected() == true) {
-                                        nodes2 = scatterchart.lookupAll(".series1");
-                                    } else {
-                                        nodes2 = scatterchart.lookupAll(".series0");
-                                    }
-                                    for (Node n : nodes2) {
-                                        n.setStyle(newColor2);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                }
-                            })
-                    );
-
-                    timeline2.setCycleCount(Animation.INDEFINITE);
-                    animation2 = new SequentialTransition();
-                    animation2.getChildren().add(timeline2);
-                    scatterchart.getData().add(series2);
-                    animation2.play();
-
-                } else {
-                    if (animation2 != null) {
-                        animation2.stop();
-                    }
-                }
-                if (checkbox3.isSelected()) {
-                    series3 = new ScatterChart.Series();
-                    Timeline timeline3 = new Timeline();
-                    timeline3.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series3.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value3
-                                        ));
-                                    }
-                                    String newColor3 = "-fx-background-color: " + toRGBCode(colorPicker3.getValue());
-                                    if (checkbox2.isSelected() && checkbox1.isSelected()) {
-                                        nodes3 = scatterchart.lookupAll(".series2");
-
-                                    } else if (!checkbox2.isSelected() && checkbox1.isSelected() || checkbox2.isSelected() && !checkbox1.isSelected()) {
-                                        nodes3 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox2.isSelected() && !checkbox1.isSelected()) {
-                                        nodes3 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes3) {
-                                        n.setStyle(newColor3);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-
-                                }
-                            })
-                    );
-                    timeline3.setCycleCount(Animation.INDEFINITE);
-                    animation3 = new SequentialTransition();
-                    animation3.getChildren().add(timeline3);
-                    scatterchart.getData().add(series3);
-                    animation3.play();
-
-                } else {
-                    if (animation3 != null) {
-                        animation3.stop();
-                    }
-                }
-                if (checkbox4.isSelected()) {
-                    series4 = new ScatterChart.Series();
-                    Timeline timeline4 = new Timeline();
-                    timeline4.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series4.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value4
-                                        ));
-                                    }
-                                    String newColor4 = "-fx-background-color: " + toRGBCode(colorPicker4.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series0");
-                                    }
-                                    for (Node n : nodes4) {
-                                        n.setStyle(newColor4);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-
-                                }
-                            })
-                    );
-
-                    timeline4.setCycleCount(Animation.INDEFINITE);
-                    animation4 = new SequentialTransition();
-                    animation4.getChildren().add(timeline4);
-                    scatterchart.getData().add(series4);
-                    animation4.play();
-
-                } else {
-                    if (animation4 != null) {
-                        animation4.stop();
-                    }
-                }
-                if (checkbox5.isSelected()) {
-                    series5 = new ScatterChart.Series();
-                    Timeline timeline5 = new Timeline();
-                    timeline5.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series5.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value5
-                                        ));
-                                    }
-                                    String newColor5 = "-fx-background-color: " + toRGBCode(colorPicker5.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series4");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series3");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series2");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes5) {
-                                        n.setStyle(newColor5);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-
-                                }
-                            })
-                    );
-
-                    timeline5.setCycleCount(Animation.INDEFINITE);
-                    animation5 = new SequentialTransition();
-                    animation5.getChildren().add(timeline5);
-                    scatterchart.getData().add(series5);
-                    animation5.play();
-
-                } else {
-                    if (animation5 != null) {
-                        animation5.stop();
-                    }
-                }
-                if (checkbox6.isSelected()) {
-                    series6 = new ScatterChart.Series();
-                    Timeline timeline6 = new Timeline();
-                    timeline6.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series6.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value6
-                                        ));
-                                    }
-                                    String newColor6 = "-fx-background-color: " + toRGBCode(colorPicker6.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series5");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series4");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes6) {
-                                        n.setStyle(newColor6);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-
-                                }
-                            })
-                    );
-
-                    timeline6.setCycleCount(Animation.INDEFINITE);
-                    animation6 = new SequentialTransition();
-                    animation6.getChildren().add(timeline6);
-                    scatterchart.getData().add(series6);
-                    animation6.play();
-
-                } else {
-                    if (animation6 != null) {
-                        animation6.stop();
-                    }
-                }
-                if (checkbox7.isSelected()) {
-                    series7 = new ScatterChart.Series();
-                    Timeline timeline7 = new Timeline();
-                    timeline7.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series7.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value7
-                                        ));
-                                    }
-                                    String newColor7 = "-fx-background-color: " + toRGBCode(colorPicker7.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
-                                            && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series6");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series5");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series4");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
-                                            && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes7) {
-                                        n.setStyle(newColor7);
-                                        n.requestFocus();
-                                    }
-                                    rff.getChannelsdata().remove(0);
-
-                                }
-                            })
-                    );
-
-                    timeline7.setCycleCount(Animation.INDEFINITE);
-                    animation7 = new SequentialTransition();
-                    animation7.getChildren().add(timeline7);
-                    scatterchart.getData().add(series7);
-                    animation7.play();
-
-                } else {
-                    if (animation7 != null) {
-                        animation7.stop();
-                    }
-                }
-                if (checkbox8.isSelected()) {
-                    series8 = new ScatterChart.Series();
-                    Timeline timeline8 = new Timeline();
-                    timeline8.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series8.getData().add(new ScatterChart.Data<String, Double>(
-                                                rff.getChannelsdata().iterator().next().date,
-                                                rff.getChannelsdata().iterator().next().value8
-                                        ));
-                                    }
-                                    String newColor8 = "-fx-background-color: " + toRGBCode(colorPicker8.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
-                                            && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series7");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series6");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series5");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series4");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
-                                            && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes8) {
-                                        n.setStyle(newColor8);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                }
-                            })
-                    );
-
-                    timeline8.setCycleCount(Animation.INDEFINITE);
-                    animation8 = new SequentialTransition();
-                    animation8.getChildren().add(timeline8);
-                    scatterchart.getData().add(series8);
-                    animation8.play();
-
-                } else {
-                    if (animation8 != null) {
-                        animation8.stop();
-                    }
-                }
-            } else if (SampleRadio.isSelected()) {
-                timeRadio.setSelected(false);
-                if (checkbox1.isSelected()) {
-                    series1 = new ScatterChart.Series();
-                    Timeline timeline1 = new Timeline();
-                    timeline1.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series1.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(a),
-                                                rff.getChannelsdata().iterator().next().value1
-                                        ));
-                                    }
-                                    String newColorA = "-fx-background-color: " + toRGBCode(colorPicker1.getValue());
-                                    Set<Node> nodesA = scatterchart.lookupAll(".series0");
-                                    for (Node n : nodesA) {
-                                        n.setStyle(newColorA);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    a++;
-                                }
-                            })
-                    );
-
-                    timeline1.setCycleCount(Animation.INDEFINITE);
-                    animation1 = new SequentialTransition();
-                    animation1.getChildren().add(timeline1);
-                    scatterchart.getData().add(series1);
-                    animation1.play();
-
-                } else {
-                    if (animation1 != null) {
-                        animation1.stop();
-                    }
-                }
-                if (checkbox2.isSelected()) {
-                    series2 = new ScatterChart.Series();
-                    Timeline timeline2 = new Timeline();
-                    timeline2.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series2.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(b),
-                                                rff.getChannelsdata().iterator().next().value2
-                                        ));
-                                    }
-                                    String newColor2 = "-fx-background-color: " + toRGBCode(colorPicker2.getValue());
-                                    if (checkbox1.isSelected() == true) {
-                                        nodes2 = scatterchart.lookupAll(".series1");
-                                    } else {
-                                        nodes2 = scatterchart.lookupAll(".series0");
-                                    }
-                                    for (Node n : nodes2) {
-                                        n.setStyle(newColor2);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    b++;
-                                }
-                            })
-                    );
-
-                    timeline2.setCycleCount(Animation.INDEFINITE);
-                    animation2 = new SequentialTransition();
-                    animation2.getChildren().add(timeline2);
-                    scatterchart.getData().add(series2);
-                    animation2.play();
-
-                } else {
-                    if (animation2 != null) {
-                        animation2.stop();
-                    }
-                }
-                if (checkbox3.isSelected()) {
-                    series3 = new ScatterChart.Series();
-                    Timeline timeline3 = new Timeline();
-                    timeline3.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series3.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(c),
-                                                rff.getChannelsdata().iterator().next().value3
-                                        ));
-                                    }
-                                    String newColor3 = "-fx-background-color: " + toRGBCode(colorPicker3.getValue());
-                                    if (checkbox2.isSelected() && checkbox1.isSelected()) {
-                                        nodes3 = scatterchart.lookupAll(".series2");
-
-                                    } else if (!checkbox2.isSelected() && checkbox1.isSelected() || checkbox2.isSelected() && !checkbox1.isSelected()) {
-                                        nodes3 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox2.isSelected() && !checkbox1.isSelected()) {
-                                        nodes3 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes3) {
-                                        n.setStyle(newColor3);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    c++;
-
-                                }
-                            })
-                    );
-                    timeline3.setCycleCount(Animation.INDEFINITE);
-                    animation3 = new SequentialTransition();
-                    animation3.getChildren().add(timeline3);
-                    scatterchart.getData().add(series3);
-                    animation3.play();
-
-                } else {
-                    if (animation3 != null) {
-                        animation3.stop();
-                    }
-                }
-                if (checkbox4.isSelected()) {
-                    series4 = new ScatterChart.Series();
-                    Timeline timeline4 = new Timeline();
-                    timeline4.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series4.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(d),
-                                                rff.getChannelsdata().iterator().next().value4
-                                        ));
-                                    }
-                                    String newColor4 = "-fx-background-color: " + toRGBCode(colorPicker4.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()) {
-                                        nodes4 = scatterchart.lookupAll(".series0");
-                                    }
-                                    for (Node n : nodes4) {
-                                        n.setStyle(newColor4);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    d++;
-                                    System.out.println("d" + d);
-
-                                }
-                            })
-                    );
-
-                    timeline4.setCycleCount(Animation.INDEFINITE);
-                    animation4 = new SequentialTransition();
-                    animation4.getChildren().add(timeline4);
-                    scatterchart.getData().add(series4);
-                    animation4.play();
-
-                } else {
-                    if (animation4 != null) {
-                        animation4.stop();
-                    }
-                }
-                if (checkbox5.isSelected()) {
-                    series5 = new ScatterChart.Series();
-                    Timeline timeline5 = new Timeline();
-                    timeline5.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series5.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(e),
-                                                rff.getChannelsdata().iterator().next().value5
-                                        ));
-                                    }
-                                    String newColor5 = "-fx-background-color: " + toRGBCode(colorPicker5.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series4");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series3");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series2");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()) {
-                                        nodes5 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes5) {
-                                        n.setStyle(newColor5);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    e++;
-
-                                }
-                            })
-                    );
-
-                    timeline5.setCycleCount(Animation.INDEFINITE);
-                    animation5 = new SequentialTransition();
-                    animation5.getChildren().add(timeline5);
-                    scatterchart.getData().add(series5);
-                    animation5.play();
-
-                } else {
-                    if (animation5 != null) {
-                        animation5.stop();
-                    }
-                }
-                if (checkbox6.isSelected()) {
-                    series6 = new ScatterChart.Series();
-                    Timeline timeline6 = new Timeline();
-                    timeline6.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series6.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(f),
-                                                rff.getChannelsdata().iterator().next().value6
-                                        ));
-                                    }
-                                    String newColor6 = "-fx-background-color: " + toRGBCode(colorPicker6.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series5");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series4");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()) {
-                                        nodes6 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes6) {
-                                        n.setStyle(newColor6);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    f++;
-
-                                }
-                            })
-                    );
-
-                    timeline6.setCycleCount(Animation.INDEFINITE);
-                    animation6 = new SequentialTransition();
-                    animation6.getChildren().add(timeline6);
-                    scatterchart.getData().add(series6);
-                    animation6.play();
-
-                } else {
-                    if (animation6 != null) {
-                        animation6.stop();
-                    }
-                }
-                if (checkbox7.isSelected()) {
-                    series7 = new ScatterChart.Series();
-                    Timeline timeline7 = new Timeline();
-                    timeline7.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series7.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(g),
-                                                rff.getChannelsdata().iterator().next().value7
-                                        ));
-                                    }
-                                    String newColor7 = "-fx-background-color: " + toRGBCode(colorPicker7.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
-                                            && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series6");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series5");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series4");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
-                                            && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()) {
-                                        nodes7 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes7) {
-                                        n.setStyle(newColor7);
-                                        n.requestFocus();
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    g++;
-                                }
-                            })
-                    );
-
-                    timeline7.setCycleCount(Animation.INDEFINITE);
-                    animation7 = new SequentialTransition();
-                    animation7.getChildren().add(timeline7);
-                    scatterchart.getData().add(series7);
-                    animation7.play();
-
-                } else {
-                    if (animation7 != null) {
-                        animation7.stop();
-                    }
-                }
-                if (checkbox8.isSelected()) {
-                    series8 = new ScatterChart.Series();
-                    Timeline timeline8 = new Timeline();
-                    timeline8.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    if (rff.getChannelsdata().iterator().hasNext()) {
-                                        series8.getData().add(new ScatterChart.Data<String, Double>(
-                                                String.valueOf(h),
-                                                rff.getChannelsdata().iterator().next().value8
-                                        ));
-                                    }
-                                    String newColor8 = "-fx-background-color: " + toRGBCode(colorPicker8.getValue());
-                                    if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
-                                            && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series7");
-
-                                    } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series6");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series5");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series4");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series3");
-
-                                    } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series2");
-
-                                    } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
-                                            || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series1");
-
-                                    } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
-                                            && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()) {
-                                        nodes8 = scatterchart.lookupAll(".series0");
-
-                                    }
-                                    for (Node n : nodes8) {
-                                        n.setStyle(newColor8);
-                                    }
-                                    rff.getChannelsdata().remove(0);
-                                    h++;
-                                }
-                            })
-                    );
-
-                    timeline8.setCycleCount(Animation.INDEFINITE);
-                    animation8 = new SequentialTransition();
-                    animation8.getChildren().add(timeline8);
-                    scatterchart.getData().add(series8);
-                    animation8.play();
-
-                } else {
-                    if (animation8 != null) {
-                        animation8.stop();
-                    }
-                }
-
-            }
+        if (AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
+            //off------------------------------------------
+            AutoReadButton.setStyle("");
+            AutoReadButton.setText("On");
+            scatterchart.getData().clear();       
+
+        } else {
+            //on-----------------------------------
+            rff = new ReadFromFile(selectedFile);
+           // rff = new ReadFromFile(dir);
+           
+            xAxis.setAutoRanging(true);
+            yAxis.setAutoRanging(true);
+            xAxis.setAnimated(false);
             scatterchart.setLegendVisible(false);
+            AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
+            AutoReadButton.setText("Off");
+            scatterchart.setVisible(true);   
+           //read-----------------------------------
+            rff.start();
+            //plot----------------------------------------------
+            
+           jennySingleplot();
+           //wait-------------------------------------
+           try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           //clearscrean------------------------------------                
+          // scatterchart.getData().clear(); 
+            
+            
 
         }
-        
+
     }
 
     @FXML
     private void Cleanscreen(ActionEvent event) {
+        clear();
+    }
+
+    void clear() {
         scatterchart.getData().clear();
         scatterchart.getData().removeAll();
+        rff.setChannelsdata(null);
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
-        if (animation != null) {
-            animation.stop();
-        }
-        rff.setChannelsdata(null);
-
     }
 
     @FXML
@@ -1724,6 +472,7 @@ while(rff.getChannelsdata().iterator().hasNext()){
         Date dateobj = new Date();
         //System.getProperty returns absolute path
         File f = new File(System.getProperty("user.dir") + "/folder/file.txt");
+    
         if (!f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
@@ -1745,14 +494,13 @@ while(rff.getChannelsdata().iterator().hasNext()){
 
     @FXML
     private void handleReadAction(ActionEvent event) throws InterruptedException, ParseException, FileNotFoundException, IOException {
+        scatterchart.getData().clear();
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
-        // if (dir != null) {
-        rff = new ReadFromFile(selectedFile);
-        rff.read();
-        fileLabel.setText(selectedFile.getPath());
-        // rff = new ReadFromFile(dir);
-        // rff.read();
+         //if (dir != null) {
+
+       fileLabel.setText(selectedFile.getPath());
+         // fileLabel.setText(dir.toString());
         // }
 
     }
@@ -1760,14 +508,547 @@ while(rff.getChannelsdata().iterator().hasNext()){
     @FXML
     private void sampleHandleAction(ActionEvent event) {
         timeRadio.setSelected(false);
+
     }
 
     @FXML
     private void timeHandleAction(ActionEvent event) {
         SampleRadio.setSelected(false);
+
     }
 
-  
+    void changecolor1() {
+        Set<Node> nodes = scatterchart.lookupAll(".series0");
+        Color c = colorPicker1.getValue();
+        String newColor = "-fx-background-color: " + toRGBCode(c);
+        for (Node n : nodes) {
+            n.setStyle(newColor);
 
-  
+        }
+
+    }
+
+    void changecolor2() {
+       
+        Color c = colorPicker2.getValue();
+        String newColor2 = "-fx-background-color: " + toRGBCode(c);
+        if (checkbox1.isSelected() == true) {
+            nodes2 = scatterchart.lookupAll(".series1");
+        } else {
+            nodes2 = scatterchart.lookupAll(".series0");
+        }
+        for (Node n : nodes2) {
+            n.setStyle(newColor2);
+        }
+
+    }
+
+    void changecolor3() {
+        Color c = colorPicker3.getValue();
+        String newColor3 = "-fx-background-color: " + toRGBCode(c);
+        if (checkbox2.isSelected() && checkbox1.isSelected()) {
+            nodes3 = scatterchart.lookupAll(".series2");
+
+        } else if (!checkbox2.isSelected() && checkbox1.isSelected() || checkbox2.isSelected() && !checkbox1.isSelected()) {
+            nodes3 = scatterchart.lookupAll(".series1");
+
+        } else if (!checkbox2.isSelected() && !checkbox1.isSelected()) {
+            nodes3 = scatterchart.lookupAll(".series0");
+
+        }
+        for (Node n : nodes3) {
+            n.setStyle(newColor3);
+        }
+
+    }
+
+    void changecolor4() {
+        Color c = colorPicker4.getValue();
+        String newColor4 = "-fx-background-color: " + toRGBCode(c);
+        if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()) {
+            nodes4 = scatterchart.lookupAll(".series3");
+
+        } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected()) {
+            nodes4 = scatterchart.lookupAll(".series2");
+
+        } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected()) {
+            nodes4 = scatterchart.lookupAll(".series1");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()) {
+            nodes4 = scatterchart.lookupAll(".series0");
+        }
+        for (Node n : nodes4) {
+            n.setStyle(newColor4);
+        }
+
+    }
+
+    void changecolor5() {
+        Color c = colorPicker5.getValue();
+        String newColor5 = "-fx-background-color: " + toRGBCode(c);
+        if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()) {
+            nodes5 = scatterchart.lookupAll(".series4");
+
+        } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()) {
+            nodes5 = scatterchart.lookupAll(".series3");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()) {
+            nodes5 = scatterchart.lookupAll(".series2");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()) {
+            nodes5 = scatterchart.lookupAll(".series1");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected()) {
+            nodes5 = scatterchart.lookupAll(".series0");
+        }
+        for (Node n : nodes5) {
+            n.setStyle(newColor5);
+        }
+
+    }
+
+    void changecolor6() {
+        Color c = colorPicker6.getValue();
+        String newColor6 = "-fx-background-color: " + toRGBCode(c);
+        if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()) {
+            nodes6 = scatterchart.lookupAll(".series5");
+
+        } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()) {
+            nodes6 = scatterchart.lookupAll(".series4");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()) {
+            nodes6 = scatterchart.lookupAll(".series3");
+
+        } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()) {
+            nodes6 = scatterchart.lookupAll(".series2");
+
+        } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected()) {
+            nodes6 = scatterchart.lookupAll(".series1");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected()) {
+            nodes6 = scatterchart.lookupAll(".series0");
+
+        }
+        for (Node n : nodes6) {
+            n.setStyle(newColor6);
+        }
+
+    }
+
+    void changecolor7() {
+        Color c = colorPicker7.getValue();
+        String newColor7 = "-fx-background-color: " + toRGBCode(c);
+        if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
+                && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()) {
+            nodes7 = scatterchart.lookupAll(".series6");
+
+        } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()) {
+            nodes7 = scatterchart.lookupAll(".series5");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()) {
+            nodes7 = scatterchart.lookupAll(".series4");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()) {
+            nodes7 = scatterchart.lookupAll(".series3");
+
+        } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()) {
+            nodes7 = scatterchart.lookupAll(".series2");
+
+        } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()) {
+            nodes7 = scatterchart.lookupAll(".series1");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
+                && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected()) {
+            nodes7 = scatterchart.lookupAll(".series0");
+
+        }
+        for (Node n : nodes7) {
+            n.setStyle(newColor7);
+        }
+
+    }
+
+    void changecolor8() {
+        Color c = colorPicker8.getValue();
+        String newColor8 = "-fx-background-color: " + toRGBCode(c);
+        if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected()
+                && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series7");
+
+        } else if (!checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series6");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series5");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series4");
+
+        } else if (checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series3");
+
+        } else if (checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series2");
+
+        } else if (checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || !checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected() && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series1");
+
+        } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && !checkbox3.isSelected()
+                && !checkbox4.isSelected() && !checkbox5.isSelected() && !checkbox6.isSelected() && !checkbox7.isSelected()) {
+            nodes8 = scatterchart.lookupAll(".series0");
+
+        }
+        for (Node n : nodes8) {
+            n.setStyle(newColor8);
+        }
+    }
+
+    @FXML
+    private void handelColorPicker1(ActionEvent event) {
+        changecolor1();
+    }
+
+    @FXML
+    private void handelColorPicker2(ActionEvent event) {
+        changecolor2();
+    }
+
+    @FXML
+    private void handelColorPicker3(ActionEvent event) {
+        changecolor3();
+    }
+
+    @FXML
+    private void handelColorPicker4(ActionEvent event) {
+        changecolor4();
+    }
+
+    @FXML
+    private void handelColorPicker5(ActionEvent event) {
+        changecolor5();
+    }
+
+    @FXML
+    private void handelColorPicker6(ActionEvent event) {
+        changecolor6();
+    }
+
+    @FXML
+    private void handelColorPicker7(ActionEvent event) {
+        changecolor7();
+    }
+
+    @FXML
+    private void handelColorPicker8(ActionEvent event) {
+        changecolor8();
+    }
+
+    @FXML
+    private void handelCheckbox1(ActionEvent event) {
+
+        if (checkbox1.isSelected()) {
+            scatterchart.getData().add(series1);
+            changecolor1();
+
+        } else {
+            scatterchart.getData().remove(series1);
+        }
+
+    }
+
+    @FXML
+    private void handelCheckbox2(ActionEvent event) {
+        if (checkbox2.isSelected()) {
+            scatterchart.getData().add(series2);
+            changecolor2();
+        } else {
+            scatterchart.getData().remove(series2);
+        }
+
+    }
+
+    @FXML
+    private void handelCheckbox3(ActionEvent event) {
+        if (checkbox3.isSelected()) {
+            scatterchart.getData().add(series3);
+            changecolor3();
+        } else {
+            scatterchart.getData().remove(series3);
+        }
+    }
+
+    @FXML
+    private void handelCheckbox4(ActionEvent event) {
+        if (checkbox4.isSelected()) {
+            scatterchart.getData().add(series4);
+            changecolor4();
+        } else {
+            scatterchart.getData().remove(series4);
+        }
+    }
+
+    @FXML
+    private void handelCheckbox5(ActionEvent event) {
+        if (checkbox5.isSelected()) {
+            scatterchart.getData().add(series5);
+            changecolor5();
+        } else {
+            scatterchart.getData().remove(series5);
+        }
+    }
+
+    @FXML
+    private void handelCheckbox6(ActionEvent event) {
+        if (checkbox6.isSelected()) {
+            scatterchart.getData().add(series6);
+            changecolor6();
+        } else {
+            scatterchart.getData().remove(series6);
+        }
+    }
+
+    @FXML
+    private void handelCheckbox7(ActionEvent event) {
+        if (checkbox7.isSelected()) {
+            scatterchart.getData().add(series7);
+            changecolor7();
+        } else {
+            scatterchart.getData().remove(series7);
+        }
+    }
+
+    @FXML
+    private void handelCheckbox8(ActionEvent event) {
+        if (checkbox8.isSelected()) {
+            scatterchart.getData().add(series8);
+            changecolor8();
+        } else {
+            scatterchart.getData().remove(series8);
+        }
+    }
+
+    @FXML
+    private void handleExitAction(ActionEvent event) {
+        System.exit(0);
+    }
+
 }
