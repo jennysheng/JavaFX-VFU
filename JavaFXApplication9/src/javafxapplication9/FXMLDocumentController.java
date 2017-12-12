@@ -70,7 +70,7 @@ import javax.swing.JOptionPane;
  *
  * @author Jenny_2
  */
-public class FXMLDocumentController implements Initializable{
+public class FXMLDocumentController implements Initializable {
 
     public List<ScatterChart.Series<String, Double>> seriesCollection = new ArrayList<>();
     FXMLDocumentController a;
@@ -196,7 +196,6 @@ public class FXMLDocumentController implements Initializable{
                 (int) (color.getBlue() * 255));
     }
 
-    
 //    public void run() {
 //        synchronized (this) {
 //            try {
@@ -217,7 +216,6 @@ public class FXMLDocumentController implements Initializable{
 //           
 //        }
 //    }
-
     void jennySingleplot() {
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
@@ -228,7 +226,6 @@ public class FXMLDocumentController implements Initializable{
         } else if (SampleRadio.isSelected()) {
             sampleplot();
         }
-        
 
     }
 
@@ -386,69 +383,68 @@ public class FXMLDocumentController implements Initializable{
         }
 
     }
- 
+
     @FXML
     private void singlePlot(MouseEvent event) {
-  rff = new ReadFromFile(selectedFile);
+        rff = new ReadFromFile(selectedFile);
         if (SingleReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
             //off------------------------------------------
             SingleReadButton.setStyle("");
             SingleReadButton.setText("On");
-            scatterchart.getData().clear();
-            rff.stop();
-          
-            
+            clear();
 
         } else {
             //on-----------------------------------
-          
-           // rff = new ReadFromFile(dir);
+
+            // rff = new ReadFromFile(dir);                
             rff.start();
+
             SingleReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
             SingleReadButton.setText("Off");
-            scatterchart.setVisible(true);                     
+            scatterchart.setVisible(true);
             jennySingleplot();
         }
     }
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
-        if (AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
-            //off------------------------------------------
-            AutoReadButton.setStyle("");
-            AutoReadButton.setText("On");
-            scatterchart.getData().clear();       
-
-        } else {
-            //on-----------------------------------
+       
             rff = new ReadFromFile(selectedFile);
-           // rff = new ReadFromFile(dir);
-           
-            xAxis.setAutoRanging(true);
-            yAxis.setAutoRanging(true);
-            xAxis.setAnimated(false);
-            scatterchart.setLegendVisible(false);
-            AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
-            AutoReadButton.setText("Off");
-            scatterchart.setVisible(true);   
-           //read-----------------------------------
-            rff.start();
-            //plot----------------------------------------------
+            if (AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
+                //off------------------------------------------
+                AutoReadButton.setStyle("");
+                AutoReadButton.setText("On");
+                rff.interrupt();
             
-           jennySingleplot();
-           //wait-------------------------------------
-           try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-           //clearscrean------------------------------------                
-          // scatterchart.getData().clear(); 
-            
-            
+            } else {
+                //on-----------------------------------
+                // rff = new ReadFromFile(dir);
+                xAxis.setAutoRanging(true);
+                yAxis.setAutoRanging(true);
+                xAxis.setAnimated(false);
+                scatterchart.setLegendVisible(false);
+                AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
+                AutoReadButton.setText("Off");
+                scatterchart.setVisible(true);
+                rff.start();
+                jennySingleplot();
+                Timeline timeline4 = new Timeline();
+                timeline4.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                scatterchart.getData().clear();
+                            }
+                        })
+                );
 
-        }
+                timeline4.setCycleCount(Animation.INDEFINITE);
+                animation4 = new SequentialTransition();
+                animation4.getChildren().add(timeline4);
+                animation4.play();
 
+            }
+        
     }
 
     @FXML
@@ -472,7 +468,7 @@ public class FXMLDocumentController implements Initializable{
         Date dateobj = new Date();
         //System.getProperty returns absolute path
         File f = new File(System.getProperty("user.dir") + "/folder/file.txt");
-    
+
         if (!f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
@@ -497,10 +493,10 @@ public class FXMLDocumentController implements Initializable{
         scatterchart.getData().clear();
         FileChooser fileChooser = new FileChooser();
         selectedFile = fileChooser.showOpenDialog(null);
-         //if (dir != null) {
+        //if (dir != null) {
 
-       fileLabel.setText(selectedFile.getPath());
-         // fileLabel.setText(dir.toString());
+        fileLabel.setText(selectedFile.getPath());
+        // fileLabel.setText(dir.toString());
         // }
 
     }
@@ -529,7 +525,7 @@ public class FXMLDocumentController implements Initializable{
     }
 
     void changecolor2() {
-       
+
         Color c = colorPicker2.getValue();
         String newColor2 = "-fx-background-color: " + toRGBCode(c);
         if (checkbox1.isSelected() == true) {
