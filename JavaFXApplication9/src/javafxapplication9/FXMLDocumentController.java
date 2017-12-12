@@ -535,26 +535,26 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
-
+//double clicka firsta gången------------------------------------------------------
     @FXML
     private void singlePlot(MouseEvent event) {
-             
+      
         if (SingleReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
-            //off------------------------------------------
+            //on------------------------------------------
             SingleReadButton.setStyle("");
-            SingleReadButton.setText("SinglePlotOn");
+            SingleReadButton.setText("SinglePlotOff");
             scatterchart.getData().clear();
             jennySingleplot();
 
         } else {
-            //on-----------------------------------
+            //off-----------------------------------
             scatterchart.getData().clear();
             SingleReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
-            SingleReadButton.setText("SinglePlotOff");
+            SingleReadButton.setText("SinglePlotOn");
             scatterchart.setVisible(true);
             rff = new ReadFromFile(selectedFile);
             rff.start();
-            jennySingleplot();
+         
 
         }
     }
