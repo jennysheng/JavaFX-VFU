@@ -396,7 +396,7 @@ public class FXMLDocumentController implements Initializable {
         } else {
             //on-----------------------------------
 
-            // rff = new ReadFromFile(dir);                
+            rff = new ReadFromFile(selectedFile);                
             rff.start();
 
             SingleReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
@@ -409,12 +409,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
        
-            rff = new ReadFromFile(selectedFile);
+     
             if (AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
                 //off------------------------------------------
                 AutoReadButton.setStyle("");
                 AutoReadButton.setText("On");
-                rff.interrupt();
+                scatterchart.getData().clear();
+                animation4.stop();
             
             } else {
                 //on-----------------------------------
@@ -426,6 +427,7 @@ public class FXMLDocumentController implements Initializable {
                 AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
                 AutoReadButton.setText("Off");
                 scatterchart.setVisible(true);
+                rff = new ReadFromFile(selectedFile);
                 rff.start();
                 jennySingleplot();
                 Timeline timeline4 = new Timeline();
@@ -433,8 +435,11 @@ public class FXMLDocumentController implements Initializable {
                         new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                scatterchart.getData().clear();
-                            }
+                                scatterchart.getData().clear();                               
+                                    jennySingleplot();
+                                    
+                                }
+                            
                         })
                 );
 
