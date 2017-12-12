@@ -38,9 +38,9 @@ public class ReadFromFile extends Thread {
     public ReadFromFile(File selectedFile) {
         this.selectedFile = selectedFile;
     }
-
+int j = 0;
     @Override
-    public void run() {
+    public void  run() {
         synchronized (this) {
 
             StringBuilder filecontent = new StringBuilder();
@@ -50,7 +50,7 @@ public class ReadFromFile extends Thread {
                 try (BufferedReader reader = new BufferedReader(new FileReader(new File(selectedFile.getPath())))) {
 
                     String line = reader.readLine();
-                    int j = 0;
+                    
 
                     while ((line) != null) {
                         line = reader.readLine();
@@ -91,6 +91,10 @@ public class ReadFromFile extends Thread {
 
             }
         }
+    }
+
+    public int getJ() {
+        return j;
     }
 
     public void setChannelsdata(ObservableList<DataLogger> channelsdata) {

@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.Animation;
@@ -72,8 +73,6 @@ import javax.swing.JOptionPane;
  */
 public class FXMLDocumentController implements Initializable {
 
-    public List<ScatterChart.Series<String, Double>> seriesCollection = new ArrayList<>();
-    FXMLDocumentController a;
     File selectedFile = null;
     ArrayList<Color> colorList = new ArrayList<Color>();
 
@@ -140,13 +139,19 @@ public class FXMLDocumentController implements Initializable {
     ObservableList<DataLogger> channelsdata;
     @FXML
     public Label outputLabel;
-    @FXML
-    public Button Cleanscreen;
+
     @FXML
     public RadioButton SampleRadio;
     @FXML
     public RadioButton timeRadio;
-    ScatterChart.Series<String, Double> series1, series2, series3, series4, series5, series6, series7, series8;
+    ScatterChart.Series<String, Double> series1;
+    ScatterChart.Series<String, Double> series2;
+    ScatterChart.Series<String, Double> series3;
+    ScatterChart.Series<String, Double> series4;
+    ScatterChart.Series<String, Double> series5;
+    ScatterChart.Series<String, Double> series6;
+    ScatterChart.Series<String, Double> series7;
+    ScatterChart.Series<String, Double> series8;
     @FXML
     public Label fileLabel;
 
@@ -185,6 +190,8 @@ public class FXMLDocumentController implements Initializable {
         colorPicker8.setValue(colorList.get(7));
         textFieldMs.setText("1000");
         SampleRadio.setSelected(true);
+        SingleReadButton.setVisible(false);
+        AutoReadButton.setVisible(false);
 
     }
     ReadFromFile rff;
@@ -196,40 +203,32 @@ public class FXMLDocumentController implements Initializable {
                 (int) (color.getBlue() * 255));
     }
 
-//    public void run() {
-//        synchronized (this) {
-//            try {
-//                wait();
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            if (timeRadio.isSelected()) {
-//                timeplot();            
-//            } else if (SampleRadio.isSelected()) {
-//                sampleplot();
-//            }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//           
-//        }
-//    }
+    void jennyAutoplot() {
+        xAxis.setAutoRanging(true);
+        yAxis.setAutoRanging(true);
+        xAxis.setAnimated(false);
+        scatterchart.setLegendVisible(false);
+        if (timeRadio.isSelected()) {
+            timeAutoPlot();
+        } else if (SampleRadio.isSelected()) {
+            sampleAutoPlot();
+        }
+
+    }
+
     void jennySingleplot() {
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
         xAxis.setAnimated(false);
         scatterchart.setLegendVisible(false);
         if (timeRadio.isSelected()) {
-            timeplot();
+            timeSinglePlot();
         } else if (SampleRadio.isSelected()) {
-            sampleplot();
+            sampleSinglePlot();
         }
-
     }
 
-    void timeplot() {
+    void timeAutoPlot() {
         SampleRadio.setSelected(false);
         series1 = new ScatterChart.Series();
         series2 = new ScatterChart.Series();
@@ -305,7 +304,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    void sampleplot() {
+    void sampleAutoPlot() {
         int i = 1;
         timeRadio.setSelected(false);
         series1 = new ScatterChart.Series();
@@ -316,18 +315,171 @@ public class FXMLDocumentController implements Initializable {
         series6 = new ScatterChart.Series();
         series7 = new ScatterChart.Series();
         series8 = new ScatterChart.Series();
+
+        int j = 0;
         while (rff.getChannelsdata().iterator().hasNext()) {
-            series1.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value1));
-            series2.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value2));
-            series3.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value3));
-            series4.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value4));
-            series5.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value5));
-            series6.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value6));
-            series7.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value7));
-            series8.getData().add(new ScatterChart.Data<>(String.valueOf(i), rff.getChannelsdata().iterator().next().value8));
+            series1.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value1));
+            series2.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value2));
+            series3.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value3));
+            series4.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value4));
+            series5.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value5));
+            series6.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value6));
+            series7.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value7));
+            series8.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value8));
             System.out.println("sampleplot" + rff.getChannelsdata().iterator().next().value1);
             rff.getChannelsdata().remove(0);
-            i++;
+            j++;
+
+        }
+
+        if (checkbox1.isSelected()) {
+            scatterchart.getData().add(series1);
+            changecolor1();
+
+        } else {
+            scatterchart.getData().remove(series1);
+        }
+        if (checkbox2.isSelected()) {
+            scatterchart.getData().add(series2);
+            changecolor2();
+        } else {
+            scatterchart.getData().remove(series2);
+        }
+
+        if (checkbox3.isSelected()) {
+            scatterchart.getData().add(series3);
+            changecolor3();
+        } else {
+            scatterchart.getData().remove(series3);
+        }
+        if (checkbox4.isSelected()) {
+            scatterchart.getData().add(series4);
+            changecolor4();
+        } else {
+            scatterchart.getData().remove(series4);
+        }
+        if (checkbox5.isSelected()) {
+            scatterchart.getData().add(series5);
+            changecolor5();
+        } else {
+            scatterchart.getData().remove(series5);
+        }
+        if (checkbox6.isSelected()) {
+            scatterchart.getData().add(series6);
+            changecolor6();
+        } else {
+            scatterchart.getData().remove(series6);
+        }
+        if (checkbox7.isSelected()) {
+            scatterchart.getData().add(series7);
+            changecolor7();
+        } else {
+            scatterchart.getData().remove(series7);
+        }
+        if (checkbox8.isSelected()) {
+            scatterchart.getData().add(series8);
+            changecolor8();
+        } else {
+            scatterchart.getData().remove(series8);
+        }
+
+    }
+
+    void timeSinglePlot() {
+        SampleRadio.setSelected(false);
+        series1 = new ScatterChart.Series();
+        series2 = new ScatterChart.Series();
+        series3 = new ScatterChart.Series();
+        series4 = new ScatterChart.Series();
+        series5 = new ScatterChart.Series();
+        series6 = new ScatterChart.Series();
+        series7 = new ScatterChart.Series();
+        series8 = new ScatterChart.Series();
+        for (int j = 0; j < rff.getJ(); j++) {
+            series1.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue1()));
+            series2.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue2()));
+            series3.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue3()));
+            series4.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue4()));
+            series5.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue5()));
+            series6.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue6()));
+            series7.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue7()));
+            series8.getData().add(new ScatterChart.Data<>(rff.getChannelsdata().get(j).getDate(), rff.getChannelsdata().get(j).getValue8()));
+
+        }
+
+        if (checkbox1.isSelected()) {
+            scatterchart.getData().add(series1);
+            changecolor1();
+        } else {
+            scatterchart.getData().remove(series1);
+        }
+        if (checkbox2.isSelected()) {
+            scatterchart.getData().add(series2);
+            changecolor2();
+        } else {
+            scatterchart.getData().remove(series2);
+        }
+
+        if (checkbox3.isSelected()) {
+            scatterchart.getData().add(series3);
+            changecolor3();
+        } else {
+            scatterchart.getData().remove(series3);
+        }
+        if (checkbox4.isSelected()) {
+            scatterchart.getData().add(series4);
+            changecolor4();
+        } else {
+            scatterchart.getData().remove(series4);
+        }
+        if (checkbox5.isSelected()) {
+            scatterchart.getData().add(series5);
+            changecolor5();
+        } else {
+            scatterchart.getData().remove(series5);
+        }
+        if (checkbox6.isSelected()) {
+            scatterchart.getData().add(series6);
+            changecolor6();
+        } else {
+            scatterchart.getData().remove(series6);
+        }
+        if (checkbox7.isSelected()) {
+            scatterchart.getData().add(series7);
+            changecolor7();
+        } else {
+            scatterchart.getData().remove(series7);
+        }
+        if (checkbox8.isSelected()) {
+            scatterchart.getData().add(series8);
+            changecolor8();
+
+        } else {
+            scatterchart.getData().remove(series8);
+        }
+    }
+
+    void sampleSinglePlot() {
+
+        timeRadio.setSelected(false);
+        series1 = new ScatterChart.Series();
+        series2 = new ScatterChart.Series();
+        series3 = new ScatterChart.Series();
+        series4 = new ScatterChart.Series();
+        series5 = new ScatterChart.Series();
+        series6 = new ScatterChart.Series();
+        series7 = new ScatterChart.Series();
+        series8 = new ScatterChart.Series();
+
+        for (int j = 0; j < rff.getJ(); j++) {
+            series1.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue1()));
+            series2.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue2()));
+            series3.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue3()));
+            series4.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue4()));
+            series5.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue5()));
+            series6.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue6()));
+            series7.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue7()));
+            series8.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().get(j).getValue8()));
 
         }
 
@@ -386,80 +538,78 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void singlePlot(MouseEvent event) {
-        rff = new ReadFromFile(selectedFile);
+             
         if (SingleReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
             //off------------------------------------------
             SingleReadButton.setStyle("");
-            SingleReadButton.setText("On");
-            clear();
+            SingleReadButton.setText("SinglePlotOn");
+            scatterchart.getData().clear();
+            jennySingleplot();
 
         } else {
             //on-----------------------------------
-
-            rff = new ReadFromFile(selectedFile);                
-            rff.start();
-
+            scatterchart.getData().clear();
             SingleReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
-            SingleReadButton.setText("Off");
+            SingleReadButton.setText("SinglePlotOff");
             scatterchart.setVisible(true);
+            rff = new ReadFromFile(selectedFile);
+            rff.start();
             jennySingleplot();
+
         }
     }
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
-       
-     
-            if (AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
-                //off------------------------------------------
-                AutoReadButton.setStyle("");
-                AutoReadButton.setText("On");
-                scatterchart.getData().clear();
-                animation4.stop();
-            
-            } else {
-                //on-----------------------------------
-                // rff = new ReadFromFile(dir);
-                xAxis.setAutoRanging(true);
-                yAxis.setAutoRanging(true);
-                xAxis.setAnimated(false);
-                scatterchart.setLegendVisible(false);
-                AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
-                AutoReadButton.setText("Off");
-                scatterchart.setVisible(true);
-                rff = new ReadFromFile(selectedFile);
-                rff.start();
-                jennySingleplot();
-                Timeline timeline4 = new Timeline();
-                timeline4.getKeyFrames().add(
-                        new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                scatterchart.getData().clear();                               
-                                    jennySingleplot();
-                                    
-                                }
-                            
-                        })
-                );
 
-                timeline4.setCycleCount(Animation.INDEFINITE);
-                animation4 = new SequentialTransition();
-                animation4.getChildren().add(timeline4);
-                animation4.play();
+        if (AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
+            //off------------------------------------------
+            AutoReadButton.setStyle("");
+            AutoReadButton.setText("On");
+            scatterchart.getData().clear();
+            animation4.stop();
+            SingleReadButton.setDisable(false);
 
-            }
-        
-    }
+        } else {
+            //on-----------------------------------
+            SingleReadButton.setDisable(true);
+            // rff = new ReadFromFile(dir);
+            xAxis.setAutoRanging(true);
+            yAxis.setAutoRanging(true);
+            xAxis.setAnimated(false);
+            scatterchart.setLegendVisible(false);
+            AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
+            AutoReadButton.setText("Off");
+            scatterchart.setVisible(true);
+            rff = new ReadFromFile(selectedFile);
+            rff.start();
+            jennyAutoplot();
+            Timeline timeline4 = new Timeline();
+            timeline4.getKeyFrames().add(
+                    new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            scatterchart.getData().clear();
+                            jennyAutoplot();
 
-    @FXML
-    private void Cleanscreen(ActionEvent event) {
-        clear();
+                        }
+
+                    })
+            );
+
+            timeline4.setCycleCount(Animation.INDEFINITE);
+            animation4 = new SequentialTransition();
+            animation4.getChildren().add(timeline4);
+            animation4.play();
+
+        }
+
     }
 
     void clear() {
         scatterchart.getData().clear();
         scatterchart.getData().removeAll();
+
         rff.setChannelsdata(null);
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
@@ -503,6 +653,8 @@ public class FXMLDocumentController implements Initializable {
         fileLabel.setText(selectedFile.getPath());
         // fileLabel.setText(dir.toString());
         // }
+        SingleReadButton.setVisible(true);
+        AutoReadButton.setVisible(true);
 
     }
 
