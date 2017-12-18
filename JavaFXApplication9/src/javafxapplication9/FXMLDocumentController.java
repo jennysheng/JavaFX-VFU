@@ -565,25 +565,28 @@ public class FXMLDocumentController implements Initializable {
         if (AutoReadButton.getStyle().equals("-fx-font: 13 arial; -fx-base: #b6e7c9;")) {
             //off------------------------------------------
             AutoReadButton.setStyle("");
-            AutoReadButton.setText("On");
+            AutoReadButton.setText("AutoPlot");
             scatterchart.getData().clear();
             animation4.stop();
             SingleReadButton.setDisable(false);
 
         } else {
-            //on-----------------------------------
+                //on-----------------------------------
             SingleReadButton.setDisable(true);
             // rff = new ReadFromFile(dir);
             xAxis.setAutoRanging(true);
             yAxis.setAutoRanging(true);
             xAxis.setAnimated(false);
+            yAxis.setAnimated(false);
             scatterchart.setLegendVisible(false);
             AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
-            AutoReadButton.setText("Off");
+           
             scatterchart.setVisible(true);
+       
+            
             rff = new ReadFromFile(selectedFile);
             rff.start();
-            jennyAutoplot();
+           
             Timeline timeline4 = new Timeline();
             timeline4.getKeyFrames().add(
                     new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
@@ -601,15 +604,15 @@ public class FXMLDocumentController implements Initializable {
             animation4 = new SequentialTransition();
             animation4.getChildren().add(timeline4);
             animation4.play();
-
+            }
+             AutoReadButton.setText("Off");
         }
 
-    }
+    
 
     void clear() {
         scatterchart.getData().clear();
         scatterchart.getData().removeAll();
-
         rff.setChannelsdata(null);
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
