@@ -581,8 +581,7 @@ public class FXMLDocumentController implements Initializable {
             scatterchart.setLegendVisible(false);
             AutoReadButton.setStyle("-fx-font: 13 arial; -fx-base: #b6e7c9;");
            
-            scatterchart.setVisible(true);
-       
+            scatterchart.setVisible(true);      
             
             rff = new ReadFromFile(selectedFile);
             rff.start();
@@ -604,8 +603,9 @@ public class FXMLDocumentController implements Initializable {
             animation4 = new SequentialTransition();
             animation4.getChildren().add(timeline4);
             animation4.play();
-            }
              AutoReadButton.setText("Off");
+            }
+            
         }
 
     
