@@ -6,6 +6,10 @@
 package javafxapplication9;
 
 import com.sun.javafx.charts.Legend;
+import com.sun.javafx.robot.FXRobot;
+import com.sun.javafx.robot.FXRobotFactory;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +34,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -52,6 +57,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -106,12 +112,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public CheckBox checkbox1;
     public Button SingelReadButton;
-    final static Object semaphore = null;
+    int m = 0;
+    int n = 0;
 
     @FXML
     public Button AutoReadButton;
-    public SequentialTransition animation, animation1, animation2, animation3, animation4, animation5, animation6, animation7, animation8;
-    public final BooleanProperty zoomAnimated = new SimpleBooleanProperty(true);
+    public SequentialTransition animation4;
+
     @FXML
     public TextField textFieldMs;
     @FXML
@@ -131,12 +138,14 @@ public class FXMLDocumentController implements Initializable {
 
     Set<Node> nodes2, nodes3, nodes4, nodes5, nodes6, nodes7, nodes8;
     Rectangle selectRect;
-    public Timeline zoomAnimation = new Timeline();
+    ReadFromFile rff;
+
     int TotalNbr;
     File dir;
+
     @FXML
     public Button SingleReadButton;
-    ObservableList<DataLogger> channelsdata;
+
     @FXML
     public Label outputLabel;
 
@@ -194,7 +203,6 @@ public class FXMLDocumentController implements Initializable {
         AutoReadButton.setVisible(false);
 
     }
-    ReadFromFile rff;
 
     public static String toRGBCode(Color color) {
         return String.format("#%02X%02X%02X",
@@ -255,6 +263,7 @@ public class FXMLDocumentController implements Initializable {
         if (checkbox1.isSelected()) {
             scatterchart.getData().add(series1);
             changecolor1();
+
         } else {
             scatterchart.getData().remove(series1);
         }
@@ -298,14 +307,14 @@ public class FXMLDocumentController implements Initializable {
         if (checkbox8.isSelected()) {
             scatterchart.getData().add(series8);
             changecolor8();
-
         } else {
             scatterchart.getData().remove(series8);
         }
+
     }
 
     void sampleAutoPlot() {
-        int i = 1;
+
         timeRadio.setSelected(false);
         series1 = new ScatterChart.Series();
         series2 = new ScatterChart.Series();
@@ -316,19 +325,18 @@ public class FXMLDocumentController implements Initializable {
         series7 = new ScatterChart.Series();
         series8 = new ScatterChart.Series();
 
-        int j = 0;
         while (rff.getChannelsdata().iterator().hasNext()) {
-            series1.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value1));
-            series2.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value2));
-            series3.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value3));
-            series4.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value4));
-            series5.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value5));
-            series6.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value6));
-            series7.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value7));
-            series8.getData().add(new ScatterChart.Data<>(String.valueOf(j), rff.getChannelsdata().iterator().next().value8));
+            series1.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value1));
+            series2.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value2));
+            series3.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value3));
+            series4.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value4));
+            series5.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value5));
+            series6.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value6));
+            series7.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value7));
+            series8.getData().add(new ScatterChart.Data<>(String.valueOf(n), rff.getChannelsdata().iterator().next().value8));
             System.out.println("sampleplot" + rff.getChannelsdata().iterator().next().value1);
             rff.getChannelsdata().remove(0);
-            j++;
+            n++;
 
         }
 
@@ -558,52 +566,57 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
+    int semaphore = 0;
+    Timeline timeline;
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
-
+        SingleReadButton.setDisable(false);
+        scatterchart.getData().clear();
+        xAxis.setAutoRanging(true);
+        yAxis.setAutoRanging(false);
+        xAxis.setAnimated(false);
+        yAxis.setAnimated(false);
+        scatterchart.setLegendVisible(false);
+        scatterchart.setVisible(true);
         if (AutoReadButton.getText().equalsIgnoreCase("Off")) {
             AutoReadButton.setText("AutoPlot");
-            scatterchart.getData().clear();
             animation4.stop();
-            SingleReadButton.setDisable(false);
 
         } else if (AutoReadButton.getText().equalsIgnoreCase("AutoPlot")) {
-            //on-----------------------------------
-            SingleReadButton.setDisable(true);
             AutoReadButton.setText("Off");
-            // rff = new ReadFromFile(dir);
-            xAxis.setAutoRanging(true);
-            yAxis.setAutoRanging(false);
-            xAxis.setAnimated(false);
-            yAxis.setAnimated(false);
-            scatterchart.setLegendVisible(false);
+          //  com.sun.glass.ui.Robot r = com.sun.glass.ui.Application.GetApplication().createRobot();
 
-            scatterchart.setVisible(true);
-
-            rff = new ReadFromFile(selectedFile);
-            rff.start();
-
-            Timeline timeline4 = new Timeline();
-            timeline4.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            scatterchart.getData().clear();
-                            jennyAutoplot();
-
-                        }
-
-                    })
-            );
-            
-            timeline4.setCycleCount(Animation.INDEFINITE);
-            animation4 = new SequentialTransition();
-            animation4.getChildren().add(timeline4);
-            animation4.play();
+           // r.mouseMove((int)1200, (int) 600);
           
-        }
+      
 
+          
+
+                rff = new ReadFromFile(selectedFile);
+                rff.start();
+
+                
+                timeline = new Timeline();
+                timeline.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(Integer.parseInt(textFieldMs.getText())), new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+
+                                scatterchart.getData().clear();
+
+                                jennyAutoplot();
+
+                            }
+                        })
+                );
+
+                timeline.setCycleCount(Animation.INDEFINITE);
+                animation4 = new SequentialTransition();
+                animation4.getChildren().add(timeline);
+                animation4.play();
+                animation4.getChildren().clear();
+        }
     }
 
     void clear() {
@@ -1201,6 +1214,14 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleExitAction(ActionEvent event) {
         System.exit(0);
+    }
+
+    @FXML
+    private void singlePlot(KeyEvent event) {
+    }
+
+    @FXML
+    private void singlePlot(ActionEvent event) {
     }
 
 }
