@@ -31,7 +31,7 @@
             <ColorPicker fx:id="colorPicker1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handelColorPicker1" prefHeight="25.0" prefWidth="82.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="17.0" prefWidth="163.0" GridPane.columnIndex="1" />
             <CheckBox fx:id="checkbox1" mnemonicParsing="false" onAction="#handelCheckbox1" text="Channel1" GridPane.rowIndex="1" />
-            <Button fx:id="SingleReadButton" mnemonicParsing="false" onMouseClicked="#singlePlot" prefHeight="25.0" prefWidth="82.0" text="SinglePlotOn" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="SingleReadButton" mnemonicParsing="false" onMouseClicked="#singlePlot" prefHeight="25.0" prefWidth="82.0" text="ClearScreen" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <Button fx:id="AutoReadButton" mnemonicParsing="false" onMouseClicked="#autoPlot" prefHeight="25.0" prefWidth="82.0" text="AutoPlot" GridPane.columnIndex="4" GridPane.rowIndex="4" />
             <TextField fx:id="textFieldMs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="82.0" promptText="Antal ms" GridPane.columnIndex="4" GridPane.rowIndex="3" />
             <CheckBox fx:id="checkbox2" mnemonicParsing="false" onAction="#handelCheckbox2" text="Channel2" GridPane.rowIndex="3" />
@@ -61,10 +61,10 @@
       <TextFlow layoutX="282.0" layoutY="21.0" prefHeight="26.0" prefWidth="217.0" />
       <Label fx:id="outputLabel" layoutX="314.0" layoutY="47.0" />
      
-      <Button layoutX="18.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleReadAction" text="PickFile" />
+      <Button layoutX="18.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleReadAction" text="File" />
       <Button layoutX="71.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleWriteAction" text="Write" />
-      <RadioButton fx:id="SampleRadio" layoutX="271.0" layoutY="47.0" mnemonicParsing="false" onAction="#sampleHandleAction" text="Sample" />
-      <RadioButton fx:id="timeRadio" layoutX="377.0" layoutY="45.0" mnemonicParsing="false" onAction="#timeHandleAction" text="Time" />
+      <RadioButton fx:id="SampleRadio" layoutX="276.0" layoutY="394.0" mnemonicParsing="false" onAction="#sampleHandleAction" text="Sample" />
+      <RadioButton fx:id="timeRadio" layoutX="379.0" layoutY="394.0" mnemonicParsing="false" onAction="#timeHandleAction" text="Time" />
       <Label fx:id="fileLabel" layoutX="149.0" layoutY="26.0" prefHeight="17.0" prefWidth="438.0" text="Label" />
       <Button layoutX="513.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleExitAction" text="Exit" />
     </children>
