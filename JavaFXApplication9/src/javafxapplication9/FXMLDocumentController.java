@@ -77,7 +77,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-import javafxapplication9.RWFile.Read;
+
 
 /**
  *
@@ -591,7 +591,7 @@ public class FXMLDocumentController implements Initializable {
     }
     int semaphore;
     Timeline timeline;
-    Read r;
+
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
