@@ -582,14 +582,7 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    public int getSemaphore() {
-        return semaphore;
-    }
-
-    public void setSemaphore(int semaphore) {
-        this.semaphore = semaphore;
-    }
-    int semaphore;
+    
     Timeline timeline;
 
 
