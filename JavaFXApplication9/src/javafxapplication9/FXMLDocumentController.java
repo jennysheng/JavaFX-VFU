@@ -226,7 +226,7 @@ public class FXMLDocumentController implements Initializable {
     void jennyAutoplot() {
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
-        xAxis.setAnimated(false);
+        xAxis.setAnimated(false);        
         scatterchart.setLegendVisible(false);
 
         if (timeRadio.isSelected()) {
@@ -596,14 +596,14 @@ public class FXMLDocumentController implements Initializable {
         yAxis.setAnimated(false);
         scatterchart.setLegendVisible(false);
         scatterchart.setVisible(true);
-        if (AutoReadButton.getText().equalsIgnoreCase("Off")) {
+        if (AutoReadButton.getText().equalsIgnoreCase("Stop")) {
             AutoReadButton.setText("AutoPlot");
             animation4.stop();
             rff.interrupt();
 
         } else if (AutoReadButton.getText().equalsIgnoreCase("AutoPlot")) {
 
-            AutoReadButton.setText("Off");
+            AutoReadButton.setText("Stop");
 
             timeline = new Timeline();
             timeline.getKeyFrames().add(
@@ -652,7 +652,6 @@ public class FXMLDocumentController implements Initializable {
         yAxis.setAutoRanging(true);
     }
 
-    @FXML
     private void handleWriteAction(ActionEvent event) {
         // FileChooser fileChooser = new FileChooser();
         // selectedFile = fileChooser.showOpenDialog(null);
@@ -1109,129 +1108,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML
-    private void handelColorPicker1(ActionEvent event) {
-        changecolor1();
-    }
-
-    @FXML
-    private void handelColorPicker2(ActionEvent event) {
-        changecolor2();
-    }
-
-    @FXML
-    private void handelColorPicker3(ActionEvent event) {
-        changecolor3();
-    }
-
-    @FXML
-    private void handelColorPicker4(ActionEvent event) {
-        changecolor4();
-    }
-
-    @FXML
-    private void handelColorPicker5(ActionEvent event) {
-        changecolor5();
-    }
-
-    @FXML
-    private void handelColorPicker6(ActionEvent event) {
-        changecolor6();
-    }
-
-    @FXML
-    private void handelColorPicker7(ActionEvent event) {
-        changecolor7();
-    }
-
-    @FXML
-    private void handelColorPicker8(ActionEvent event) {
-        changecolor8();
-    }
-
-    @FXML
-    private void handelCheckbox1(ActionEvent event) {
-
-        if (checkbox1.isSelected()) {
-            scatterchart.getData().add(series1);
-            changecolor1();
-
-        } else {
-            scatterchart.getData().remove(series1);
-        }
-
-    }
-
-    @FXML
-    private void handelCheckbox2(ActionEvent event) {
-        if (checkbox2.isSelected()) {
-            scatterchart.getData().add(series2);
-            changecolor2();
-        } else {
-            scatterchart.getData().remove(series2);
-        }
-
-    }
-
-    @FXML
-    private void handelCheckbox3(ActionEvent event) {
-        if (checkbox3.isSelected()) {
-            scatterchart.getData().add(series3);
-            changecolor3();
-        } else {
-            scatterchart.getData().remove(series3);
-        }
-    }
-
-    @FXML
-    private void handelCheckbox4(ActionEvent event) {
-        if (checkbox4.isSelected()) {
-            scatterchart.getData().add(series4);
-            changecolor4();
-        } else {
-            scatterchart.getData().remove(series4);
-        }
-    }
-
-    @FXML
-    private void handelCheckbox5(ActionEvent event) {
-        if (checkbox5.isSelected()) {
-            scatterchart.getData().add(series5);
-            changecolor5();
-        } else {
-            scatterchart.getData().remove(series5);
-        }
-    }
-
-    @FXML
-    private void handelCheckbox6(ActionEvent event) {
-        if (checkbox6.isSelected()) {
-            scatterchart.getData().add(series6);
-            changecolor6();
-        } else {
-            scatterchart.getData().remove(series6);
-        }
-    }
-
-    @FXML
-    private void handelCheckbox7(ActionEvent event) {
-        if (checkbox7.isSelected()) {
-            scatterchart.getData().add(series7);
-            changecolor7();
-        } else {
-            scatterchart.getData().remove(series7);
-        }
-    }
-
-    @FXML
-    private void handelCheckbox8(ActionEvent event) {
-        if (checkbox8.isSelected()) {
-            scatterchart.getData().add(series8);
-            changecolor8();
-        } else {
-            scatterchart.getData().remove(series8);
-        }
-    }
+  
 
     @FXML
     private void handleExitAction(ActionEvent event) {
@@ -1476,7 +1353,9 @@ public class FXMLDocumentController implements Initializable {
 
         double minDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(minX - xStart));
         double maxDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(maxX - xStart));
-
+        xAxis.setTickLabelRotation(90);
+       
+       
         //The "low" Y data value is actually at the maxY graphical location as Y graphical axis gets
         //larger as you go down on the screen.
         double minDataY = yAxis.toNumericValue(yAxis.getValueForDisplay(maxY - yStart));
@@ -1487,5 +1366,10 @@ public class FXMLDocumentController implements Initializable {
                 maxDataX - minDataX,
                 maxDataY - minDataY);
     }
+
+   
+
+  
+   
 
 }
