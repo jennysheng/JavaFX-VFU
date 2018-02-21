@@ -78,7 +78,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 
-
 /**
  *
  * @author Jenny_2
@@ -226,7 +225,7 @@ public class FXMLDocumentController implements Initializable {
     void jennyAutoplot() {
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
-        xAxis.setAnimated(false);        
+        xAxis.setAnimated(false);
         scatterchart.setLegendVisible(false);
 
         if (timeRadio.isSelected()) {
@@ -582,9 +581,7 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    
     Timeline timeline;
-
 
     @FXML
     private void autoPlot(MouseEvent event) throws InterruptedException {
@@ -612,34 +609,32 @@ public class FXMLDocumentController implements Initializable {
                         public void handle(ActionEvent actionEvent) {
                             rff = new ReadFromFile(selectedFile);
                             rff.start();
-                      
-                           scatterchart.getData().clear(); 
-                        
-                           
-                           try {
-                               Thread.sleep(100);
+
+                            scatterchart.getData().clear();
+
+                            try {
+                                Thread.sleep(100);
                             } catch (InterruptedException ex) {
-                               Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-                            } 
-                              jennyAutoplot();                   
-                                                      
+                                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            jennyAutoplot();
 
                         }
                     })
             );
 
-            if (scatterchart.getData() != null) {            
-                timeline.setCycleCount(Animation.INDEFINITE);                
+            if (scatterchart.getData() != null) {
+                timeline.setCycleCount(Animation.INDEFINITE);
                 animation4 = new SequentialTransition();
                 animation4.getChildren().add(timeline);
                 animation4.play();
                 animation4.getChildren().clear();
                 scatterchart.getData().clear();
-                if(scatterchart.getData() == null){
-                animation4.stop();
+                if (scatterchart.getData() == null) {
+                    animation4.stop();
                 }
             }
-          
+
         }
 
     }
@@ -720,8 +715,10 @@ public class FXMLDocumentController implements Initializable {
         String newColor2 = "-fx-background-color: " + toRGBCode(c);
         if (checkbox1.isSelected() == true) {
             nodes2 = scatterchart.lookupAll(".series1");
+            
         } else {
             nodes2 = scatterchart.lookupAll(".series0");
+       
         }
         for (Node n : nodes2) {
             n.setStyle(newColor2);
@@ -1108,8 +1105,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-  
-
     @FXML
     private void handleExitAction(ActionEvent event) {
         System.exit(0);
@@ -1354,8 +1349,7 @@ public class FXMLDocumentController implements Initializable {
         double minDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(minX - xStart));
         double maxDataX = xAxis.toNumericValue(xAxis.getValueForDisplay(maxX - xStart));
         xAxis.setTickLabelRotation(90);
-       
-       
+
         //The "low" Y data value is actually at the maxY graphical location as Y graphical axis gets
         //larger as you go down on the screen.
         double minDataY = yAxis.toNumericValue(yAxis.getValueForDisplay(maxY - yStart));
@@ -1367,9 +1361,92 @@ public class FXMLDocumentController implements Initializable {
                 maxDataY - minDataY);
     }
 
-   
+    @FXML
+    private void handlecheckbox1(ActionEvent event) {
+        if (checkbox1.isSelected()) {
+            scatterchart.getData().add(series1);
+            changecolor1();
 
-  
-   
+        } else {
+            scatterchart.getData().remove(series1);
+        }
+    }
+
+    @FXML
+    private void handlecheckbox2(ActionEvent event) {
+         if (checkbox2.isSelected()) {
+            scatterchart.getData().add(series2);
+            changecolor2();
+
+        } else {
+            scatterchart.getData().remove(series2);
+        }
+    }
+
+    @FXML
+    private void handlecheckbox3(ActionEvent event) {
+         if (checkbox3.isSelected()) {
+            scatterchart.getData().add(series3);
+            changecolor3();
+
+        } else {
+            scatterchart.getData().remove(series3);
+        }
+    }
+
+    @FXML
+    private void handlecheckbox4(ActionEvent event) {
+         if (checkbox4.isSelected()) {
+            scatterchart.getData().add(series4);
+            changecolor4();
+
+        } else {
+            scatterchart.getData().remove(series4);
+        }
+    }
+
+    @FXML
+    private void handlecheckbox5(ActionEvent event) {
+         if (checkbox5.isSelected()) {
+            scatterchart.getData().add(series5);
+            changecolor5();
+
+        } else {
+            scatterchart.getData().remove(series5);
+        }
+    }
+
+    @FXML
+    private void handlecheckbox6(ActionEvent event) {
+         if (checkbox6.isSelected()) {
+            scatterchart.getData().add(series6);
+            changecolor6();
+
+        } else {
+            scatterchart.getData().remove(series6);
+        }
+    }
+
+    @FXML
+    private void handlecheckbox7(ActionEvent event) {
+         if (checkbox7.isSelected()) {
+            scatterchart.getData().add(series7);
+            changecolor7();
+
+        } else {
+            scatterchart.getData().remove(series7);
+        }
+    }
+
+    @FXML
+    private void handlecheckbox8(ActionEvent event) {
+         if (checkbox8.isSelected()) {
+            scatterchart.getData().add(series8);
+            changecolor8();
+
+        } else {
+            scatterchart.getData().remove(series8);
+        }
+    }
 
 }
