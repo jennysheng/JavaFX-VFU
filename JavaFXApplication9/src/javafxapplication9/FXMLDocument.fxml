@@ -30,13 +30,13 @@
          <children>
             <ColorPicker fx:id="colorPicker1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="103.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="17.0" prefWidth="163.0" GridPane.columnIndex="1" />
-            <CheckBox fx:id="checkbox1" mnemonicParsing="false" text="Channel 1" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkbox1" mnemonicParsing="false" onAction="#handlecheckbox1" text="Channel 1" GridPane.rowIndex="1" />
             <Button fx:id="SingleReadButton" mnemonicParsing="false" onMouseClicked="#singlePlot" prefHeight="25.0" prefWidth="82.0" text="ClearScreen" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <Button fx:id="AutoReadButton" mnemonicParsing="false" onMouseClicked="#autoPlot" prefHeight="25.0" prefWidth="82.0" text="AutoPlot" GridPane.columnIndex="4" GridPane.rowIndex="4" />
             <TextField fx:id="textFieldMs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="82.0" promptText="Antal ms" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <CheckBox fx:id="checkbox2" mnemonicParsing="false" text="Channel 2" GridPane.rowIndex="3" />
-            <CheckBox fx:id="checkbox3" mnemonicParsing="false" text="Channel 3" GridPane.rowIndex="4" />
-            <CheckBox fx:id="checkbox4" mnemonicParsing="false" text="Channel 4" GridPane.rowIndex="5" />
+            <CheckBox fx:id="checkbox2" mnemonicParsing="false" onAction="#handlecheckbox2" text="Channel 2" GridPane.rowIndex="3" />
+            <CheckBox fx:id="checkbox3" mnemonicParsing="false" onAction="#handlecheckbox3" text="Channel 3" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkbox4" mnemonicParsing="false" onAction="#handlecheckbox4" text="Channel 4" GridPane.rowIndex="5" />
             <ColorPicker fx:id="colorPicker2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="103.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ColorPicker fx:id="colorPicker3" prefHeight="25.0" prefWidth="103.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ColorPicker fx:id="colorPicker4" prefHeight="25.0" prefWidth="103.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
@@ -44,13 +44,13 @@
             <ColorPicker fx:id="colorPicker6" prefHeight="25.0" prefWidth="103.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <ColorPicker fx:id="colorPicker7" prefHeight="25.0" prefWidth="103.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
             <ColorPicker fx:id="colorPicker8" prefHeight="25.0" prefWidth="103.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <CheckBox fx:id="checkbox5" mnemonicParsing="false" text="Channel 5" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <CheckBox fx:id="checkbox6" mnemonicParsing="false" text="Channel 6" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <CheckBox fx:id="checkbox7" mnemonicParsing="false" text="Channel 7" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <CheckBox fx:id="checkbox8" mnemonicParsing="false" text="Channel 8" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <CheckBox fx:id="checkbox5" mnemonicParsing="false" onAction="#handlecheckbox5" text="Channel 5" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkbox6" mnemonicParsing="false" onAction="#handlecheckbox6" text="Channel 6" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <CheckBox fx:id="checkbox7" mnemonicParsing="false" onAction="#handlecheckbox7" text="Channel 7" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkbox8" mnemonicParsing="false" onAction="#handlecheckbox8" text="Channel 8" GridPane.columnIndex="2" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <ScatterChart fx:id="scatterchart" layoutX="10.0" layoutY="47.0" prefHeight="355.0" prefWidth="592.0">
+      <ScatterChart fx:id="scatterchart" layoutX="18.0" layoutY="43.0" prefHeight="355.0" prefWidth="592.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>
@@ -62,9 +62,9 @@
       <Label fx:id="outputLabel" layoutX="314.0" layoutY="47.0" />
      
       <Button layoutX="18.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleReadAction" text="File" />
-      <RadioButton fx:id="SampleRadio" layoutX="244.0" layoutY="394.0" mnemonicParsing="false" onAction="#sampleHandleAction" text="Sample" />
-      <RadioButton fx:id="timeRadio" layoutX="321.0" layoutY="394.0" mnemonicParsing="false" onAction="#timeHandleAction" text="Time" />
+      <RadioButton fx:id="SampleRadio" layoutX="259.0" layoutY="390.0" mnemonicParsing="false" onAction="#sampleHandleAction" text="Sample" />
+      <RadioButton fx:id="timeRadio" layoutX="378.0" layoutY="390.0" mnemonicParsing="false" onAction="#timeHandleAction" text="Time" />
       <Label fx:id="fileLabel" layoutX="70.0" layoutY="26.0" prefHeight="17.0" prefWidth="438.0" text="Label" />
-      <Button layoutX="546.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleExitAction" text="Exit" />
+      <Button layoutX="549.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleExitAction" prefHeight="25.0" prefWidth="41.0" text="Exit" />
     </children>
 </AnchorPane>
