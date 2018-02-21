@@ -715,10 +715,10 @@ public class FXMLDocumentController implements Initializable {
         String newColor2 = "-fx-background-color: " + toRGBCode(c);
         if (checkbox1.isSelected() == true) {
             nodes2 = scatterchart.lookupAll(".series1");
-            
+
         } else {
             nodes2 = scatterchart.lookupAll(".series0");
-       
+
         }
         for (Node n : nodes2) {
             n.setStyle(newColor2);
@@ -870,6 +870,8 @@ public class FXMLDocumentController implements Initializable {
                 || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
                 || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
                 || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected()
                 || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected()
                 || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()) {
             nodes7 = scatterchart.lookupAll(".series5");
@@ -961,9 +963,12 @@ public class FXMLDocumentController implements Initializable {
                 || checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
                 || checkbox1.isSelected() && checkbox2.isSelected() && !checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
                 || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && !checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
                 || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && !checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
                 || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected() && checkbox7.isSelected()
-                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()) {
+                || !checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && !checkbox7.isSelected()
+                || checkbox1.isSelected() && checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && !checkbox6.isSelected()&& checkbox7.isSelected()) {
+            
             nodes8 = scatterchart.lookupAll(".series6");
 
         } else if (!checkbox1.isSelected() && !checkbox2.isSelected() && checkbox3.isSelected() && checkbox4.isSelected() && checkbox5.isSelected() && checkbox6.isSelected() && checkbox7.isSelected()
@@ -1374,7 +1379,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handlecheckbox2(ActionEvent event) {
-         if (checkbox2.isSelected()) {
+        if (checkbox2.isSelected()) {
             scatterchart.getData().add(series2);
             changecolor2();
 
@@ -1385,7 +1390,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handlecheckbox3(ActionEvent event) {
-         if (checkbox3.isSelected()) {
+        if (checkbox3.isSelected()) {
             scatterchart.getData().add(series3);
             changecolor3();
 
@@ -1396,7 +1401,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handlecheckbox4(ActionEvent event) {
-         if (checkbox4.isSelected()) {
+        if (checkbox4.isSelected()) {
             scatterchart.getData().add(series4);
             changecolor4();
 
@@ -1407,7 +1412,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handlecheckbox5(ActionEvent event) {
-         if (checkbox5.isSelected()) {
+        if (checkbox5.isSelected()) {
             scatterchart.getData().add(series5);
             changecolor5();
 
@@ -1418,7 +1423,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handlecheckbox6(ActionEvent event) {
-         if (checkbox6.isSelected()) {
+        if (checkbox6.isSelected()) {
             scatterchart.getData().add(series6);
             changecolor6();
 
@@ -1429,7 +1434,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handlecheckbox7(ActionEvent event) {
-         if (checkbox7.isSelected()) {
+        if (checkbox7.isSelected()) {
             scatterchart.getData().add(series7);
             changecolor7();
 
@@ -1440,7 +1445,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handlecheckbox8(ActionEvent event) {
-         if (checkbox8.isSelected()) {
+        if (checkbox8.isSelected()) {
             scatterchart.getData().add(series8);
             changecolor8();
 
